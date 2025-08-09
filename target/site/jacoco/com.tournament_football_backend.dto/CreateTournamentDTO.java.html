@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CreateTournamentDTO.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tournament-football-backend</a> &gt; <a href="index.source.html" class="el_package">com.tournament_football_backend.dto</a> &gt; <span class="el_source">CreateTournamentDTO.java</span></div><h1>CreateTournamentDTO.java</h1><pre class="source lang-java linenums">package com.tournament_football_backend.dto;
+
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+import com.tournament_football_backend.model.TournamentStatus;
+
+import java.time.LocalDate;
+
+public class CreateTournamentDTO {
+
+    @NotBlank
+    @Size(min = 3, max = 100)
+    private String name;
+
+    @Size(max = 1000)
+    private String description;
+
+    @NotNull
+    private LocalDate startDate;
+
+    @NotNull
+    private LocalDate endDate;
+
+<span class="pc" id="L25">    private Integer maxTeams = 16;</span>
+<span class="pc" id="L26">    private TournamentStatus status = TournamentStatus.OPEN;</span>
+
+    // Constructors
+<span class="fc" id="L29">    public CreateTournamentDTO() {}</span>
+
+<span class="nc" id="L31">    public CreateTournamentDTO(String name, LocalDate startDate, LocalDate endDate) {</span>
+<span class="nc" id="L32">        this.name = name;</span>
+<span class="nc" id="L33">        this.startDate = startDate;</span>
+<span class="nc" id="L34">        this.endDate = endDate;</span>
+<span class="nc" id="L35">    }</span>
+
+    // Getters and Setters
+    public String getName() {
+<span class="fc" id="L39">        return name;</span>
+    }
+
+    public void setName(String name) {
+<span class="fc" id="L43">        this.name = name;</span>
+<span class="fc" id="L44">    }</span>
+
+    public String getDescription() {
+<span class="fc" id="L47">        return description;</span>
+    }
+
+    public void setDescription(String description) {
+<span class="fc" id="L51">        this.description = description;</span>
+<span class="fc" id="L52">    }</span>
+
+    public LocalDate getStartDate() {
+<span class="fc" id="L55">        return startDate;</span>
+    }
+
+    public void setStartDate(LocalDate startDate) {
+<span class="fc" id="L59">        this.startDate = startDate;</span>
+<span class="fc" id="L60">    }</span>
+
+    public LocalDate getEndDate() {
+<span class="fc" id="L63">        return endDate;</span>
+    }
+
+    public void setEndDate(LocalDate endDate) {
+<span class="fc" id="L67">        this.endDate = endDate;</span>
+<span class="fc" id="L68">    }</span>
+
+    public Integer getMaxTeams() {
+<span class="fc" id="L71">        return maxTeams;</span>
+    }
+
+    public void setMaxTeams(Integer maxTeams) {
+<span class="fc" id="L75">        this.maxTeams = maxTeams;</span>
+<span class="fc" id="L76">    }</span>
+
+    public TournamentStatus getStatus() {
+<span class="fc" id="L79">        return status;</span>
+    }
+
+    public void setStatus(TournamentStatus status) {
+<span class="fc" id="L83">        this.status = status;</span>
+<span class="fc" id="L84">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

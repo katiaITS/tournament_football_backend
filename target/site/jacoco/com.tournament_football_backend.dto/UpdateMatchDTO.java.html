@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UpdateMatchDTO.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tournament-football-backend</a> &gt; <a href="index.source.html" class="el_package">com.tournament_football_backend.dto</a> &gt; <span class="el_source">UpdateMatchDTO.java</span></div><h1>UpdateMatchDTO.java</h1><pre class="source lang-java linenums">package com.tournament_football_backend.dto;
+
+import jakarta.validation.constraints.Min;
+import com.tournament_football_backend.model.MatchStatus;
+
+import java.time.LocalDateTime;
+
+public class UpdateMatchDTO {
+
+    // All fields optional for partial updates
+    private LocalDateTime matchDate;
+
+    @Min(0)
+    private Integer homeGoals;
+
+    @Min(0)
+    private Integer awayGoals;
+
+    private MatchStatus status;
+
+    // Constructors
+<span class="fc" id="L22">    public UpdateMatchDTO() {}</span>
+
+    // Getters and Setters
+    public LocalDateTime getMatchDate() {
+<span class="fc" id="L26">        return matchDate;</span>
+    }
+
+    public void setMatchDate(LocalDateTime matchDate) {
+<span class="fc" id="L30">        this.matchDate = matchDate;</span>
+<span class="fc" id="L31">    }</span>
+
+    public Integer getHomeGoals() {
+<span class="fc" id="L34">        return homeGoals;</span>
+    }
+
+    public void setHomeGoals(Integer homeGoals) {
+<span class="fc" id="L38">        this.homeGoals = homeGoals;</span>
+<span class="fc" id="L39">    }</span>
+
+    public Integer getAwayGoals() {
+<span class="fc" id="L42">        return awayGoals;</span>
+    }
+
+    public void setAwayGoals(Integer awayGoals) {
+<span class="nc" id="L46">        this.awayGoals = awayGoals;</span>
+<span class="nc" id="L47">    }</span>
+
+    public MatchStatus getStatus() {
+<span class="fc" id="L50">        return status;</span>
+    }
+
+    public void setStatus(MatchStatus status) {
+<span class="fc" id="L54">        this.status = status;</span>
+<span class="fc" id="L55">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

@@ -1,0 +1,61 @@
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: tournament-user-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-rootpassword}
+      MYSQL_DATABASE: ${DB_NAME:-tournament_football}
+      MYSQL_USER: ${DB_USERNAME:-tournament_user}
+      MYSQL_PASSWORD: ${DB_PASSWORD:-password}
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./src/main/resources/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql
+      - ./src/main/resources/data.sql:/docker-entrypoint-initdb.d/02-data.sql
+    networks:
+      - tournament-network
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: tournament-football-app
+    restart: unless-stopped
+    depends_on:
+      - mysql
+    environment:
+      DB_URL: jdbc:mysql://mysql:3306/${DB_NAME:-tournament_football}?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Europe/Rome
+      DB_USERNAME: ${DB_USERNAME:-tournament_user}
+      DB_PASSWORD: ${DB_PASSWORD:-password}
+      JWT_SECRET: ${JWT_SECRET:-mySecretKey12345678901234567890}
+      JWT_EXPIRATION: ${JWT_EXPIRATION:-86400000}
+    ports:
+      - "8080:8080"
+    networks:
+      - tournament-network
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: tournament_football-phpmyadmin
+    restart: unless-stopped
+    depends_on:
+      - mysql
+    environment:
+      PMA_HOST: mysql
+      PMA_PORT: 3306
+      PMA_USER: ${DB_USERNAME:-tournament_user}
+      PMA_PASSWORD: ${DB_PASSWORD:-password}
+    ports:
+      - "8081:80"
+    networks:
+      - tournament-network
+
+volumes:
+  mysql_data:
+    driver: local
+
+networks:
+  tournament-network:
+    driver: bridge

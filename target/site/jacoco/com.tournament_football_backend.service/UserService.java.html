@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UserService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tournament-football-backend</a> &gt; <a href="index.source.html" class="el_package">com.tournament_football_backend.service</a> &gt; <span class="el_source">UserService.java</span></div><h1>UserService.java</h1><pre class="source lang-java linenums">package com.tournament_football_backend.service;
+
+import com.tournament_football_backend.dto.ProfileDTO;
+import com.tournament_football_backend.dto.UpdateUserDTO;
+import com.tournament_football_backend.dto.UserDTO;
+import com.tournament_football_backend.model.Profile;
+import com.tournament_football_backend.model.Role;
+import com.tournament_football_backend.model.User;
+import com.tournament_football_backend.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+import static com.tournament_football_backend.exception.UserExceptions.*;
+import static com.tournament_football_backend.exception.ValidationExceptions.*;
+
+@Service
+@Transactional
+<span class="fc" id="L24">public class UserService {</span>
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    public List&lt;UserDTO&gt; getAllUsers() {
+<span class="fc" id="L33">        return userRepository.findAll().stream()</span>
+<span class="fc" id="L34">                .map(this::convertToDTO)</span>
+<span class="fc" id="L35">                .collect(Collectors.toList());</span>
+    }
+
+    public Optional&lt;UserDTO&gt; getUserById(Long id) {
+<span class="fc" id="L39">        return userRepository.findByIdWithProfile(id)</span>
+<span class="fc" id="L40">                .map(this::convertToDTO);</span>
+    }
+
+    public Optional&lt;UserDTO&gt; getUserByUsername(String username) {
+<span class="fc" id="L44">        return userRepository.findByUsername(username)</span>
+<span class="fc" id="L45">                .map(this::convertToDTO);</span>
+    }
+
+    public UserDTO createUser(UserDTO userDTO, String password) {
+<span class="fc bfc" id="L49" title="All 2 branches covered.">        if (userRepository.existsByUsername(userDTO.getUsername())) {</span>
+<span class="fc" id="L50">            throw new UsernameAlreadyExistsException();</span>
+        }
+<span class="fc bfc" id="L52" title="All 2 branches covered.">        if (userRepository.existsByEmail(userDTO.getEmail())) {</span>
+<span class="fc" id="L53">            throw new EmailAlreadyExistsException();</span>
+        }
+
+<span class="fc" id="L56">        User user = new User();</span>
+<span class="fc" id="L57">        user.setUsername(userDTO.getUsername());</span>
+<span class="fc" id="L58">        user.setEmail(userDTO.getEmail());</span>
+<span class="fc" id="L59">        user.setPassword(passwordEncoder.encode(password));</span>
+<span class="fc bfc" id="L60" title="All 2 branches covered.">        user.setRole(userDTO.getRole() != null ? userDTO.getRole() : Role.ROLE_USER);</span>
+
+<span class="fc" id="L62">        User savedUser = userRepository.save(user);</span>
+<span class="fc" id="L63">        return convertToDTO(savedUser);</span>
+    }
+
+    public Optional&lt;UserDTO&gt; updateUser(Long id, UpdateUserDTO updateUserDTO) {
+<span class="fc" id="L67">        return userRepository.findById(id)</span>
+<span class="fc" id="L68">                .map(user -&gt; {</span>
+<span class="fc bfc" id="L69" title="All 4 branches covered.">                    if (updateUserDTO.getUsername() != null &amp;&amp; !updateUserDTO.getUsername().equals(user.getUsername())) {</span>
+<span class="fc bfc" id="L70" title="All 2 branches covered.">                        if (userRepository.existsByUsername(updateUserDTO.getUsername())) {</span>
+<span class="fc" id="L71">                            throw new UsernameAlreadyExistsException();</span>
+                        }
+<span class="fc" id="L73">                        user.setUsername(updateUserDTO.getUsername());</span>
+                    }
+<span class="fc bfc" id="L75" title="All 4 branches covered.">                    if (updateUserDTO.getEmail() != null &amp;&amp; !updateUserDTO.getEmail().equals(user.getEmail())) {</span>
+<span class="fc bfc" id="L76" title="All 2 branches covered.">                        if (userRepository.existsByEmail(updateUserDTO.getEmail())) {</span>
+<span class="fc" id="L77">                            throw new EmailAlreadyExistsException();</span>
+                        }
+<span class="fc" id="L79">                        user.setEmail(updateUserDTO.getEmail());</span>
+                    }
+<span class="pc bpc" id="L81" title="1 of 2 branches missed.">                    if (updateUserDTO.getRole() != null) {</span>
+<span class="fc" id="L82">                        user.setRole(updateUserDTO.getRole());</span>
+                    }
+<span class="fc" id="L84">                    return convertToDTO(userRepository.save(user));</span>
+                });
+    }
+
+    public boolean deleteUser(Long id) {
+<span class="fc bfc" id="L89" title="All 2 branches covered.">        if (!userRepository.existsById(id)) {</span>
+<span class="fc" id="L90">            throw new UserNotFoundException();</span>
+        }
+
+<span class="fc" id="L93">        userRepository.deleteById(id);</span>
+<span class="fc" id="L94">        return true;</span>
+    }
+
+    public Optional&lt;UserDTO&gt; updateProfile(Long userId, ProfileDTO profileDTO) {
+<span class="fc" id="L98">        return userRepository.findByIdWithProfile(userId)</span>
+<span class="fc" id="L99">                .map(user -&gt; {</span>
+<span class="fc" id="L100">                    Profile profile = user.getProfile();</span>
+<span class="fc bfc" id="L101" title="All 2 branches covered.">                    if (profile == null) {</span>
+<span class="fc" id="L102">                        profile = new Profile();</span>
+<span class="fc" id="L103">                        profile.setUser(user);</span>
+<span class="fc" id="L104">                        user.setProfile(profile);</span>
+                    }
+
+<span class="pc bpc" id="L107" title="1 of 2 branches missed.">                    if (profileDTO.getFirstName() != null) profile.setFirstName(profileDTO.getFirstName());</span>
+<span class="fc bfc" id="L108" title="All 2 branches covered.">                    if (profileDTO.getLastName() != null) profile.setLastName(profileDTO.getLastName());</span>
+<span class="fc bfc" id="L109" title="All 2 branches covered.">                    if (profileDTO.getBirthDate() != null) profile.setBirthDate(profileDTO.getBirthDate());</span>
+<span class="fc bfc" id="L110" title="All 2 branches covered.">                    if (profileDTO.getPhone() != null) profile.setPhone(profileDTO.getPhone());</span>
+<span class="fc bfc" id="L111" title="All 2 branches covered.">                    if (profileDTO.getCity() != null) profile.setCity(profileDTO.getCity());</span>
+<span class="fc bfc" id="L112" title="All 2 branches covered.">                    if (profileDTO.getBio() != null) profile.setBio(profileDTO.getBio());</span>
+
+<span class="fc" id="L114">                    return convertToDTO(userRepository.save(user));</span>
+                });
+    }
+
+    public List&lt;UserDTO&gt; searchUsers(String keyword) {
+<span class="fc bfc" id="L119" title="All 4 branches covered.">        if (keyword == null || keyword.trim().isEmpty()) {</span>
+<span class="fc" id="L120">            throw new EmptySearchKeywordException();</span>
+        }
+
+<span class="fc" id="L123">        return userRepository.findByUsernameContainingOrEmailContaining(keyword).stream()</span>
+<span class="fc" id="L124">                .map(this::convertToDTO)</span>
+<span class="fc" id="L125">                .collect(Collectors.toList());</span>
+    }
+
+    public boolean existsByUsername(String username) {
+<span class="fc" id="L129">        return userRepository.existsByUsername(username);</span>
+    }
+
+    public boolean existsByEmail(String email) {
+<span class="fc" id="L133">        return userRepository.existsByEmail(email);</span>
+    }
+
+    private UserDTO convertToDTO(User user) {
+<span class="fc" id="L137">        UserDTO dto = new UserDTO();</span>
+<span class="fc" id="L138">        dto.setId(user.getId());</span>
+<span class="fc" id="L139">        dto.setUsername(user.getUsername());</span>
+<span class="fc" id="L140">        dto.setEmail(user.getEmail());</span>
+<span class="fc" id="L141">        dto.setRole(user.getRole());</span>
+<span class="fc" id="L142">        dto.setCreatedAt(user.getCreatedAt());</span>
+
+<span class="fc bfc" id="L144" title="All 2 branches covered.">        if (user.getProfile() != null) {</span>
+<span class="fc" id="L145">            ProfileDTO profileDTO = new ProfileDTO();</span>
+<span class="fc" id="L146">            profileDTO.setId(user.getProfile().getId());</span>
+<span class="fc" id="L147">            profileDTO.setFirstName(user.getProfile().getFirstName());</span>
+<span class="fc" id="L148">            profileDTO.setLastName(user.getProfile().getLastName());</span>
+<span class="fc" id="L149">            profileDTO.setBirthDate(user.getProfile().getBirthDate());</span>
+<span class="fc" id="L150">            profileDTO.setPhone(user.getProfile().getPhone());</span>
+<span class="fc" id="L151">            profileDTO.setCity(user.getProfile().getCity());</span>
+<span class="fc" id="L152">            profileDTO.setBio(user.getProfile().getBio());</span>
+<span class="fc" id="L153">            dto.setProfile(profileDTO);</span>
+        }
+
+<span class="fc" id="L156">        return dto;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TournamentController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tournament-football-backend</a> &gt; <a href="index.source.html" class="el_package">com.tournament_football_backend.controller</a> &gt; <span class="el_source">TournamentController.java</span></div><h1>TournamentController.java</h1><pre class="source lang-java linenums">package com.tournament_football_backend.controller;
+
+import com.tournament_football_backend.dto.CreateTournamentDTO;
+import com.tournament_football_backend.dto.TournamentDTO;
+import com.tournament_football_backend.dto.UpdateTournamentDTO;
+import com.tournament_football_backend.model.TournamentStatus;
+import com.tournament_football_backend.service.TournamentService;
+import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping(&quot;/tournaments&quot;)
+@CrossOrigin(origins = &quot;*&quot;, maxAge = 3600)
+<span class="fc" id="L19">public class TournamentController {</span>
+
+    @Autowired
+    private TournamentService tournamentService;
+
+    // GET /api/tournaments - List all tournaments
+    @GetMapping
+    public ResponseEntity&lt;List&lt;TournamentDTO&gt;&gt; getAllTournaments() {
+<span class="nc" id="L27">        List&lt;TournamentDTO&gt; tournaments = tournamentService.getAllTournaments();</span>
+<span class="nc" id="L28">        return ResponseEntity.ok(tournaments);</span>
+    }
+
+    // GET /api/tournaments/{id} - Get tournament by ID
+    @GetMapping(&quot;/{id}&quot;)
+    public ResponseEntity&lt;TournamentDTO&gt; getTournamentById(@PathVariable Long id) {
+<span class="nc" id="L34">        return tournamentService.getTournamentById(id)</span>
+<span class="nc" id="L35">                .map(tournament -&gt; ResponseEntity.ok(tournament))</span>
+<span class="nc" id="L36">                .orElse(ResponseEntity.notFound().build());</span>
+    }
+
+    // POST /api/tournaments - Create new tournament (ADMIN only)
+    @PostMapping
+    @PreAuthorize(&quot;hasRole('ADMIN')&quot;)
+    public ResponseEntity&lt;TournamentDTO&gt; createTournament(@Valid @RequestBody CreateTournamentDTO createTournamentDTO) {
+<span class="nc" id="L43">        TournamentDTO createdTournament = tournamentService.createTournament(createTournamentDTO);</span>
+<span class="nc" id="L44">        return ResponseEntity.ok(createdTournament);</span>
+    }
+
+    // PUT /api/tournaments/{id} - Update tournament (ADMIN only)
+    @PutMapping(&quot;/{id}&quot;)
+    @PreAuthorize(&quot;hasRole('ADMIN')&quot;)
+    public ResponseEntity&lt;TournamentDTO&gt; updateTournament(@PathVariable Long id, @Valid @RequestBody UpdateTournamentDTO updateTournamentDTO) {
+<span class="nc" id="L51">        return tournamentService.updateTournament(id, updateTournamentDTO)</span>
+<span class="nc" id="L52">                .map(updatedTournament -&gt; ResponseEntity.ok(updatedTournament))</span>
+<span class="nc" id="L53">                .orElse(ResponseEntity.notFound().build());</span>
+    }
+
+    // DELETE /api/tournaments/{id} - Delete tournament (ADMIN only)
+    @DeleteMapping(&quot;/{id}&quot;)
+    @PreAuthorize(&quot;hasRole('ADMIN')&quot;)
+    public ResponseEntity&lt;?&gt; deleteTournament(@PathVariable Long id) {
+<span class="nc" id="L60">        tournamentService.deleteTournament(id);</span>
+<span class="nc" id="L61">        return ResponseEntity.ok().build();</span>
+    }
+
+    // POST /api/tournaments/{tournamentId}/teams/{teamId} - Register team to tournament
+    @PostMapping(&quot;/{tournamentId}/teams/{teamId}&quot;)
+    @PreAuthorize(&quot;hasRole('USER') or hasRole('ADMIN')&quot;)
+    public ResponseEntity&lt;?&gt; registerTeam(@PathVariable Long tournamentId, @PathVariable Long teamId) {
+<span class="nc" id="L68">        tournamentService.registerTeam(tournamentId, teamId);</span>
+<span class="nc" id="L69">        return ResponseEntity.ok().build();</span>
+    }
+
+    // DELETE /api/tournaments/{tournamentId}/teams/{teamId} - Remove team from tournament (ADMIN only)
+    @DeleteMapping(&quot;/{tournamentId}/teams/{teamId}&quot;)
+    @PreAuthorize(&quot;hasRole('ADMIN')&quot;)
+    public ResponseEntity&lt;?&gt; removeTeam(@PathVariable Long tournamentId, @PathVariable Long teamId) {
+<span class="nc" id="L76">        tournamentService.removeTeam(tournamentId, teamId);</span>
+<span class="nc" id="L77">        return ResponseEntity.ok().build();</span>
+    }
+
+    // GET /api/tournaments/status/{status} - Tournaments by status
+    @GetMapping(&quot;/status/{status}&quot;)
+    public ResponseEntity&lt;List&lt;TournamentDTO&gt;&gt; getTournamentsByStatus(@PathVariable TournamentStatus status) {
+<span class="nc" id="L83">        List&lt;TournamentDTO&gt; tournaments = tournamentService.getTournamentsByStatus(status);</span>
+<span class="nc" id="L84">        return ResponseEntity.ok(tournaments);</span>
+    }
+
+    // GET /api/tournaments/upcoming - Upcoming tournaments
+    @GetMapping(&quot;/upcoming&quot;)
+    public ResponseEntity&lt;List&lt;TournamentDTO&gt;&gt; getUpcomingTournaments() {
+<span class="nc" id="L90">        List&lt;TournamentDTO&gt; tournaments = tournamentService.getUpcomingTournaments();</span>
+<span class="nc" id="L91">        return ResponseEntity.ok(tournaments);</span>
+    }
+
+    // GET /api/tournaments/team/{teamId} - Tournaments by team
+    @GetMapping(&quot;/team/{teamId}&quot;)
+    public ResponseEntity&lt;List&lt;TournamentDTO&gt;&gt; getTournamentsByTeam(@PathVariable Long teamId) {
+<span class="nc" id="L97">        List&lt;TournamentDTO&gt; tournaments = tournamentService.getTournamentsByTeam(teamId);</span>
+<span class="nc" id="L98">        return ResponseEntity.ok(tournaments);</span>
+    }
+
+    // GET /api/tournaments/search?keyword={keyword} - Search tournaments
+    @GetMapping(&quot;/search&quot;)
+    public ResponseEntity&lt;List&lt;TournamentDTO&gt;&gt; searchTournaments(@RequestParam String keyword) {
+<span class="nc" id="L104">        List&lt;TournamentDTO&gt; tournaments = tournamentService.searchTournaments(keyword);</span>
+<span class="nc" id="L105">        return ResponseEntity.ok(tournaments);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

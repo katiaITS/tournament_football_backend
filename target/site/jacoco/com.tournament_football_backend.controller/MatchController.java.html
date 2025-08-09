@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MatchController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tournament-football-backend</a> &gt; <a href="index.source.html" class="el_package">com.tournament_football_backend.controller</a> &gt; <span class="el_source">MatchController.java</span></div><h1>MatchController.java</h1><pre class="source lang-java linenums">package com.tournament_football_backend.controller;
+
+import com.tournament_football_backend.dto.CreateMatchDTO;
+import com.tournament_football_backend.dto.MatchDTO;
+import com.tournament_football_backend.dto.UpdateMatchDTO;
+import com.tournament_football_backend.model.MatchStatus;
+import com.tournament_football_backend.service.MatchService;
+import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Map;
+
+@RestController
+@RequestMapping(&quot;/matches&quot;)
+@CrossOrigin(origins = &quot;*&quot;, maxAge = 3600)
+<span class="fc" id="L22">public class MatchController {</span>
+
+    @Autowired
+    private MatchService matchService;
+
+    // GET /api/matches - List all matches
+    @GetMapping
+    public ResponseEntity&lt;List&lt;MatchDTO&gt;&gt; getAllMatches() {
+<span class="nc" id="L30">        List&lt;MatchDTO&gt; matches = matchService.getAllMatches();</span>
+<span class="nc" id="L31">        return ResponseEntity.ok(matches);</span>
+    }
+
+    // GET /api/matches/{id} - Get match by ID
+    @GetMapping(&quot;/{id}&quot;)
+    public ResponseEntity&lt;MatchDTO&gt; getMatchById(@PathVariable Long id) {
+<span class="nc" id="L37">        return matchService.getMatchById(id)</span>
+<span class="nc" id="L38">                .map(match -&gt; ResponseEntity.ok(match))</span>
+<span class="nc" id="L39">                .orElse(ResponseEntity.notFound().build());</span>
+    }
+
+    // POST /api/matches - Create new match (ADMIN only)
+    @PostMapping
+    @PreAuthorize(&quot;hasRole('ADMIN')&quot;)
+    public ResponseEntity&lt;MatchDTO&gt; createMatch(@Valid @RequestBody CreateMatchDTO createMatchDTO) {
+<span class="nc" id="L46">        MatchDTO createdMatch = matchService.createMatch(createMatchDTO);</span>
+<span class="nc" id="L47">        return ResponseEntity.ok(createdMatch);</span>
+    }
+
+    // PUT /api/matches/{id} - Update match (ADMIN only)
+    @PutMapping(&quot;/{id}&quot;)
+    @PreAuthorize(&quot;hasRole('ADMIN')&quot;)
+    public ResponseEntity&lt;MatchDTO&gt; updateMatch(@PathVariable Long id, @Valid @RequestBody UpdateMatchDTO updateMatchDTO) {
+<span class="nc" id="L54">        return matchService.updateMatch(id, updateMatchDTO)</span>
+<span class="nc" id="L55">                .map(updatedMatch -&gt; ResponseEntity.ok(updatedMatch))</span>
+<span class="nc" id="L56">                .orElse(ResponseEntity.notFound().build());</span>
+    }
+
+    // PUT /api/matches/{id}/result - Update match result (ADMIN only)
+    @PutMapping(&quot;/{id}/result&quot;)
+    @PreAuthorize(&quot;hasRole('ADMIN')&quot;)
+    public ResponseEntity&lt;MatchDTO&gt; updateResult(@PathVariable Long id, @RequestBody Map&lt;String, Integer&gt; result) {
+<span class="nc" id="L63">        Integer homeGoals = result.get(&quot;homeGoals&quot;);</span>
+<span class="nc" id="L64">        Integer awayGoals = result.get(&quot;awayGoals&quot;);</span>
+
+<span class="nc" id="L66">        return matchService.updateResult(id, homeGoals, awayGoals)</span>
+<span class="nc" id="L67">                .map(updatedMatch -&gt; ResponseEntity.ok(updatedMatch))</span>
+<span class="nc" id="L68">                .orElse(ResponseEntity.notFound().build());</span>
+    }
+
+    // DELETE /api/matches/{id} - Delete match (ADMIN only)
+    @DeleteMapping(&quot;/{id}&quot;)
+    @PreAuthorize(&quot;hasRole('ADMIN')&quot;)
+    public ResponseEntity&lt;?&gt; deleteMatch(@PathVariable Long id) {
+<span class="nc" id="L75">        matchService.deleteMatch(id);</span>
+<span class="nc" id="L76">        return ResponseEntity.ok().build();</span>
+    }
+
+    // GET /api/matches/tournament/{tournamentId} - Matches by tournament
+    @GetMapping(&quot;/tournament/{tournamentId}&quot;)
+    public ResponseEntity&lt;List&lt;MatchDTO&gt;&gt; getMatchesByTournament(@PathVariable Long tournamentId) {
+<span class="nc" id="L82">        List&lt;MatchDTO&gt; matches = matchService.getMatchesByTournament(tournamentId);</span>
+<span class="nc" id="L83">        return ResponseEntity.ok(matches);</span>
+    }
+
+    // GET /api/matches/team/{teamId} - Matches by team
+    @GetMapping(&quot;/team/{teamId}&quot;)
+    public ResponseEntity&lt;List&lt;MatchDTO&gt;&gt; getMatchesByTeam(@PathVariable Long teamId) {
+<span class="nc" id="L89">        List&lt;MatchDTO&gt; matches = matchService.getMatchesByTeam(teamId);</span>
+<span class="nc" id="L90">        return ResponseEntity.ok(matches);</span>
+    }
+
+    // GET /api/matches/status/{status} - Matches by status
+    @GetMapping(&quot;/status/{status}&quot;)
+    public ResponseEntity&lt;List&lt;MatchDTO&gt;&gt; getMatchesByStatus(@PathVariable MatchStatus status) {
+<span class="nc" id="L96">        List&lt;MatchDTO&gt; matches = matchService.getMatchesByStatus(status);</span>
+<span class="nc" id="L97">        return ResponseEntity.ok(matches);</span>
+    }
+
+    // GET /api/matches/period?start={start}&amp;end={end} - Matches by period
+    @GetMapping(&quot;/period&quot;)
+    public ResponseEntity&lt;List&lt;MatchDTO&gt;&gt; getMatchesByPeriod(
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime start,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime end) {
+<span class="nc" id="L105">        List&lt;MatchDTO&gt; matches = matchService.getMatchesByPeriod(start, end);</span>
+<span class="nc" id="L106">        return ResponseEntity.ok(matches);</span>
+    }
+
+    // GET /api/matches/today - Today's matches
+    @GetMapping(&quot;/today&quot;)
+    public ResponseEntity&lt;List&lt;MatchDTO&gt;&gt; getTodayMatches() {
+<span class="nc" id="L112">        List&lt;MatchDTO&gt; matches = matchService.getTodayMatches();</span>
+<span class="nc" id="L113">        return ResponseEntity.ok(matches);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

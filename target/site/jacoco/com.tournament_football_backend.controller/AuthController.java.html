@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AuthController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">tournament-football-backend</a> &gt; <a href="index.source.html" class="el_package">com.tournament_football_backend.controller</a> &gt; <span class="el_source">AuthController.java</span></div><h1>AuthController.java</h1><pre class="source lang-java linenums">package com.tournament_football_backend.controller;
+
+import com.tournament_football_backend.config.JwtUtils;
+import com.tournament_football_backend.dto.AuthDTO;
+import com.tournament_football_backend.dto.UserDTO;
+import com.tournament_football_backend.service.UserService;
+import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping(&quot;/auth&quot;)
+@CrossOrigin(origins = &quot;*&quot;, maxAge = 3600)
+<span class="fc" id="L20">public class AuthController {</span>
+
+    @Autowired
+    AuthenticationManager authenticationManager;
+
+    @Autowired
+    UserService userService;
+
+    @Autowired
+    JwtUtils jwtUtils;
+
+    @PostMapping(&quot;/login&quot;)
+    public ResponseEntity&lt;?&gt; authenticateUser(@Valid @RequestBody AuthDTO.LoginRequest loginRequest) {
+<span class="nc" id="L33">        Authentication authentication = authenticationManager.authenticate(</span>
+<span class="nc" id="L34">                new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));</span>
+
+<span class="nc" id="L36">        SecurityContextHolder.getContext().setAuthentication(authentication);</span>
+<span class="nc" id="L37">        String jwt = jwtUtils.generateJwtToken(authentication);</span>
+
+<span class="nc" id="L39">        UserDetails userDetails = (UserDetails) authentication.getPrincipal();</span>
+<span class="nc" id="L40">        String role = userDetails.getAuthorities().iterator().next().getAuthority();</span>
+
+<span class="nc" id="L42">        return ResponseEntity.ok(new AuthDTO.JwtResponse(jwt,</span>
+<span class="nc" id="L43">                userDetails.getUsername(),</span>
+                null, // email not available in UserDetails
+                role));
+    }
+
+    @PostMapping(&quot;/register&quot;)
+    public ResponseEntity&lt;?&gt; registerUser(@Valid @RequestBody AuthDTO.RegisterRequest signUpRequest) {
+<span class="nc" id="L50">        UserDTO userDTO = new UserDTO();</span>
+<span class="nc" id="L51">        userDTO.setUsername(signUpRequest.getUsername());</span>
+<span class="nc" id="L52">        userDTO.setEmail(signUpRequest.getEmail());</span>
+
+<span class="nc" id="L54">        UserDTO createdUser = userService.createUser(userDTO, signUpRequest.getPassword());</span>
+
+<span class="nc" id="L56">        return ResponseEntity.ok(new MessageResponse(&quot;User registered successfully!&quot;));</span>
+    }
+
+    // Message response class
+    public static class MessageResponse {
+        private String message;
+
+<span class="nc" id="L63">        public MessageResponse(String message) {</span>
+<span class="nc" id="L64">            this.message = message;</span>
+<span class="nc" id="L65">        }</span>
+
+        public String getMessage() {
+<span class="nc" id="L68">            return message;</span>
+        }
+
+        public void setMessage(String message) {
+<span class="nc" id="L72">            this.message = message;</span>
+<span class="nc" id="L73">        }</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

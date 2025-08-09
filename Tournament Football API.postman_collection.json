@@ -1,0 +1,1799 @@
+{
+	"info": {
+		"_postman_id": "feba8c18-cd8b-4268-95b0-4a52c771c83e",
+		"name": "Tournament Football API",
+		"description": "Streamlined collection for testing Tournament Football Backend APIs",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "26618050",
+		"_collection_link": "https://restless-astronaut-543406.postman.co/workspace/My-Workspace~d3e0364f-c647-4d81-8c0a-4d98b4b48a3f/collection/26618050-feba8c18-cd8b-4268-95b0-4a52c771c83e?action=share&source=collection_link&creator=26618050"
+	},
+	"item": [
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "Register User",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"username\": \"test_user\",\n  \"email\": \"test@email.com\",\n  \"password\": \"password123\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/register",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    const response = pm.response.json();",
+									"    pm.collectionVariables.set('jwt_token', response.token);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"username\": \"mario_rossi\",\n  \"password\": \"password123\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login Admin",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    const response = pm.response.json();",
+									"    pm.collectionVariables.set('jwt_token', response.token);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"username\": \"admin\",\n  \"password\": \"password123\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User Management",
+			"item": [
+				{
+					"name": "Get All Users (ADMIN)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/users",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get User by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/users/2",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get User by Username",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/users/username/mario_rossi",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"username",
+								"mario_rossi"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update User",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"username\": \"mario_rossi_updated\",\n  \"email\": \"mario.updated@email.com\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/users/2",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update User Profile",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"firstName\": \"Mario\",\n  \"lastName\": \"Rossi\",\n  \"birthDate\": \"1990-05-15\",\n  \"phone\": \"333-1234567\",\n  \"city\": \"Milano\",\n  \"bio\": \"Experienced football player\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/users/2/profile",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"2",
+								"profile"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Search Users (ADMIN)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/users/search?keyword=mario",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"search"
+							],
+							"query": [
+								{
+									"key": "keyword",
+									"value": "mario"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete User (ADMIN)",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/users/2",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"2"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Team Management",
+			"item": [
+				{
+					"name": "Get All Teams",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/teams",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"teams"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Team by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/teams/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"teams",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Team by Name",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/teams/name/Bari Dolphins",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"teams",
+								"name",
+								"Bari Dolphins"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Team",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Test Team API\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/teams",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"teams"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Team (ADMIN)",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Updated Team Name\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/teams/2",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"teams",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Player to Team (ADMIN)",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/teams/2/players/3",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"teams",
+								"2",
+								"players",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Remove Player from Team (ADMIN)",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/teams/2/players/3",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"teams",
+								"2",
+								"players",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Teams by Player",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/teams/player/3",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"teams",
+								"player",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Search Teams",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/teams/search?keyword=test",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"teams",
+								"search"
+							],
+							"query": [
+								{
+									"key": "keyword",
+									"value": "test"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Team (ADMIN)",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/teams/3",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"teams",
+								"3"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Tournament Management",
+			"item": [
+				{
+					"name": "Get All Tournaments",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/tournaments",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"tournaments"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Tournament by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/tournaments/2",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"tournaments",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Tournament (ADMIN)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Test Tournament API\",\n  \"description\": \"Tournament created via API for testing\",\n  \"startDate\": \"2025-09-01\",\n  \"endDate\": \"2025-09-30\",\n  \"maxTeams\": 16\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/tournaments",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"tournaments"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Tournament (ADMIN)",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Updated Tournament Name\",\n  \"description\": \"Updated description\",\n  \"maxTeams\": 32,\n  \"status\": \"IN_PROGRESS\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/tournaments/2",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"tournaments",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Register Team to Tournament",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/tournaments/3/teams/4",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"tournaments",
+								"3",
+								"teams",
+								"4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Remove Team from Tournament (ADMIN)",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/tournaments/3/teams/4",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"tournaments",
+								"3",
+								"teams",
+								"4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Tournaments by Status",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/tournaments/status/OPEN",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"tournaments",
+								"status",
+								"OPEN"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Upcoming Tournaments",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/tournaments/upcoming",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"tournaments",
+								"upcoming"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Tournaments by Team",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/tournaments/team/4",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"tournaments",
+								"team",
+								"4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Search Tournaments",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/tournaments/search?keyword=test",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"tournaments",
+								"search"
+							],
+							"query": [
+								{
+									"key": "keyword",
+									"value": "test"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Tournament (ADMIN)",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/tournaments/5",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"tournaments",
+								"5"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Match Management",
+			"item": [
+				{
+					"name": "Get All Matches",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/matches",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"matches"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Match by ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/matches/13",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"matches",
+								"13"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Match (ADMIN)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"homeTeamId\": 1,\n  \"awayTeamId\": 2,\n  \"tournamentId\": 1,\n  \"matchDate\": \"2025-10-15T15:00:00\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/matches",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"matches"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Match (ADMIN)",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"matchDate\": \"2025-10-20T16:00:00\",\n  \"status\": \"IN_PROGRESS\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/matches/1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"matches",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Match Result (ADMIN)",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"homeGoals\": 3,\n  \"awayGoals\": 2\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/matches/1/result",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"matches",
+								"1",
+								"result"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Matches by Tournament",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/matches/tournament/2",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"matches",
+								"tournament",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Matches by Team",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/matches/team/6",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"matches",
+								"team",
+								"6"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Matches by Status",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/matches/status/SCHEDULED",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"matches",
+								"status",
+								"SCHEDULED"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Matches by Period",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/matches/period?start=2025-10-01T00:00:00&end=2025-10-31T23:59:59",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"matches",
+								"period"
+							],
+							"query": [
+								{
+									"key": "start",
+									"value": "2025-10-01T00:00:00"
+								},
+								{
+									"key": "end",
+									"value": "2025-10-31T23:59:59"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Today's Matches",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/matches/today",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"matches",
+								"today"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Match (ADMIN)",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/matches/12",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"matches",
+								"12"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Complete Testing Workflow",
+			"item": [
+				{
+					"name": "01 - Login Admin",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    const response = pm.response.json();",
+									"    pm.collectionVariables.set('jwt_token', response.token);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"username\": \"admin\",\n  \"password\": \"password123\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "02 - Register New User",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"username\": \"test_user_api\",\n  \"email\": \"test.api@email.com\",\n  \"password\": \"password123\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/register",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "03 - Get All Users",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    const users = pm.response.json();",
+									"    const newUser = users.find(u => u.username === 'test_user_api');",
+									"    if (newUser) {",
+									"        pm.collectionVariables.set('user_id', newUser.id);",
+									"        pm.collectionVariables.set('player_id', newUser.id);",
+									"    }",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/users",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "04 - Create Home Team",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    const team = pm.response.json();",
+									"    pm.collectionVariables.set('team_id', team.id);",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Test Team Workflow\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/teams",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"teams"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "05 - Create Away Team",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    const team = pm.response.json();",
+									"    pm.collectionVariables.set('team_id_away', team.id);",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Test Team Workflow (Away)\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/teams",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"teams"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "06 - Create Tournament",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    const tournament = pm.response.json();",
+									"    pm.collectionVariables.set('tournament_id', tournament.id);",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Test Tournament Workflow\",\n  \"description\": \"Tournament for testing workflow\",\n  \"startDate\": \"2025-09-01\",\n  \"endDate\": \"2025-09-30\",\n  \"maxTeams\": 16\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/tournaments",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"tournaments"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "07 - Register Home Team to Tournament",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/tournaments/{{tournament_id}}/teams/{{team_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"tournaments",
+								"{{tournament_id}}",
+								"teams",
+								"{{team_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "08 - Register Away Team to Tournament",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/tournaments/{{tournament_id}}/teams/{{team_id_away}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"tournaments",
+								"{{tournament_id}}",
+								"teams",
+								"{{team_id_away}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "09 - Create Match",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code === 200) {",
+									"    const match = pm.response.json();",
+									"    pm.collectionVariables.set('match_id', match.id);",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"homeTeamId\": {{team_id}},\n  \"awayTeamId\": {{team_id_away}},\n  \"tournamentId\": {{tournament_id}},\n  \"matchDate\": \"2025-10-15T15:00:00\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/matches",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"matches"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "10 - Update Match Result",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"homeGoals\": 2,\n  \"awayGoals\": 1\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/matches/{{match_id}}/result",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"matches",
+								"{{match_id}}",
+								"result"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "11 - Update User Profile",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"firstName\": \"Test\",\n  \"lastName\": \"User\",\n  \"city\": \"Milano\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/users/{{user_id}}/profile",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"users",
+								"{{user_id}}",
+								"profile"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "12 - Verify Tournament",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/tournaments/{{tournament_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"tournaments",
+								"{{tournament_id}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Rules Tests",
+			"item": [
+				{
+					"name": "JWT & Authorization Tests",
+					"item": [
+						{
+							"name": "Test Invalid JWT Token",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "invalid.jwt.token",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/users",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"users"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Test No JWT Token",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/tournaments",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"tournaments"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Login as USER",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"username\": \"mario_rossi\",\n  \"password\": \"password123\"\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/auth/login",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"auth",
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "USER tries ADMIN endpoint (should fail)",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/users",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"users"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Tournament Full Tests",
+					"item": [
+						{
+							"name": "Update Tournament (ADMIN)",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"name\": \"Limited Tournament\",\n  \"description\": \"Tournament with only 2 teams\",\n  \"startDate\": \"2025-09-01\",\n  \"endDate\": \"2025-09-30\",\n  \"maxTeams\": 2\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/tournaments/7",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"tournaments",
+										"7"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Register Team 1 (should work)",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/tournaments/7/teams/1",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"tournaments",
+										"7",
+										"teams",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Register Team 2 (should work)",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/tournaments/7/teams/2",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"tournaments",
+										"7",
+										"teams",
+										"2"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Register Team 3 (should fail - tournament full)",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/tournaments/7/teams/3",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"tournaments",
+										"7",
+										"teams",
+										"3"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Same Team Match Tests",
+					"item": [
+						{
+							"name": "Create Match with Same Team (should fail)",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"homeTeamId\": 1,\n  \"awayTeamId\": 1,\n  \"tournamentId\": 1,\n  \"matchDate\": \"2025-10-15T15:00:00\"\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/matches",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"matches"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create Valid Match (should work)",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"homeTeamId\": 1,\n  \"awayTeamId\": 2,\n  \"tournamentId\": 1,\n  \"matchDate\": \"2025-10-15T15:00:00\"\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/matches",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"matches"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Tournament Status Tests",
+					"item": [
+						{
+							"name": "Create Closed Tournament",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"name\": \"Closed Tournament\",\n  \"description\": \"Tournament not open\",\n  \"startDate\": \"2025-09-01\",\n  \"endDate\": \"2025-09-30\",\n  \"maxTeams\": 16,\n  \"status\": \"COMPLETED\"\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/tournaments",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"tournaments"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Register Team to Closed Tournament (should fail)",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/tournaments/2/teams/3",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"tournaments",
+										"2",
+										"teams",
+										"3"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Welcome Message",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{base_url}}",
+					"host": [
+						"{{base_url}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{jwt_token}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"const token = pm.collectionVariables.get('jwt_token');",
+					"if (token) {",
+					"    pm.request.headers.add({",
+					"        key: 'Authorization',",
+					"        value: 'Bearer ' + token",
+					"    });",
+					"}"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:8080/api",
+			"type": "string"
+		},
+		{
+			"key": "jwt_token",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "user_id",
+			"value": "2",
+			"type": "string"
+		},
+		{
+			"key": "player_id",
+			"value": "2",
+			"type": "string"
+		},
+		{
+			"key": "team_id",
+			"value": "2",
+			"type": "string"
+		},
+		{
+			"key": "tournament_id",
+			"value": "2",
+			"type": "string"
+		},
+		{
+			"key": "match_id",
+			"value": "2",
+			"type": "string"
+		},
+		{
+			"key": "team_id_away",
+			"value": "2",
+			"type": "string"
+		}
+	]
+}
