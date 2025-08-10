@@ -5,6 +5,10 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
+/**
+ * Represents a football match between two teams in a tournament.
+ * Contains details about the teams, tournament, match date, goals scored, and match status.
+ */
 @Entity
 @Table(name = "matches")
 public class Match {

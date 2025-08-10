@@ -3,6 +3,7 @@ package com.tournament_football_backend.controller;
 import com.tournament_football_backend.dto.CreateTeamDTO;
 import com.tournament_football_backend.dto.TeamDTO;
 import com.tournament_football_backend.dto.UpdateTeamDTO;
+import com.tournament_football_backend.exception.TeamExceptions;
 import com.tournament_football_backend.service.TeamService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,25 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/*
+    * TeamController.java
+    * Handles team-related API endpoints.
+    * Provides functionality to manage teams, including creating, updating, deleting,
+    * and retrieving teams and their players.
+    *
+    * Endpoints:
+    * - GET /api/teams - List all teams
+    * - GET /api/teams/{id} - Get team by ID
+    * - GET /api/teams/name/{name} - Get team by name
+    * - POST /api/teams - Create new team
+    * - PUT /api/teams/{id} - Update team (ADMIN only)
+    * - DELETE /api/teams/{id} - Delete team (ADMIN only)
+    * - POST /api/teams/{teamId}/players/{playerId} - Add player to team (ADMIN only)
+    * - DELETE /api/teams/{teamId}/players/{playerId} - Remove player from team (ADMIN only)
+    * - GET /api/teams/player/{playerId} - Get teams by player ID
+    * - GET /api/teams/search?keyword={keyword} - Search teams by keyword
+    *
+ */
 @RestController
 @RequestMapping("/teams")
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -30,9 +50,9 @@ public class TeamController {
     // GET /api/teams/{id} - Get team by ID
     @GetMapping("/{id}")
     public ResponseEntity<TeamDTO> getTeamById(@PathVariable Long id) {
-        return teamService.getTeamById(id)
-                .map(team -> ResponseEntity.ok(team))
-                .orElse(ResponseEntity.notFound().build());
+        TeamDTO team = teamService.getTeamById(id)
+                .orElseThrow(() -> new TeamExceptions.TeamNotFoundException());
+        return ResponseEntity.ok(team);
     }
 
     // GET /api/teams/name/{name} - Get team by name

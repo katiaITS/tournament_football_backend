@@ -5,7 +5,9 @@ import jakarta.validation.constraints.NotNull;
 import com.tournament_football_backend.model.MatchStatus;
 
 import java.time.LocalDateTime;
-
+/* * MatchDTO represents a match in the tournament system.
+ * It includes details about the teams, tournament, match date, scores, and status.
+ */
 public class MatchDTO {
 
     private Long id;

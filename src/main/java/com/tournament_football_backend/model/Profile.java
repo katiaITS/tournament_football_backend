@@ -5,6 +5,11 @@ import jakarta.validation.constraints.Size;
 
 import java.time.LocalDate;
 
+/**
+ * Represents a user profile in the tournament football backend system.
+ * Contains personal information about the user such as name, birth date, phone number, city, and bio.
+ * Each profile is associated with a user account.
+ */
 @Entity
 @Table(name = "profiles")
 public class Profile {

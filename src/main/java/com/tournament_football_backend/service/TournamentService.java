@@ -23,6 +23,11 @@ import static com.tournament_football_backend.exception.TeamExceptions.*;
 import static com.tournament_football_backend.exception.TournamentExceptions.*;
 import static com.tournament_football_backend.exception.ValidationExceptions.*;
 
+/**
+ * TournamentService.java
+ * Service class for managing tournaments in the tournament football application.
+ * Provides methods to create, update, delete, and retrieve tournaments and their participating teams.
+ */
 @Service
 @Transactional
 public class TournamentService {

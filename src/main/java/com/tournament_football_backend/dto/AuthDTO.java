@@ -4,6 +4,10 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
+/**
+ * Data Transfer Objects (DTOs) for Authentication operations.
+ * This class contains nested static classes for login, registration, and JWT response.
+ */
 public class AuthDTO {
 
     // DTO for Login

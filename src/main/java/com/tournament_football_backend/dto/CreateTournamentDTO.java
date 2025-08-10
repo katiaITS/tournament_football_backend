@@ -6,7 +6,11 @@ import jakarta.validation.constraints.Size;
 import com.tournament_football_backend.model.TournamentStatus;
 
 import java.time.LocalDate;
-
+/* * CreateTournamentDTO.java
+ *
+ * This class represents the data transfer object for creating a new tournament.
+ * It includes validation annotations to ensure the integrity of the data.
+ */
 public class CreateTournamentDTO {
 
     @NotBlank

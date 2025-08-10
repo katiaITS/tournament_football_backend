@@ -9,6 +9,9 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Set;
 
+/* * Tournament Data Transfer Object
+ * Represents a tournament with its details and participating teams.
+ */
 public class TournamentDTO {
 
     private Long id;

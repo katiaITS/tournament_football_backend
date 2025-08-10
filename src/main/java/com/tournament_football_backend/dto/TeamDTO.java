@@ -6,6 +6,10 @@ import jakarta.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.util.Set;
 
+/**
+ * Data Transfer Object for Team entity.
+ * Contains basic team information and a set of players.
+ */
 public class TeamDTO {
 
     private Long id;

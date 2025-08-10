@@ -9,6 +9,9 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
+/* * Team entity representing a football team in the tournament system.
+ * It contains fields for team name, creation date, and relationships with players and tournaments.
+ */
 @Entity
 @Table(name = "teams")
 public class Team {

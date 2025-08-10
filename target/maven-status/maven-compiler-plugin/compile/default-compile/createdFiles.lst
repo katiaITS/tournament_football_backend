@@ -8,6 +8,7 @@ com\tournament_football_backend\repository\UserRepository.class
 com\tournament_football_backend\exception\MatchExceptions.class
 com\tournament_football_backend\exception\TournamentExceptions$TournamentNotFoundException.class
 com\tournament_football_backend\service\TournamentService.class
+com\tournament_football_backend\config\CustomAccessDeniedHandler.class
 com\tournament_football_backend\exception\ValidationExceptions.class
 com\tournament_football_backend\exception\MatchExceptions$InvalidMatchResultException.class
 com\tournament_football_backend\model\Match.class
@@ -45,7 +46,6 @@ com\tournament_football_backend\dto\UpdateTournamentDTO.class
 com\tournament_football_backend\config\AuthTokenFilter.class
 com\tournament_football_backend\controller\MatchController.class
 com\tournament_football_backend\repository\ProfileRepository.class
-com\tournament_football_backend\exception\UserExceptions$UnauthorizedOperationException.class
 com\tournament_football_backend\dto\ProfileDTO.class
 com\tournament_football_backend\exception\MatchExceptions$SameTeamMatchException.class
 com\tournament_football_backend\exception\TournamentExceptions$InvalidTournamentDateException.class

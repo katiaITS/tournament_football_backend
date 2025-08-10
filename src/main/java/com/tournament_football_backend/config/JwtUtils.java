@@ -12,7 +12,15 @@ import org.springframework.stereotype.Component;
 
 import java.security.Key;
 import java.util.Date;
-
+/*
+    * JwtUtils.java
+    *
+    * This class provides utility methods for generating, parsing, and validating JWT tokens.
+    * It uses the io.jsonwebtoken library to handle JWT operations.
+    * It includes methods to generate a token from an authentication object or username,
+    * retrieve the username from a token, and validate a token.
+    *
+ */
 @Component
 public class JwtUtils {
 

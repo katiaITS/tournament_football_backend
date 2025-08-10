@@ -5,6 +5,10 @@ import com.tournament_football_backend.model.TournamentStatus;
 
 import java.time.LocalDate;
 
+/**
+ * Data Transfer Object for updating tournament details.
+ * All fields are optional to allow partial updates.
+ */
 public class UpdateTournamentDTO {
 
     // All fields optional for partial updates

@@ -9,6 +9,11 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Optional;
 
+/*
+    * TeamRepository.java
+    * This interface defines methods for accessing and manipulating Team entities in the database.
+    * It extends JpaRepository to provide basic CRUD operations and custom query methods.
+ */
 @Repository
 public interface TeamRepository extends JpaRepository<Team, Long> {
 

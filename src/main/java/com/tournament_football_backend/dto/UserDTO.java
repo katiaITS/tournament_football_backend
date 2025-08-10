@@ -7,6 +7,10 @@ import com.tournament_football_backend.model.Role;
 
 import java.time.LocalDateTime;
 
+/**
+ * Data Transfer Object for User entity.
+ * This class is used to transfer user data between layers.
+ */
 public class UserDTO {
 
     private Long id;

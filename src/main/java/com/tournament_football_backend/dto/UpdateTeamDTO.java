@@ -2,6 +2,10 @@ package com.tournament_football_backend.dto;
 
 import jakarta.validation.constraints.Size;
 
+/**
+ * Data Transfer Object for updating a team.
+ * All fields are optional to allow partial updates.
+ */
 public class UpdateTeamDTO {
 
     // All fields optional for partial updates

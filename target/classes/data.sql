@@ -83,8 +83,8 @@ INSERT IGNORE INTO tournaments (name, description, start_date, end_date, max_tea
 ('Southern Football Champions', 'Tournament for the best teams from southern Italy, knockout format', '2025-06-01', '2025-06-30',  16, 'OPEN'),
 ('Giuseppe Meazza Memorial', 'Memorial tournament dedicated to the great champion, with historic teams', '2025-08-01', '2025-08-15',  10, 'OPEN'),
 ('Regional Trophy', 'Inter-regional competition with representatives from various cities', '2025-09-01', '2025-09-30',  20, 'OPEN'),
-('Autumn Cup', 'Autumn tournament for higher category teams', '2025-10-15', '2025-11-15',  8, 'OPEN'),
-('Winter Cup', 'Winter indoor competition, reduced field 3vs3', '2025-12-01', '2025-12-20',  24, 'OPEN');
+('Autumn Cup', 'Autumn tournament for higher category teams', '2025-10-15', '2025-11-15',  8, 'COMPLETED'),
+('Winter Cup', 'Winter indoor competition, reduced field 3vs3', '2025-12-01', '2025-12-20',  4, 'OPEN');
 
 -- Team registrations to tournaments
 INSERT IGNORE INTO tournament_teams (tournament_id, team_id) VALUES
@@ -99,7 +99,9 @@ INSERT IGNORE INTO tournament_teams (tournament_id, team_id) VALUES
 -- Regional Trophy (10 teams)
 (5, 1), (5, 2), (5, 3), (5, 4), (5, 5), (5, 6), (5, 7), (5, 8), (5, 9), (5, 10),
 -- Autumn Cup (6 teams)
-(6, 2), (6, 4), (6, 6), (6, 8), (6, 10), (6, 12);
+(6, 2), (6, 4), (6, 6), (6, 8), (6, 10), (6, 12),
+-- Winter Cup (4 teams)
+(7, 1), (7, 3), (7, 5), (7, 7);
 
 -- Matches with varied results and realistic dates
 INSERT IGNORE INTO matches (home_team_id, away_team_id, tournament_id, match_date, home_goals, away_goals, status) VALUES

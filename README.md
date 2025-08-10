@@ -1,85 +1,108 @@
 # Tournament Football Backend
 
-Un sistema completo per la gestione di tornei di calcetto, sviluppato con Spring Boot e containerizzato con Docker.
+Sistema backend per la gestione di tornei di calcetto sviluppato con Spring Boot, Spring Security e MySQL.
 
 ## Indice
 
-- [Descrizione del Progetto](#descrizione-del-progetto)
+- [Panoramica](#panoramica)
 - [Tecnologie Utilizzate](#tecnologie-utilizzate)
 - [Architettura](#architettura)
 - [Requisiti](#requisiti)
 - [Installazione e Avvio](#installazione-e-avvio)
+- [API Endpoints](#api-endpoints)
 - [Configurazione](#configurazione)
-- [API Documentation](#api-documentation)
-- [Database](#database)
-- [Test](#test)
-- [Collection Postman](#collection-postman)
+- [Testing](#testing)
+- [Dati di Test](#dati-di-test)
 - [Sviluppi Futuri](#sviluppi-futuri)
 
-## Descrizione del Progetto
+## Panoramica
 
-**Tournament Football Backend** è un'API REST completa per la gestione di tornei di calcetto. Il sistema permette di:
+Tournament Football Backend è un'applicazione per digitalizzare la gestione di competizioni sportive, sostituendo la gestione cartacea tradizionale. Il sistema offre:
 
-- Gestire utenti con profili personalizzati e sistema di autenticazione JWT
-- Creare e amministrare squadre con gestione dei giocatori
-- Organizzare tornei con iscrizioni e controllo degli stati
-- Programmare partite e registrare risultati
-- Gestire permessi differenziati per utenti e amministratori
+- **Per organizzazioni sportive locali**: Gestione semplice di tornei tra amici o squadre amatoriali
+- **Per centri sportivi**: Soluzione completa per gestire più tornei contemporaneamente
 
-### Casi d'Uso
+### Obiettivi del Progetto
 
-- **Organizzazioni sportive locali**: Gestione semplice di tornei amatoriali
-- **Centri sportivi**: Soluzione completa per gestire più tornei contemporaneamente
-- **Comunità di giocatori**: Piattaforma per organizzare competizioni tra amici
+- API REST complete per operazioni CRUD su utenti, squadre, tornei e partite
+- Database MySQL con implementazione di tutte le relazioni JPA (OneToOne, OneToMany, ManyToOne, ManyToMany)
+- Sistema di autenticazione sicuro con JWT e ruoli USER/ADMIN
+- Test automatici con copertura superiore al 35%
+- Containerizzazione Docker per facilità di deployment
+- Documentazione completa delle API con Postman
 
 ## Tecnologie Utilizzate
 
-### Backend
-- **Java 21**
+### Backend Framework
 - **Spring Boot 3.5.4**
-- **Spring Security** - Autenticazione JWT e autorizzazione
-- **Spring Data JPA** - Persistenza dati
-- **Maven 3.9+** - Gestione dipendenze
+- **Spring Security** - Autenticazione JWT e autorizzazione basata su ruoli
+- **Spring Data JPA** - Persistenza dati e ORM
+- **JWT** - Token di autenticazione
 
-### Database
-- **MySQL 8.0** - Database principale
+### Database e Persistenza
+- **MySQL 8.0** - Database relazionale principale
 - **H2** - Database per test
-- **phpMyAdmin** - Interfaccia di gestione database
+- **phpMyAdmin** - Gestione database via web
 
-### DevOps & Testing
-- **Docker & Docker Compose** - Containerizzazione
-- **JUnit 5 + Mockito** - Test automatici (>60% copertura)
-- **Postman** - Documentazione e test API
+### Build e Deployment
+- **Maven 3.9+** - Gestione dipendenze e build
+- **Docker 20.10+** - Containerizzazione
+- **Docker Compose 2.0+** - Orchestrazione multi-container
+- **Java 21**
+
+### Testing
+- **JUnit 5 + Mockito** - Test automatici
+- **Postman** - Test API
 
 ## Architettura
 
-Il progetto segue il pattern **MVC** organizzato in 4 moduli principali:
-
 ```
 ┌─────────────────┐
-│   Controllers   │ ← Gestione richieste HTTP
+│   Controllers   │ ← Gestiscono le richieste HTTP
 ├─────────────────┤
-│    Services     │ ← Logica di business
+│    Services     │ ← Contengono la logica di business
 ├─────────────────┤
-│  Repositories   │ ← Accesso ai dati
+│  Repositories   │ ← Si occupano del database
 ├─────────────────┤
-│     Models      │ ← Entità del database
+│     Models      │ ← Rappresentano le tabelle del database
 └─────────────────┘
 ```
 
-### Moduli Applicativi
+### Moduli Principali
 
-1. **User Module**: Gestione utenti, autenticazione JWT, profili
-2. **Team Module**: Gestione squadre e giocatori
-3. **Tournament Module**: Gestione tornei e iscrizioni
-4. **Match Module**: Gestione partite e risultati
+#### Modulo User (Utenti)
+- **Controller**: `AuthController`, `UserController`
+- **Service**: `UserService`, `UserDetailsServiceImpl`
+- **Repository**: `UserRepository`, `ProfileRepository`
+- **Entità**: `User`, `Profile`
+- **Relazioni JPA**: OneToOne (User ↔ Profile), ManyToMany (User ↔ Team)
+- **Funzionalità**: Autenticazione JWT, gestione profili, autorizzazioni
 
-### Relazioni JPA Implementate
+#### Modulo Team (Squadre)
+- **Controller**: `TeamController`
+- **Service**: `TeamService`
+- **Repository**: `TeamRepository`
+- **Entità**: `Team`
+- **Relazioni JPA**: ManyToMany (Team ↔ Users e Tournament ↔ Teams)
+- **Funzionalità**: Gestione squadre e giocatori
 
-- **OneToOne**: User ↔ Profile
-- **OneToMany**: Tournament → Matches
-- **ManyToOne**: Match → Teams, Match → Tournament
-- **ManyToMany**: Team ↔ Users, Tournament ↔ Teams
+#### Modulo Tournament (Tornei)
+- **Controller**: `TournamentController`
+- **Service**: `TournamentService`
+- **Repository**: `TournamentRepository`
+- **Entità**: `Tournament`
+- **Relazioni JPA**: OneToMany (Tournament → Match), ManyToMany (Tournament ↔ Teams)
+- **Stati**: OPEN, IN_PROGRESS, COMPLETED, CANCELLED, SCHEDULED
+- **Funzionalità**: Gestione tornei e iscrizioni
+
+#### Modulo Match (Partite)
+- **Controller**: `MatchController`
+- **Service**: `MatchService`
+- **Repository**: `MatchRepository`
+- **Entità**: `Match`
+- **Relazioni JPA**: ManyToOne (Match → Teams, Match → Tournament)
+- **Stati**: SCHEDULED, IN_PROGRESS, COMPLETED, POSTPONED, CANCELLED, TO_BE_SCHEDULED
+- **Funzionalità**: Programmazione partite e risultati
 
 ## Requisiti
 
@@ -94,40 +117,129 @@ git clone <repository-url>
 cd tournament-football-backend
 ```
 
-### 2. Avvio con Docker Compose
+### 2. Avvio dei Servizi
 ```bash
-# Avvia tutto l'ambiente (app + database + phpMyAdmin)
 docker-compose up --build -d
 ```
 
-### 3. Accesso ai Servizi
+### 3. Accesso all'Applicazione
 - **API**: http://localhost:8080/api
 - **phpMyAdmin**: http://localhost:8081
-- **Database**: localhost:3306
+- **Database**: http://localhost:3306
 
-### 4. Verifica Stato (Opzionale)
+### 4. Verifica Stato Container (Opzionale)
 ```bash
-# Controlla che i container siano attivi
 docker-compose ps
+```
 
-# Visualizza i log
+### 5. Visualizzazione Log (Opzionale)
+```bash
 docker-compose logs -f
 ```
 
-### 5. Arresto Servizi
+### 6. Arresto Servizi
 ```bash
 docker-compose down
 ```
 
+## API Endpoints
+
+### Autenticazione (`/auth`)
+
+#### POST `/auth/login` - Login utente
+- **Request Body**:
+    ```json
+    {
+    "username": "admin",
+    "password": "password123"
+    }
+    ```
+- **Response**
+    - **Success (200 OK)**:
+        ```json
+        {
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+        "type": "Bearer",
+        "username": "admin",
+        "email": null,
+        "role": "ROLE_ADMIN"
+        }
+        ```
+    - **Error (401 Unauthorized)**: `{ "error": "Invalid credentials" }`
+
+#### POST `/auth/register` - Registrazione
+- **Request Body**:
+    ```json
+    {
+    "username": "nuovo_utente",
+    "email": "utente@email.com",
+    "password": "password123"
+    }
+    ```
+- **Response**
+    - **Success (201 Created)**:
+        ```json
+        {
+        "message": "User registered successfully!"
+        }
+        ```
+    - **Error (400 Bad Request)**: `{ "error": "Username already exists" }`
+
+### Gestione Utenti (`/users`)
+
+- `GET /users` - Lista utenti (ADMIN)
+- `GET /users/{id}` - Dettagli utente (ADMIN o proprietario)
+- `PUT /users/{id}/profile` - Aggiorna profilo (ADMIN o proprietario)
+- `GET /users/search?keyword={keyword}` - Ricerca utenti (ADMIN)
+
+### Gestione Squadre (`/teams`)
+
+- `GET /teams` - Lista squadre
+- `POST /teams` - Crea squadra
+- `GET /teams/{id}` - Dettagli squadra
+- `POST /teams/{teamId}/players/{playerId}` - Aggiungi giocatore (ADMIN)
+- `DELETE /teams/{teamId}/players/{playerId}` - Rimuovi giocatore (ADMIN)
+- `GET /teams/search?keyword={keyword}` - Ricerca squadre
+
+### Gestione Tornei (`/tournaments`)
+
+- `GET /tournaments` - Lista tornei
+- `POST /tournaments` - Crea torneo (ADMIN)
+- `GET /tournaments/{id}` - Dettagli torneo
+- `POST /tournaments/{tournamentId}/teams/{teamId}` - Iscrivi squadra
+- `GET /tournaments/status/{status}` - Filtra per stato
+- `GET /tournaments/upcoming` - Tornei futuri
+
+### Gestione Partite (`/matches`)
+
+- `GET /matches` - Lista partite
+- `POST /matches` - Crea partita (ADMIN)
+- `PUT /matches/{id}/result` - Aggiorna risultato (ADMIN)
+- `GET /matches/today` - Partite odierne
+- `GET /matches/tournament/{id}` - Partite per torneo
+- `GET /matches/team/{id}` - Partite per squadra
+
+### Codici di Stato HTTP
+
+| Codice | Significato | Utilizzo |
+|--------|-------------|----------|
+| 200 | OK | Operazioni riuscite |
+| 201 | Created | Creazione risorsa |
+| 400 | Bad Request | Dati non validi |
+| 401 | Unauthorized | Token mancante/invalido |
+| 403 | Forbidden | Permessi insufficienti |
+| 404 | Not Found | Risorsa inesistente |
+| 409 | Conflict | Conflitto logico |
+
 ## Configurazione
 
-Il file `.env` contiene tutte le configurazioni principali:
-
+### File .env
 ```env
 # Database Configuration
 DB_NAME=tournament_football
 DB_USERNAME=tournament_user
 DB_PASSWORD=password
+DB_ROOT_PASSWORD=rootpassword
 
 # JWT Configuration
 JWT_SECRET=mySecretKey12345678901234567890123456789012345678901234567890
@@ -135,178 +247,93 @@ JWT_EXPIRATION=86400000
 
 # Server Configuration
 SERVER_PORT=8080
+SPRING_PROFILES_ACTIVE=docker
+
+# JPA Configuration
+SPRING_JPA_SHOW_SQL=true
+SPRING_JPA_HIBERNATE_DDL_AUTO=update
 ```
 
-## API Documentation
+### Sicurezza JWT
+- **Algoritmo**: HS256 (HMAC con SHA-256)
+- **Durata token**: 24 ore (configurabile)
+- **Secret key**: Configurabile tramite variabili d'ambiente
 
-### Autenticazione
+### Permessi Endpoint
+- **Pubblici** (`/auth/**`): Accesso libero
+- **Autenticati**: Richiede token JWT valido
+- **Solo ADMIN**: Operazioni amministrative
+- **Proprietario o ADMIN**: Accesso ai propri dati
 
-#### POST `/auth/login` - Login utente
-```json
-{
-  "username": "admin",
-  "password": "password123"
-}
-```
+## Testing
 
-#### POST `/auth/register` - Registrazione
-```json
-{
-  "username": "nuovo_utente",
-  "email": "utente@email.com",
-  "password": "password123"
-}
-```
+### Test Automatici
+Copertura superiore al 35% con JUnit 5 + Mockito:
 
-### Gestione Squadre
+| Test Suite | Focus |
+|------------|-------|
+| MatchServiceTest | Logica partite, controllo punteggi |
+| TeamServiceTest | Gestione giocatori, ricerche |
+| TournamentServiceTest | Stati tornei, logica complessa |
+| UserServiceTest | Autenticazione, profili |
+| UserDetailsServiceImplTest | Integrazione Spring Security |
 
-#### GET `/teams` - Lista squadre
-*Richiede: Token JWT*
+### Test API con Postman
+Collection completa disponibile in `Tournament Football API.postman_collection.json`:
 
-#### POST `/teams` - Crea squadra
-```json
-{
-  "name": "Nuova Squadra FC"
-}
-```
+**Funzionalità:**
+- Gestione automatica JWT
+- Variabili dinamiche
+- Workflow completo di test (12 step)
+- Test regole di business
+- Validazione autorizzazioni
 
-#### POST `/teams/{teamId}/players/{playerId}` - Aggiungi giocatore
-*Richiede: Ruolo ADMIN*
+**Utilizzo:**
+1. Importare collection in Postman
+2. Configurare `base_url` = `http://localhost:8080/api`
+3. Eseguire "Complete Testing Workflow"
 
-### Gestione Tornei
+## Dati di Test
 
-#### GET `/tournaments` - Lista tornei
-*Richiede: Token JWT*
+### Account Preconfigurati
+- **Admin**: `admin` / `password123`
+- **Admin Secondario**: `matteo_bronze` / `password123`
+- **Utenti Standard**: `mario_rossi`, `luca_bianchi`, `giuseppe_verdi` / `password123`
 
-#### POST `/tournaments` - Crea torneo
-*Richiede: Ruolo ADMIN*
-```json
-{
-  "name": "Torneo Primavera 2025",
-  "description": "Competizione primaverile",
-  "startDate": "2025-04-01",
-  "endDate": "2025-04-30",
-  "maxTeams": 16
-}
-```
+*Le password nei dati di test sono già hashate con BCrypt, ma per comodità la password in chiaro è `password123` per tutti gli utenti di test.*
 
-#### POST `/tournaments/{tournamentId}/teams/{teamId}` - Iscrivi squadra
-
-### Gestione Partite
-
-#### GET `/matches` - Lista partite
-*Richiede: Token JWT*
-
-#### POST `/matches` - Crea partita
-*Richiede: Ruolo ADMIN*
-```json
-{
-  "homeTeamId": 1,
-  "awayTeamId": 2,
-  "tournamentId": 1,
-  "matchDate": "2025-04-15T16:00:00"
-}
-```
-
-#### PUT `/matches/{id}/result` - Aggiorna risultato
-*Richiede: Ruolo ADMIN*
-```json
-{
-  "homeGoals": 3,
-  "awayGoals": 1
-}
-```
-
-### Codici di Stato HTTP
-
-| Codice | Significato | Utilizzo |
-|--------|-------------|----------|
-| 200 | OK | Operazioni riuscite |
-| 201 | Created | Risorsa creata |
-| 400 | Bad Request | Dati input non validi |
-| 401 | Unauthorized | Token mancante/invalido |
-| 403 | Forbidden | Autorizzazioni insufficienti |
-| 404 | Not Found | Risorsa inesistente |
-| 409 | Conflict | Operazione non permessa |
-
-## Database
-
-### Inizializzazione Automatica
-
-Il database viene popolato automaticamente con:
+### Dati Precaricati
 - **15 utenti** con profili completi
 - **12 squadre** con giocatori assegnati
 - **7 tornei** in diversi stati
 - **25+ partite** con risultati e calendario
+- **Relazioni complete** tra tutte le entità
 
-### Account di Test Preconfigurati
-
-| Username | Password | Ruolo |
-|----------|----------|-------|
-| `admin` | `password123` | ADMIN |
-| `matteo_bronze` | `password123` | ADMIN |
-| `mario_rossi` | `password123` | USER |
-| `luca_bianchi` | `password123` | USER |
-| `giuseppe_verdi` | `password123` | USER |
-
-### Accesso phpMyAdmin
-- URL: http://localhost:8081
-- Server: `mysql`
-- Username: `tournament_user`
-- Password: `password`
-
-## Test
-
-Il progetto include test automatici completi con **copertura del 63%**:
-
-### Suite di Test
-- **MatchServiceTest**: 30+ test per logica partite
-- **TeamServiceTest**: 25+ test per gestione squadre
-- **TournamentServiceTest**: 25+ test per logica tornei
-- **UserServiceTest**: 30+ test per autenticazione
-- **UserDetailsServiceImplTest**: 10+ test integrazione Spring Security
-
-## Collection Postman
-
-Il progetto include una Collection Postman completa per testare tutte le API:
-
-### Importazione
-1. Aprire Postman
-2. Importare il file `Tournament Football API.postman_collection.json`
-
-### Funzionalità Automatizzate
-- **Gestione JWT automatica**: Token salvato dopo login
-- **Variabili dinamiche**: ID estratti automaticamente
-- **Workflow completo**: 12 step di test end-to-end
-
-### Test Workflow Completo
-La Collection include un workflow automatico che testa:
-1. Login Admin
-2. Registrazione utente
-3. Creazione squadre
-4. Creazione torneo
-5. Iscrizione squadre
-6. Creazione partite
-7. Aggiornamento risultati
-8. Verifiche finali
+### Schema Database
+- 7 tabelle principali (users, profiles, teams, tournaments, matches)
+- 2 tabelle di relazione (team_players, tournament_teams)
+- Vincoli di integrità referenziale
+- Indici per performance ottimizzate
 
 ## Sviluppi Futuri
 
-### Funzionalità Pianificate
-- Statistiche dettagliate giocatori (goal, assist, presenze)
-- Generazione automatica calendario partite
-- Diversi formati torneo (eliminazione diretta, gironi)
+### Funzionalità Future
+- Statistiche dettagliate (goal, assist, presenze, cartellini)
+- Generazione calendario automatico
+- Diversi tipi di torneo (eliminazione diretta, gironi)
+- Export dati in PDF/Excel
 - Sistema notifiche real-time
 - Interfaccia web completa
-- Export dati in PDF/Excel
 
 ### Miglioramenti Tecnici
 - Architettura a microservizi
 - Comunicazione asincrona
-- Deployment cloud (AWS/Azure)
-- Cache distribuita (Redis)
-- Monitoring e logging avanzati
+- Deployment cloud (AWS, Azure)
+
+## Licenza
+
+Progetto sviluppato per scopi educativi.
 
 ---
 
-**Sviluppato usando Spring Boot e Docker**
+**Sviluppato utilizzando Spring Boot, MySQL e Docker**

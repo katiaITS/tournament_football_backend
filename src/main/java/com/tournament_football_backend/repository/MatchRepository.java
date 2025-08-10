@@ -10,6 +10,10 @@ import org.springframework.stereotype.Repository;
 import java.time.LocalDateTime;
 import java.util.List;
 
+/* MatchRepository.java
+ * This interface defines methods for accessing and manipulating Match entities in the database.
+ * It extends JpaRepository to provide basic CRUD operations and custom query methods.
+ */
 @Repository
 public interface MatchRepository extends JpaRepository<Match, Long> {
 

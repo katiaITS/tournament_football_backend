@@ -50,7 +50,8 @@
 									"    pm.collectionVariables.set('jwt_token', response.token);",
 									"}"
 								],
-								"type": "text/javascript"
+								"type": "text/javascript",
+								"packages": {}
 							}
 						}
 					],
@@ -64,7 +65,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"username\": \"mario_rossi\",\n  \"password\": \"password123\"\n}"
+							"raw": "{\n  \"username\": \"giuseppe_verdi\",\n  \"password\": \"password123\"\n}"
 						},
 						"url": {
 							"raw": "{{base_url}}/auth/login",
@@ -126,7 +127,7 @@
 			"name": "User Management",
 			"item": [
 				{
-					"name": "Get All Users (ADMIN)",
+					"name": "Get All Users (ADMIN only)",
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -143,44 +144,44 @@
 					"response": []
 				},
 				{
-					"name": "Get User by ID",
+					"name": "Get User by ID (ADMIN or self)",
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/users/2",
+							"raw": "{{base_url}}/users/4",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"users",
-								"2"
+								"4"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "Get User by Username",
+					"name": "Get User by Username (ADMIN or self)",
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/users/username/mario_rossi",
+							"raw": "{{base_url}}/users/username/giulia_diamond",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"users",
 								"username",
-								"mario_rossi"
+								"giulia_diamond"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "Update User",
+					"name": "Update User (ADMIN or self)",
 					"request": {
 						"method": "PUT",
 						"header": [
@@ -207,7 +208,7 @@
 					"response": []
 				},
 				{
-					"name": "Update User Profile",
+					"name": "Update User Profile (ADMIN or self)",
 					"request": {
 						"method": "PUT",
 						"header": [
@@ -221,13 +222,13 @@
 							"raw": "{\n  \"firstName\": \"Mario\",\n  \"lastName\": \"Rossi\",\n  \"birthDate\": \"1990-05-15\",\n  \"phone\": \"333-1234567\",\n  \"city\": \"Milano\",\n  \"bio\": \"Experienced football player\"\n}"
 						},
 						"url": {
-							"raw": "{{base_url}}/users/2/profile",
+							"raw": "{{base_url}}/users/5/profile",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"users",
-								"2",
+								"5",
 								"profile"
 							]
 						}
@@ -1390,6 +1391,185 @@
 			"name": "Rules Tests",
 			"item": [
 				{
+					"name": "User Validation Tests",
+					"item": [
+						{
+							"name": "Test Username Already Exists",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"username\": \"admin\", \r\n    \"email\": \"new@email.com\", \r\n    \"password\": \"password123\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/auth/register",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"auth",
+										"register"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Test Email Already Exists",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"username\": \"newuser\", \r\n    \"email\": \"admin@tournamentfootball.com\", \r\n    \"password\": \"password123\"\r\n}"
+								},
+								"url": {
+									"raw": "{{base_url}}/auth/register",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"auth",
+										"register"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Test User Not Found",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/users/999",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"users",
+										"999"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Team Validation Tests",
+					"item": [
+						{
+							"name": "Test Team Not Found",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/teams/999",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"teams",
+										"999"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Test Team Name Already Exists",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\"name\": \"Milan Lions\"} ",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{base_url}}/teams",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"teams"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Test Player Already In Team",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/teams/1/players/2",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"teams",
+										"1",
+										"players",
+										"2"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Test Player Not In Team",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/teams/1/players/11",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"teams",
+										"1",
+										"players",
+										"11"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
 					"name": "JWT & Authorization Tests",
 					"item": [
 						{
@@ -1420,27 +1600,22 @@
 							"response": []
 						},
 						{
-							"name": "Test No JWT Token",
-							"request": {
-								"auth": {
-									"type": "noauth"
-								},
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{base_url}}/tournaments",
-									"host": [
-										"{{base_url}}"
-									],
-									"path": [
-										"tournaments"
-									]
+							"name": "Login User",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"if (pm.response.code === 200) {",
+											"    const response = pm.response.json();",
+											"    pm.collectionVariables.set('jwt_token', response.token);",
+											"}"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
 								}
-							},
-							"response": []
-						},
-						{
-							"name": "Login as USER",
+							],
 							"request": {
 								"method": "POST",
 								"header": [
@@ -1451,7 +1626,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"username\": \"mario_rossi\",\n  \"password\": \"password123\"\n}"
+									"raw": "{\n  \"username\": \"luca_bianchi\",\n  \"password\": \"password123\"\n}"
 								},
 								"url": {
 									"raw": "{{base_url}}/auth/login",
@@ -1486,12 +1661,82 @@
 					]
 				},
 				{
-					"name": "Tournament Full Tests",
+					"name": "Tournament Validation Tests",
 					"item": [
 						{
-							"name": "Update Tournament (ADMIN)",
+							"name": "Test Register Team in Tournament Full",
 							"request": {
-								"method": "PUT",
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/tournaments/7/teams/6",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"tournaments",
+										"7",
+										"teams",
+										"6"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Test Register Team to Closed Tournament",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/tournaments/6/teams/3",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"tournaments",
+										"6",
+										"teams",
+										"3"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Test Tournament Not Found",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/tournaments/999",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"tournaments",
+										"999"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Test Invalid Tournament Date",
+							"request": {
+								"method": "POST",
 								"header": [
 									{
 										"key": "Content-Type",
@@ -1500,34 +1745,38 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"name\": \"Limited Tournament\",\n  \"description\": \"Tournament with only 2 teams\",\n  \"startDate\": \"2025-09-01\",\n  \"endDate\": \"2025-09-30\",\n  \"maxTeams\": 2\n}"
+									"raw": "{\n     \"name\": \"Invalid Tournament\",\n     \"startDate\": \"2025-12-31\",\n     \"endDate\": \"2025-01-01\"\n   }"
 								},
 								"url": {
-									"raw": "{{base_url}}/tournaments/7",
+									"raw": "{{base_url}}/tournaments",
 									"host": [
 										"{{base_url}}"
 									],
 									"path": [
-										"tournaments",
-										"7"
+										"tournaments"
 									]
 								}
 							},
 							"response": []
 						},
 						{
-							"name": "Register Team 1 (should work)",
+							"name": "Test Team Already In Tournament",
 							"request": {
 								"method": "POST",
-								"header": [],
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
 								"url": {
-									"raw": "{{base_url}}/tournaments/7/teams/1",
+									"raw": "{{base_url}}/tournaments/2/teams/1",
 									"host": [
 										"{{base_url}}"
 									],
 									"path": [
 										"tournaments",
-										"7",
+										"2",
 										"teams",
 										"1"
 									]
@@ -1536,40 +1785,20 @@
 							"response": []
 						},
 						{
-							"name": "Register Team 2 (should work)",
+							"name": "Test Team Not In Tournament",
 							"request": {
-								"method": "POST",
+								"method": "DELETE",
 								"header": [],
 								"url": {
-									"raw": "{{base_url}}/tournaments/7/teams/2",
+									"raw": "{{base_url}}/tournaments/1/teams/9",
 									"host": [
 										"{{base_url}}"
 									],
 									"path": [
 										"tournaments",
-										"7",
+										"1",
 										"teams",
-										"2"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Register Team 3 (should fail - tournament full)",
-							"request": {
-								"method": "POST",
-								"header": [],
-								"url": {
-									"raw": "{{base_url}}/tournaments/7/teams/3",
-									"host": [
-										"{{base_url}}"
-									],
-									"path": [
-										"tournaments",
-										"7",
-										"teams",
-										"3"
+										"9"
 									]
 								}
 							},
@@ -1578,7 +1807,7 @@
 					]
 				},
 				{
-					"name": "Same Team Match Tests",
+					"name": "Match Validation Tests",
 					"item": [
 						{
 							"name": "Create Match with Same Team (should fail)",
@@ -1607,18 +1836,42 @@
 							"response": []
 						},
 						{
-							"name": "Create Valid Match (should work)",
+							"name": "Test Match Not Found",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/matches/999",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"matches",
+										"999"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Test Teams Not In Tournament",
 							"request": {
 								"method": "POST",
 								"header": [
 									{
 										"key": "Content-Type",
-										"value": "application/json"
+										"value": "application/json",
+										"type": "text"
 									}
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"homeTeamId\": 1,\n  \"awayTeamId\": 2,\n  \"tournamentId\": 1,\n  \"matchDate\": \"2025-10-15T15:00:00\"\n}"
+									"raw": "{\r\n     \"homeTeamId\": 12,\r\n     \"awayTeamId\": 1,\r\n     \"tournamentId\": 1\r\n   }",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
 								},
 								"url": {
 									"raw": "{{base_url}}/matches",
@@ -1631,53 +1884,93 @@
 								}
 							},
 							"response": []
-						}
-					]
-				},
-				{
-					"name": "Tournament Status Tests",
-					"item": [
+						},
 						{
-							"name": "Create Closed Tournament",
+							"name": "Test Invalid Match Result (Negative Goals)",
 							"request": {
-								"method": "POST",
+								"method": "PUT",
 								"header": [
 									{
 										"key": "Content-Type",
-										"value": "application/json"
+										"value": "application/json",
+										"type": "text"
 									}
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n  \"name\": \"Closed Tournament\",\n  \"description\": \"Tournament not open\",\n  \"startDate\": \"2025-09-01\",\n  \"endDate\": \"2025-09-30\",\n  \"maxTeams\": 16,\n  \"status\": \"COMPLETED\"\n}"
+									"raw": "{\r\n    \"homeGoals\": -1, \r\n    \"awayGoals\": 2\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
 								},
 								"url": {
-									"raw": "{{base_url}}/tournaments",
+									"raw": "{{base_url}}/matches/1/result",
 									"host": [
 										"{{base_url}}"
 									],
 									"path": [
-										"tournaments"
+										"matches",
+										"1",
+										"result"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Search & Validation Tests",
+					"item": [
+						{
+							"name": "Test Empty Search Keyword (Teams)",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}/teams/search?keyword=",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"teams",
+										"search"
+									],
+									"query": [
+										{
+											"key": "keyword",
+											"value": ""
+										}
 									]
 								}
 							},
 							"response": []
 						},
 						{
-							"name": "Register Team to Closed Tournament (should fail)",
+							"name": "Test Invalid Match Period",
 							"request": {
-								"method": "POST",
+								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{base_url}}/tournaments/2/teams/3",
+									"raw": "{{base_url}}/matches/period?start=2025-12-31T00:00:00&end=2025-01-01T00:00:00",
 									"host": [
 										"{{base_url}}"
 									],
 									"path": [
-										"tournaments",
-										"2",
-										"teams",
-										"3"
+										"matches",
+										"period"
+									],
+									"query": [
+										{
+											"key": "start",
+											"value": "2025-12-31T00:00:00"
+										},
+										{
+											"key": "end",
+											"value": "2025-01-01T00:00:00"
+										}
 									]
 								}
 							},

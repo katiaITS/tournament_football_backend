@@ -3,6 +3,7 @@ package com.tournament_football_backend.controller;
 import com.tournament_football_backend.dto.CreateTournamentDTO;
 import com.tournament_football_backend.dto.TournamentDTO;
 import com.tournament_football_backend.dto.UpdateTournamentDTO;
+import com.tournament_football_backend.exception.TournamentExceptions;
 import com.tournament_football_backend.model.TournamentStatus;
 import com.tournament_football_backend.service.TournamentService;
 import jakarta.validation.Valid;
@@ -13,6 +14,26 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/*
+    * TournamentController.java
+    * Handles tournament-related API endpoints.
+    * Provides functionality to manage tournaments, including creating, updating, deleting,
+    * and retrieving tournaments and their teams.
+    *
+    * Endpoints:
+    * - GET /api/tournaments - List all tournaments
+    * - GET /api/tournaments/{id} - Get tournament by ID
+    * - POST /api/tournaments - Create new tournament (ADMIN only)
+    * - PUT /api/tournaments/{id} - Update tournament (ADMIN only)
+    * - DELETE /api/tournaments/{id} - Delete tournament (ADMIN only)
+    * - POST /api/tournaments/{tournamentId}/teams/{teamId} - Register team to tournament
+    * - DELETE /api/tournaments/{tournamentId}/teams/{teamId} - Remove team from tournament (ADMIN only)
+    * - GET /api/tournaments/status/{status} - Tournaments by status
+    * - GET /api/tournaments/upcoming - Upcoming tournaments
+    * - GET /api/tournaments/team/{teamId} - Tournaments by team
+    * - GET /api/tournaments/search?keyword={keyword} - Search tournaments
+    *
+ */
 @RestController
 @RequestMapping("/tournaments")
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -31,9 +52,9 @@ public class TournamentController {
     // GET /api/tournaments/{id} - Get tournament by ID
     @GetMapping("/{id}")
     public ResponseEntity<TournamentDTO> getTournamentById(@PathVariable Long id) {
-        return tournamentService.getTournamentById(id)
-                .map(tournament -> ResponseEntity.ok(tournament))
-                .orElse(ResponseEntity.notFound().build());
+        TournamentDTO tournament = tournamentService.getTournamentById(id)
+                .orElseThrow(() -> new TournamentExceptions.TournamentNotFoundException());
+        return ResponseEntity.ok(tournament);
     }
 
     // POST /api/tournaments - Create new tournament (ADMIN only)

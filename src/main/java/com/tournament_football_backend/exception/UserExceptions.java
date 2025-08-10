@@ -19,13 +19,9 @@ public class UserExceptions {
 
     public static class EmailAlreadyExistsException extends TournamentException {
         public EmailAlreadyExistsException() {
+
             super("Email already exists", "EMAIL_ALREADY_EXISTS");
         }
     }
 
-    public static class UnauthorizedOperationException extends TournamentException {
-        public UnauthorizedOperationException() {
-            super("Unauthorized operation", "UNAUTHORIZED_OPERATION");
-        }
-    }
 }

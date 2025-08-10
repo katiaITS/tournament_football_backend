@@ -11,6 +11,11 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * TournamentRepository.java
+ * This interface defines methods for accessing and manipulating Tournament entities in the database.
+ * It extends JpaRepository to provide basic CRUD operations and custom query methods.
+ */
 @Repository
 public interface TournamentRepository extends JpaRepository<Tournament, Long> {
 

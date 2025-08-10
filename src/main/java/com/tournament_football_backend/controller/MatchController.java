@@ -3,6 +3,7 @@ package com.tournament_football_backend.controller;
 import com.tournament_football_backend.dto.CreateMatchDTO;
 import com.tournament_football_backend.dto.MatchDTO;
 import com.tournament_football_backend.dto.UpdateMatchDTO;
+import com.tournament_football_backend.exception.MatchExceptions;
 import com.tournament_football_backend.model.MatchStatus;
 import com.tournament_football_backend.service.MatchService;
 import jakarta.validation.Valid;
@@ -16,6 +17,23 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
+/*
+    * MatchController.java
+    * Handles match-related operations such as creating, updating, and retrieving matches.
+    * Provides endpoints for both users and administrators.
+    * Endpoints:
+    * - GET /api/matches - List all matches
+    * - GET /api/matches/{id} - Get match by ID
+    * - POST /api/matches - Create new match (ADMIN only)
+    * - PUT /api/matches/{id} - Update match (ADMIN only)
+    * - PUT /api/matches/{id}/result - Update match result (ADMIN only)
+    * - DELETE /api/matches/{id} - Delete match (ADMIN only)
+    * - GET /api/matches/tournament/{tournamentId} - Matches by tournament
+    * - GET /api/matches/team/{teamId} - Matches by team
+    * - GET /api/matches/status/{status} - Matches by status
+    * - GET /api/matches/period?start={start}&end={end} - Matches by period
+    * - GET /api/matches/today - Today's matches
+ */
 @RestController
 @RequestMapping("/matches")
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -34,9 +52,9 @@ public class MatchController {
     // GET /api/matches/{id} - Get match by ID
     @GetMapping("/{id}")
     public ResponseEntity<MatchDTO> getMatchById(@PathVariable Long id) {
-        return matchService.getMatchById(id)
-                .map(match -> ResponseEntity.ok(match))
-                .orElse(ResponseEntity.notFound().build());
+        MatchDTO match = matchService.getMatchById(id)
+                .orElseThrow(() -> new MatchExceptions.MatchNotFoundException());
+        return ResponseEntity.ok(match);
     }
 
     // POST /api/matches - Create new match (ADMIN only)

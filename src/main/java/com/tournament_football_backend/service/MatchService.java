@@ -24,6 +24,10 @@ import static com.tournament_football_backend.exception.TeamExceptions.*;
 import static com.tournament_football_backend.exception.TournamentExceptions.*;
 import static com.tournament_football_backend.exception.ValidationExceptions.*;
 
+/* MatchService.java
+ * Service class for managing football matches in a tournament system.
+ * Provides methods to create, update, delete, and retrieve matches.
+ */
 @Service
 @Transactional
 public class MatchService {

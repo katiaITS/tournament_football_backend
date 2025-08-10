@@ -4,6 +4,10 @@ import jakarta.validation.constraints.Size;
 
 import java.time.LocalDate;
 
+/**
+ * Data Transfer Object for user profile information.
+ * This class is used to transfer profile data between the client and server.
+ */
 public class ProfileDTO {
 
     private Long id;

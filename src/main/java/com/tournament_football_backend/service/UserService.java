@@ -19,6 +19,11 @@ import java.util.stream.Collectors;
 import static com.tournament_football_backend.exception.UserExceptions.*;
 import static com.tournament_football_backend.exception.ValidationExceptions.*;
 
+/**
+ * UserService.java
+ * Service class for managing users in the tournament football application.
+ * Provides methods to create, update, delete, and retrieve users and their profiles.
+ */
 @Service
 @Transactional
 public class UserService {

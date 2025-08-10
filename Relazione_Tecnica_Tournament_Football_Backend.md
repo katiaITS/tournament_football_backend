@@ -276,19 +276,18 @@ Per la sicurezza ho usato:
 - **Autenticati**: Richiede token JWT valido
 - **Solo ADMIN**: Solo gli amministratori possono fare certe operazioni
 - **Proprietario o ADMIN**: Puoi vedere/modificare solo i tuoi dati (o tutto se sei admin)
-
 ---
 
 ### Test Automatici
-**Copertura Raggiunta:** 63% di copertura (copertura richiesta 35%)
+**Copertura Raggiunta:** Superiore al 35% richiesto
 
-| Test Suite | Test Cases Reali | Focus Testing |
-|------------|------------------|---------------|
-| **MatchServiceTest** | 30+              | Logica delle partite, controllo punteggi |
-| **TeamServiceTest** | 25+              | Gestione giocatori, ricerche |
-| **TournamentServiceTest** | 35+              | Stati dei tornei, logica complessa |
-| **UserServiceTest** | 30+              | Autenticazione, profili |
-| **UserDetailsServiceImplTest** | 10+              | Integrazione Spring Security |
+| Test Suite | Focus Testing |
+|------------|---------------|
+| **MatchServiceTest** | Logica delle partite, controllo punteggi |
+| **TeamServiceTest** | Gestione giocatori, ricerche |
+| **TournamentServiceTest** | Stati dei tornei, logica complessa |
+| **UserServiceTest** | Autenticazione, profili |
+| **UserDetailsServiceImplTest** | Integrazione Spring Security |
 
 **Come ho fatto i test:** Ho usato JUnit 5 + Mockito per simulare le dipendenze e testare vari scenari.
 
@@ -349,6 +348,8 @@ Passi da seguire:
   - `luca_bianchi` / `password123`
   - `giuseppe_verdi` / `password123`
 
+Le password nei dati di test sono già hashate con BCrypt, ma per comodità la password in chiaro è `password123` per tutti gli utenti di test.
+
 **Dati Precaricati:**
 - **15 utenti** con profili completi e dati realistici
 - **12 squadre** con giocatori assegnati e nomi creativi
@@ -387,7 +388,7 @@ Ho creato **API REST complete** organizzate per funzionalità, seguendo gli stan
         "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
         "type": "Bearer",
         "username": "admin",
-        "email": "admin@tournamentfootball.com",
+        "email": null,
         "role": "ROLE_ADMIN"
         }
         ```
@@ -442,7 +443,7 @@ Ho creato **API REST complete** organizzate per funzionalità, seguendo gli stan
 
 #### GET `/users/{id}` - Dettagli utente specifico
 - **Descrizione**: Recupera dettagli completi di un utente incluso profilo
-- **Autorizzazione**: Solo ADMIN
+- **Autorizzazione**: ADMIN o proprietario dell'account
 - **Headers**: `Authorization: Bearer <jwt_token>`
 - **Response** 
     -  **Success (200 OK)**:
@@ -467,7 +468,7 @@ Ho creato **API REST complete** organizzate per funzionalità, seguendo gli stan
 
 #### PUT `/users/{id}/profile` - Aggiorna profilo personalizzato
 - **Descrizione**: Aggiorna informazioni profilo personali utente
-- **Autorizzazione**: Solo ADMIN
+- **Autorizzazione**: ADMIN o proprietario dell'account
 - **Headers**: `Authorization: Bearer <jwt_token>`
 - **Request Body**:
     ```json
@@ -931,7 +932,7 @@ Il sistema che ho creato è:
 
 - **Funzionante:** Tutte le API lavorano correttamente
 - **Sicuro:** Implementa autenticazione JWT e controlli di autorizzazione
-- **Testato:** Copertura di test del 63%
+- **Testato:** Copertura di test superiore al 35% richiesto
 - **Documentato:** API completamente documentate con esempi pratici
 - **Facile da installare:** Basta un comando Docker per far partire tutto
 

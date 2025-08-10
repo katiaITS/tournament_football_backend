@@ -10,6 +10,11 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * User entity representing a user in the tournament system.
+ * It contains fields for username, email, password, role, creation date,
+ * and relationships with profile and teams.
+ */
 @Entity
 @Table(name = "users")
 public class User {

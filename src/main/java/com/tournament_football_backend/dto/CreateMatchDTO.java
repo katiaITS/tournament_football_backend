@@ -5,7 +5,12 @@ import jakarta.validation.constraints.NotNull;
 import com.tournament_football_backend.model.MatchStatus;
 
 import java.time.LocalDateTime;
-
+/* * CreateMatchDTO.java
+ *
+ * This class represents the data transfer object for creating a new match.
+ * It includes fields for home team, away team, tournament, match date, goals,
+ * and status. It uses validation annotations to ensure required fields are provided.
+ */
 public class CreateMatchDTO {
 
     @NotNull

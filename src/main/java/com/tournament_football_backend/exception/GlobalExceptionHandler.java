@@ -4,6 +4,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.authorization.AuthorizationDeniedException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -21,6 +24,58 @@ public class GlobalExceptionHandler {
 
     private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
+    // Handles authorization denied exceptions
+    // This is typically thrown when a user tries to access a resource they are not authorized for
+    @ExceptionHandler(AuthorizationDeniedException.class)
+    public ResponseEntity<ErrorResponse> handleAuthorizationDenied(
+            AuthorizationDeniedException ex, WebRequest request) {
+
+        logger.warn("Authorization denied: {}", ex.getMessage());
+
+        ErrorResponse errorResponse = new ErrorResponse(
+                "ACCESS_DENIED",
+                "Non hai i permessi per accedere a questa risorsa"
+        );
+
+        return new ResponseEntity<>(errorResponse, HttpStatus.FORBIDDEN);
+    }
+
+    // Handles access denied exceptions
+    // This is typically used when a user tries to access a resource they are not authorized for
+    // e.g., trying to access a tournament they are not part of
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<ErrorResponse> handleAccessDenied(
+            AccessDeniedException ex, WebRequest request) {
+
+        logger.warn("Access denied: {}", ex.getMessage());
+
+        ErrorResponse errorResponse = new ErrorResponse(
+                "ACCESS_DENIED",
+                "Non hai i permessi per accedere a questa risorsa"
+        );
+
+        return new ResponseEntity<>(errorResponse, HttpStatus.FORBIDDEN);
+    }
+
+    // Handles authentication exceptions
+    // This is typically thrown when a JWT token is invalid or missing
+    @ExceptionHandler(AuthenticationException.class)
+    public ResponseEntity<ErrorResponse> handleAuthentication(
+            AuthenticationException ex, WebRequest request) {
+
+        logger.warn("Authentication failed: {}", ex.getMessage());
+
+        ErrorResponse errorResponse = new ErrorResponse(
+                "AUTHENTICATION_FAILED",
+                "Token JWT non valido o mancante"
+        );
+
+        return new ResponseEntity<>(errorResponse, HttpStatus.UNAUTHORIZED);
+    }
+
+    // Handles custom tournament exceptions
+    // This is used for specific error codes related to tournament operations
+    // e.g., tournament not found, already exists, etc.
     @ExceptionHandler(TournamentException.class)
     public ResponseEntity<ErrorResponse> handleTournamentException(
             TournamentException ex, WebRequest request) {
@@ -34,6 +89,9 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorResponse, status);
     }
 
+    // Handles validation exceptions
+    // This is typically thrown when input validation fails
+    // e.g., required fields are missing or invalid data types
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorResponse> handleValidationExceptions(
             MethodArgumentNotValidException ex, WebRequest request) {
@@ -53,6 +111,9 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
+    // Handles generic exceptions
+    // This is a catch-all for any unexpected errors that occur
+    // e.g., database errors, null pointer exceptions, etc.
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleGlobalException(
             Exception ex, WebRequest request) {

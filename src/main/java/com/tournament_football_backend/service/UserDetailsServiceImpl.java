@@ -13,6 +13,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+/*
+ * UserDetailsServiceImpl.java
+ * Implementation of UserDetailsService for loading user-specific data.
+ * Provides methods to load user details by username and build UserPrincipal.
+ */
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
 

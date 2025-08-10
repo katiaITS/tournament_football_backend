@@ -4,6 +4,10 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Size;
 import com.tournament_football_backend.model.Role;
 
+/**
+ * Data Transfer Object for updating user information.
+ * All fields are optional to allow partial updates.
+ */
 public class UpdateUserDTO {
 
     // All fields optional for partial updates

@@ -11,6 +11,10 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * Tournament entity representing a football tournament in the system.
+ * It contains fields for tournament name, description, dates, status, and relationships with teams and matches.
+ */
 @Entity
 @Table(name = "tournaments")
 public class Tournament {

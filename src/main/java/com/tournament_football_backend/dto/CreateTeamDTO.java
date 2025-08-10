@@ -2,7 +2,9 @@ package com.tournament_football_backend.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-
+/* * CreateTeamDTO is used for creating a new team.
+ * It contains the necessary fields and validation constraints.
+ */
 public class CreateTeamDTO {
 
     @NotBlank

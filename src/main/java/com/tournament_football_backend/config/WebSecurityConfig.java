@@ -21,7 +21,12 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.Arrays;
-
+/*
+    * WebSecurityConfig.java
+    * This class configures the security settings for the application.
+    * It sets up authentication, authorization, CORS, and exception handling.
+    * It uses JWT for stateless authentication and allows public access to specific endpoints.
+ */
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity(prePostEnabled = true)
@@ -33,11 +38,16 @@ public class WebSecurityConfig {
     @Autowired
     private AuthEntryPointJwt unauthorizedHandler;
 
+    @Autowired
+    private CustomAccessDeniedHandler accessDeniedHandler;
+
+    // This method provides an AuthTokenFilter bean for filtering requests with JWT tokens
     @Bean
     public AuthTokenFilter authenticationJwtTokenFilter() {
         return new AuthTokenFilter();
     }
 
+    // This method provides a DaoAuthenticationProvider bean for authentication
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
@@ -46,28 +56,36 @@ public class WebSecurityConfig {
         return authProvider;
     }
 
+    // This method provides an AuthenticationManager bean for managing authentication
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
         return authConfig.getAuthenticationManager();
     }
 
+    // This method provides a PasswordEncoder bean for encoding passwords
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
+    // This method configures the security filter chain for the application
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-                .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
+                .exceptionHandling(exception -> {
+                    exception.authenticationEntryPoint(unauthorizedHandler);
+                    exception.accessDeniedHandler(accessDeniedHandler);
+                })
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
+                        // only this endpoint are public (without JWT)
                         .requestMatchers("/auth/**").permitAll()
                         .requestMatchers("/public/**").permitAll()
                         .requestMatchers("/").permitAll()
-                        .requestMatchers("/admin/**").hasRole("ADMIN")
+
+                        // Endpoint with JWT + @PreAuthorize
                         .anyRequest().authenticated()
                 );
 
@@ -76,6 +94,7 @@ public class WebSecurityConfig {
         return http.build();
     }
 
+    // This method configures CORS settings for the application
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
