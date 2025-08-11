@@ -130,7 +130,7 @@ Il docker-compose.yml orchestizza tre servizi:
 
 #### Mapping Porte
 - **8080**: Applicazione Spring Boot
-- **8081**: phpMyAdmin interface  
+- **8081**: phpMyAdmin interface
 - **3306**: MySQL database (connessioni esterne)
 
 Questa strategia di containerizzazione con docker porta i seguenti vantaggi implementativi:
@@ -206,7 +206,7 @@ I servizi contengono la logica principale dell'applicazione:
 
 - **UserService**: Gestione utenti, profili, validazioni unicità
 - **TeamService**: Gestione squadre, assegnazione giocatori
-- **TournametService**: Gestione tornei, iscrizioni, validazioni date
+- **TournamentService**: Gestione tornei, iscrizioni, validazioni date
 - **MatchService**: Gestione partite, risultati, calendario
 - **UserDetailsServiceImpl**: Si integra con Spring Security per l'autenticazione
 
@@ -226,7 +226,7 @@ Le entità rappresentano le tabelle del database:
 - **User**: Rappresenta un utente registrato
 - **Profile**: Rappresenta i dati personali di un utente
 - **Match**: Rappresenta una partita
-- **Team**: Rappresenta una squadra 
+- **Team**: Rappresenta una squadra
 - **Tournament**: Rappresenta un torneo
 
 ---
@@ -248,7 +248,7 @@ La strategia DTO implementa **separazione** tra entità interne e oggetti di tra
 - **Security:** Evito di esporre dati sensibili come le password
 
 ---
-### Eccezioni 
+### Eccezioni
 Per la gestione degli errori ho deciso di implementare una serie di eccezioni personalizzate che derivano dalla classe base `TournamentException`. Queste eccezioni sono suddivise in classi specifice per i diversi moduli:
 
 - **TeamExceptions:** Eccezioni relative alla gestione delle squadre
@@ -291,6 +291,24 @@ Per la sicurezza ho usato:
 
 **Come ho fatto i test:** Ho usato JUnit 5 + Mockito per simulare le dipendenze e testare vari scenari.
 
+**Coverage**
+![img.png](img.png)
+
+### Esecuzione Test
+Per eseguire i test automatici è consigliato utilizzare IntelliJ IDEA con plugin Maven.
+
+#### Esecuzione con IntelliJ IDEA da terminale
+1. Aprire il progetto in IntelliJ IDEA
+2. Aprire il terminale integrato
+3. Eseguire il comando:
+   ```bash
+   ./mvnw clean test
+   ```
+#### Esecuzione con IntelliJ IDEA GUI
+IntelliJ IDEA permette di eseguire i test direttamente dall'interfaccia grafica:
+1. Aprire il progetto in IntelliJ IDEA
+2. Navigare su `Run` → `Run All Tests with Coverage`
+
 ---
 ## Come Eseguire il Progetto
 ### Requisiti
@@ -304,36 +322,36 @@ Passi da seguire:
     cd tournament-football-backend
     ```
 
-2. **Avviare i servizi con Docker Compose:** 
-    #### Avvia tutto l'ambiente (app + database + phpMyAdmin)
+2. **Avviare i servizi con Docker Compose:**
+   #### Avvia tutto l'ambiente (app + database + phpMyAdmin)
     ```
-    docker-compose up --build -d
+    docker compose up --build -d
     ```
-    L'applicazione sarà accessibile a:
+   L'applicazione sarà accessibile a:
     - **API**: http://localhost:8080/api
     - **phpMyAdmin**: http://localhost:8081
-    - **Database**: http://localhost:3306
+    - **Database**: localhost:3306
 
 3. **Verificare che i container siano attivi (opzionale)**
     ```bash
-    docker-compose ps
+    docker compose ps
     ```
 
 4. **Visualizzare tutti i log se qualcosa non va (opzionale)**
     ```bash
-    docker-compose logs -f
+    docker compose logs -f
     ```
-   
+
 5. **Arrestare i servizi:**
     ```bash
-    docker-compose down
+    docker compose down
     ```
 ---
 ## Database e Inizializzazione
 
 ### Come Funziona l'Inizializzazione Database
 1. **Docker Compose** avvia MySQL vuoto
-2. **Spring Boot** si connette al database  
+2. **Spring Boot** si connette al database
 3. **Schema.sql** crea automaticamente tutte le tabelle
 4. **Data.sql** popola il database con dati di test realistici
 5. **JPA/Hibernate** gestisce le entità create
@@ -343,12 +361,12 @@ Passi da seguire:
 **Account di Test:**
 - **Admin**: `admin` / `password123`
 - **Admin Secondario**: `matteo_bronze` / `password123`
-- **Utenti Standard**: 
-  - `mario_rossi` / `password123`
-  - `luca_bianchi` / `password123`
-  - `giuseppe_verdi` / `password123`
+- **Utenti Standard**:
+    - `mario_rossi` / `password123`
+    - `luca_bianchi` / `password123`
+    - `giuseppe_verdi` / `password123`
 
-Le password nei dati di test sono già hashate con BCrypt, ma per comodità la password in chiaro è `password123` per tutti gli utenti di test.
+*Le password nei dati di test sono già hashate con BCrypt, ma per comodità la password in chiaro è `password123` per tutti gli utenti di test.*
 
 **Dati Precaricati:**
 - **15 utenti** con profili completi e dati realistici
@@ -365,451 +383,62 @@ Il file `schema.sql` crea automaticamente:
 - Indici per performance ottimizzate
 
 ---
+
 ## API Endpoints Principali - Come usare l'applicazione
 
 Ho creato **API REST complete** organizzate per funzionalità, seguendo gli standard REST e implementando sicurezza appropriata.
 
-### Endpoint Autenticazione (`/auth`)
+### Autenticazione (`/auth`)
+- `POST /auth/login` - Login utente
+- `POST /auth/register` - Registrazione
 
-#### POST `/auth/login` - Login utente con generazione JWT
-- **Descrizione**: Autentica utente e genera token JWT per accesso alle API protette
-- **Autorizzazione**: Nessuna (endpoint pubblico)
-- **Request Body**:
-    ```json
-    {
-    "username": "admin",
-    "password": "password123"
-    }
-    ```
-- **Response**
-    - **Success (200 OK)**:
-        ```json
-        {
-        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
-        "type": "Bearer",
-        "username": "admin",
-        "email": null,
-        "role": "ROLE_ADMIN"
-        }
-        ```
-    - **Error (401 Unauthorized)**: `{ "error": "Invalid credentials" }`
+### Gestione Utenti (`/users`)
+- `GET /users` - Lista utenti (ADMIN)
+- `GET /users/search?keyword={keyword}` - Ricerca utenti (ADMIN)
+- `GET /users/username/{username}` - Dettagli utente per username (ADMIN o proprietario)
+- `GET /users/{id}` - Dettagli utente (ADMIN o proprietario)
+- `PUT /users/{id}/profile` - Aggiorna profilo (ADMIN o proprietario)
+- `PUT /users/{id}` - Aggiorna utente (ADMIN o proprietario)
+- `DELETE /users/{id}` - Elimina utente (ADMIN)
 
-#### POST `/auth/register` - Registrazione nuovo utente
-- **Descrizione**: Registra nuovo utente nel sistema con ruolo USER di default
-- **Autorizzazione**: Nessuna (endpoint pubblico)
-- **Request Body**:
-    ```json
-    {
-    "username": "nuovo_utente",
-    "email": "utente@email.com",
-    "password": "password123"
-    }
-    ```
-- **Response**
-    - **Success (201 Created)**:
-        ```json
-        {
-        "message": "User registered successfully!"
-        }
-        ```
-    - **Error (400 Bad Request)**: `{ "error": "Username already exists" }`
+### Gestione Squadre (`/teams`)
+- `GET /teams` - Lista squadre
+- `GET /teams/{id}` - Dettagli squadra
+- `GET /teams/name/{name}` - Dettagli squadra per nome
+- `POST /teams` - Crea squadra
+- `PUT /teams/{id}` - Aggiorna squadra (ADMIN)
+- `DELETE /teams/{id}` - Elimina squadra (ADMIN)
+- `POST /teams/{teamId}/players/{playerId}` - Aggiungi giocatore (ADMIN)
+- `DELETE /teams/{teamId}/players/{playerId}` - Rimuovi giocatore (ADMIN)
+- `GET /teams/player/{playerId}` - Squadre per giocatore
+- `GET /teams/search?keyword={keyword}` - Ricerca squadre
 
----
-### Endpoint Gestione Utenti (`/users`)
+### Gestione Tornei (`/tournaments`)
+- `GET /tournaments` - Lista tornei
+- `GET /tournaments/{id}` - Dettagli torneo
+- `POST /tournaments` - Crea torneo (ADMIN)
+- `PUT /tournaments/{id}` - Aggiorna torneo (ADMIN)
+- `DELETE /tournaments/{id}` - Elimina torneo (ADMIN)
+- `POST /tournaments/{tournamentId}/teams/{teamId}` - Iscrivi squadra
+- `DELETE /api/tournaments/{tournamentId}/teams/{teamId}` - Rimuovi squadra da torneo (ADMIN)
+- `GET /tournaments/status/{status}` - Filtra per stato
+- `GET /tournaments/upcoming` - Tornei futuri
+- `GET /api/tournaments/team/{teamId}` - Tornei per squadra
+- `GET /tournaments/search?keyword={keyword}` - Ricerca tornei
 
-#### GET `/users` - Lista completa utenti registrati
-- **Descrizione**: Recupera lista di tutti gli utenti del sistema
-- **Autorizzazione**: Solo ADMIN
-- **Headers**: `Authorization: Bearer <jwt_token>`
-- **Response**
-    - **Success (200 OK)**:
-        ```json
-            [
-            {
-                "id": 1,
-                "username": "admin",
-                "email": "admin@tournamentfootball.com",
-                "role": "ROLE_ADMIN",
-                "createdAt": "2025-01-01T10:00:00",
-                "profile": {
-                "firstName": "Admin",
-                "lastName": "System",
-                "city": "Milano"
-                }
-            }
-            ]
-        ```
-    - **Error (403 Forbidden)**: Se non ADMIN
+### Gestione Partite (`/matches`)
+- `GET /matches` - Lista partite
+- `GET /matches/{id}` - Dettagli partita per id
+- `POST /matches` - Crea partita (ADMIN)
+- `PUT /matches/{id}` - Aggiorna match (ADMIN)
+- `PUT /matches/{id}/result` - Aggiorna risultato (ADMIN)
+- `DELETE /matches/{id}` - Elimina partita (ADMIN)
+- `GET /matches/tournament/{id}` - Partite per torneo
+- `GET /matches/team/{id}` - Partite per squadra
+- `GET /matches/status/{status}` - Partite per stato
+- `GET /matches/period?start={start}&end={end}` - Partite per periodo
+- `GET /matches/today` - Partite odierne
 
-#### GET `/users/{id}` - Dettagli utente specifico
-- **Descrizione**: Recupera dettagli completi di un utente incluso profilo
-- **Autorizzazione**: ADMIN o proprietario dell'account
-- **Headers**: `Authorization: Bearer <jwt_token>`
-- **Response** 
-    -  **Success (200 OK)**:
-        ```json
-        {
-        "id": 2,
-        "username": "mario_rossi",
-        "email": "mario.rossi@email.com",
-        "role": "ROLE_USER",
-        "createdAt": "2025-01-01T10:30:00",
-        "profile": {
-            "firstName": "Mario",
-            "lastName": "Rossi",
-            "birthDate": "1990-05-15",
-            "phone": "333-111-2222",
-            "city": "Milano",
-            "bio": "Calciatore appassionato"
-        }
-        }
-        ```
-    - **Error (404 Not Found)**: Se utente inesistente
-
-#### PUT `/users/{id}/profile` - Aggiorna profilo personalizzato
-- **Descrizione**: Aggiorna informazioni profilo personali utente
-- **Autorizzazione**: ADMIN o proprietario dell'account
-- **Headers**: `Authorization: Bearer <jwt_token>`
-- **Request Body**:
-    ```json
-    {
-    "firstName": "Mario",
-    "lastName": "Rossi",
-    "birthDate": "1990-05-15",
-    "phone": "333-1234567",
-    "city": "Milano",
-    "bio": "Centrocampista con 10 anni di esperienza"
-    }
-    ```
-- **Response** 
-    - **Success (200 OK)**: UserDTO completo aggiornato
-    - **Error (404 Not Found)**: Se utente inesistente
-
-#### GET `/users/search?keyword={keyword}` - Ricerca utenti
-- **Descrizione**: Ricerca utenti per username o email (solo ADMIN)
-- **Autorizzazione**: Solo ADMIN
-- **Headers**: `Authorization: Bearer <jwt_token>`
-- **Query Parameters**: `keyword` (String) - Termine di ricerca
-- **Response**
-    - **Success (200 OK)**: Array UserDTO filtrati
-    - **Error (403 Forbidden)**: Se non ADMIN
-
----
-### Endpoint Gestione Squadre (`/teams`)
-
-#### GET `/teams` - Lista squadre disponibili
-- **Descrizione**: Recupera lista completa squadre registrate nel sistema
-- **Autorizzazione**: Token JWT valido (USER o ADMIN)
-- **Headers**: `Authorization: Bearer <jwt_token>`
-- **Response**
-    - **Success (200 OK)**:
-        ```json
-        [
-        {
-            "id": 1,
-            "name": "Milan Lions",
-            "createdAt": "2025-01-01T11:00:00",
-            "numberOfPlayers": 5,
-            "players": [
-            {
-                "id": 2,
-                "username": "mario_rossi",
-                "email": "mario.rossi@email.com"
-            }
-            ]
-        }
-        ]
-        ```
-    - **Error (401 Unauthorized)**: Se token non valido
-
-#### POST `/teams` - Crea squadra
-- **Descrizione**: Registra nuova squadra nel sistema
-- **Autorizzazione**: USER o ADMIN
-- **Headers**: `Authorization: Bearer <jwt_token>`
-- **Request Body**:
-    ```json
-    {
-    "name": "Nuova Squadra FC"
-    }
-    ```
-- **Response**
-    - **Success (201 Created)**:
-        ```json
-        {
-        "id": 3,
-        "name": "Nuova Squadra FC",
-        "createdAt": "2025-01-15T14:30:00",
-        "numberOfPlayers": 0,
-        "players": []
-        }
-        ```
-    - **Error (400 Bad Request)**: `{ "error": "Team name already exists" }`
-
-#### POST `/teams/{teamId}/players/{playerId}` - Aggiungi giocatore
-- **Descrizione**: Aggiunge giocatore al roster della squadra specificata
-- **Autorizzazione**: Solo ADMIN
-- **Headers**: `Authorization: Bearer <jwt_token>`
-- **Path Parameters**: 
-  - `teamId` (Long) - ID della squadra
-  - `playerId` (Long) - ID del giocatore/utente
-- **Response** 
-    - **Success (200 OK)**:
-        ```json
-        {
-        "message": "Player added successfully",
-        "team": {
-            "id": 1,
-            "name": "Milan Lions",
-            "numberOfPlayers": 6
-        }
-        }
-        ```
-    - **Error (409 Conflict)**: `{ "error": "Player already in team" }`
-    - **Error (404 Not Found)**: `{ "error": "Team or player not found" }`
-
-#### GET `/teams/search?keyword={keyword}` - Ricerca squadre
-- **Descrizione**: Ricerca squadre per nome utilizzando keyword parziale
-- **Autorizzazione**: Token JWT valido (USER o ADMIN)
-- **Headers**: `Authorization: Bearer <jwt_token>`
-- **Query Parameters**: `keyword` (String) - Nome squadra parziale
-- **Response Success (200 OK)**:
-    ```json
-    [
-        {
-            "id": 1,
-            "name": "Milan Lions",
-            "numberOfPlayers": 5
-        }
-    ]
-    ```
-
----
-### Endpoint Gestione Tornei (`/tournaments`)
-
-#### GET `/tournaments` - Lista tornei disponibili
-- **Descrizione**: Recupera tutti i tornei con dettagli e squadre partecipanti
-- **Autorizzazione**: Token JWT valido (USER o ADMIN)
-- **Headers**: `Authorization: Bearer <jwt_token>`
-- **Response Success (200 OK)**:
-    ```json
-    [
-    {
-        "id": 1,
-        "name": "Coppa Italia 2025",
-        "description": "Torneo nazionale amatoriale",
-        "startDate": "2025-03-01",
-        "endDate": "2025-03-31",
-        "maxTeams": 16,
-        "status": "OPEN",
-        "numberOfRegisteredTeams": 8,
-        "participatingTeams": [
-        {
-            "id": 1,
-            "name": "Milan Lions",
-            "numberOfPlayers": 5
-        }
-        ]
-    }
-    ]
-    ```
-
-#### POST `/tournaments` - Crea torneo
-- **Descrizione**: Crea nuovo torneo nel sistema (solo amministratori)
-- **Autorizzazione**: Solo ADMIN
-- **Headers**: `Authorization: Bearer <jwt_token>`
-- **Request Body**:
-    ```json
-    {
-    "name": "Torneo Primavera 2025",
-    "description": "Competizione primaverile per squadre amatoriali",
-    "startDate": "2025-04-01",
-    "endDate": "2025-04-30",
-    "maxTeams": 16
-    }
-    ```
-- **Response**
-    - **Success (201 Created)**:
-        ```json
-        {
-        "id": 2,
-        "name": "Torneo Primavera 2025",
-        "description": "Competizione primaverile per squadre amatoriali",
-        "startDate": "2025-04-01",
-        "endDate": "2025-04-30",
-        "maxTeams": 16,
-        "status": "SCHEDULED",
-        "numberOfRegisteredTeams": 0,
-        "participatingTeams": []
-        }
-        ```
-    - **Error (400 Bad Request)**: `{ "error": "Start date must be before end date" }`
-
-#### POST `/tournaments/{tournamentId}/teams/{teamId}` - Iscrivi squadra
-- **Descrizione**: Iscrive squadra al torneo specificato
-- **Autorizzazione**: USER o ADMIN
-- **Headers**: `Authorization: Bearer <jwt_token>`
-- **Path Parameters**:
-  - `tournamentId` (Long) - ID del torneo
-  - `teamId` (Long) - ID della squadra
-- **Response**
-    - **Success (200 OK)**:
-        ```json
-        {
-        "message": "Team registered successfully",
-        "tournament": {
-            "id": 1,
-            "name": "Coppa Italia 2025",
-            "numberOfRegisteredTeams": 9
-        }
-        }
-        ```
-    - **Error (409 Conflict)**: `{ "error": "Tournament is full" }`
-    - **Error (400 Bad Request)**: `{ "error": "Team already registered" }`
-
-#### GET `/tournaments/status/{status}` - Filtra per stato
-- **Descrizione**: Filtra tornei per stato specifico
-- **Autorizzazione**: Token JWT valido (USER o ADMIN)
-- **Headers**: `Authorization: Bearer <jwt_token>`
-- **Path Parameters**: `status` - OPEN, IN_PROGRESS, COMPLETED, CANCELLED, SCHEDULED
-- **Response:**
-    - **Success (200 OK)**: Array TournamentDTO filtrati per stato
-    - **Error (400 Bad Request)**: `{ "error": "Invalid status value" }`
-
-#### GET `/tournaments/upcoming` - Tornei futuri
-- **Descrizione**: Recupera tornei con data inizio futura
-- **Autorizzazione**: Token JWT valido (USER o ADMIN)
-- **Headers**: `Authorization: Bearer <jwt_token>`
-- **Response Success (200 OK)**:
-    ```json
-    [
-        {
-            "id": 2,
-            "name": "Torneo Primavera 2025",
-            "startDate": "2025-04-01",
-            "endDate": "2025-04-30",
-            "status": "SCHEDULED",
-            "numberOfRegisteredTeams": 4
-        }
-    ]
-    ```
-
----
-### Endpoint Gestione Partite (`/matches`)
-
-#### GET `/matches` - Lista partite
-- **Descrizione**: Recupera calendario completo di tutte le partite
-- **Autorizzazione**: Token JWT valido (USER o ADMIN)
-- **Headers**: `Authorization: Bearer <jwt_token>`
-- **Response Success (200 OK)**:
-    ```json
-    [
-        {
-            "id": 1,
-            "homeTeamId": 1,
-            "awayTeamId": 2,
-            "tournamentId": 1,
-            "homeTeamName": "Milan Lions",
-            "awayTeamName": "Rome Eagles",
-            "tournamentName": "Coppa Italia 2025",
-            "matchDate": "2025-03-05T15:00:00",
-            "homeGoals": 2,
-            "awayGoals": 1,
-            "status": "COMPLETED",
-            "result": "2 - 1"
-        }
-    ]
-    ```
-
-#### POST `/matches` - Crea partita
-- **Descrizione**: Programma nuova partita nel torneo specificato
-- **Autorizzazione**: Solo ADMIN
-- **Headers**: `Authorization: Bearer <jwt_token>`
-- **Request Body**:
-    ```json
-    {
-    "homeTeamId": 1,
-    "awayTeamId": 2,
-    "tournamentId": 1,
-    "matchDate": "2025-04-15T16:00:00"
-    }
-    ```
-- **Response:**
-    - **Success (201 Created)**:
-        ```json
-        {
-        "id": 5,
-        "homeTeamId": 1,
-        "awayTeamId": 2,
-        "tournamentId": 1,
-        "homeTeamName": "Milan Lions",
-        "awayTeamName": "Rome Eagles",
-        "tournamentName": "Coppa Italia 2025",
-        "matchDate": "2025-04-15T16:00:00",
-        "homeGoals": null,
-        "awayGoals": null,
-        "status": "SCHEDULED",
-        "result": null
-        }
-        ```
-    - **Error (400 Bad Request)**: `{ "error": "Teams must be different" }`
-    - **Error (404 Not Found)**: `{ "error": "Tournament or teams not found" }`
-
-#### PUT `/matches/{id}/result` - Aggiorna risultato finale
-- **Descrizione**: Inserisce risultato finale partita e cambia stato a COMPLETED
-- **Autorizzazione**: Solo ADMIN
-- **Headers**: `Authorization: Bearer <jwt_token>`
-- **Path Parameters**: `id` (Long) - ID della partita
-- **Request Body**:
-    ```json
-    {
-    "homeGoals": 3,
-    "awayGoals": 1
-    }
-    ```
-- **Response:**
-    - **Success (200 OK)**:
-        ```json
-        {
-        "id": 5,
-        "homeTeamName": "Milan Lions",
-        "awayTeamName": "Rome Eagles",
-        "homeGoals": 3,
-        "awayGoals": 1,
-        "status": "COMPLETED",
-        "result": "3 - 1"
-        }
-        ```
-    - **Error (400 Bad Request)**: `{ "error": "Goals cannot be negative" }`
-    - **Error (404 Not Found)**: `{ "error": "Match not found" }`
-
-#### GET `/matches/today` - Partite odierne
-- **Descrizione**: Recupera partite programmate per la data odierna
-- **Autorizzazione**: Token JWT valido (USER o ADMIN)
-- **Headers**: `Authorization: Bearer <jwt_token>`
-- **Response Success (200 OK)**:
-    ```json
-    [
-        {
-            "id": 3,
-            "homeTeamName": "Inter Milan",
-            "awayTeamName": "AC Milan",
-            "tournamentName": "Derby Cup",
-            "matchDate": "2025-01-15T20:30:00",
-            "status": "SCHEDULED"
-        }
-    ]
-    ```
-
-#### GET `/matches/tournament/{id}` - Partite per torneo
-- **Descrizione**: Recupera tutte le partite di un torneo specifico
-- **Autorizzazione**: Token JWT valido (USER o ADMIN)
-- **Headers**: `Authorization: Bearer <jwt_token>`
-- **Path Parameters**: `id` (Long) - ID del torneo
-- **Response:**
-    - **Success (200 OK)**: Array MatchDTO del torneo specificato
-    - **Error (404 Not Found)**: `{ "error": "Tournament not found" }`
-
----
 ### Codici di Stato HTTP Utilizzati
 
 | Codice | Significato | Utilizzo |
@@ -846,7 +475,7 @@ La Collection `Tournament Football API.postman_collection.json` include:
 **Complete Testing Workflow:**
 Ho creato una sequenza di 12 step che testa tutto dall'inizio alla fine::
 1. Login Admin → Salva il token
-2. User registration → Salva l'ID  
+2. User registration → Salva l'ID
 3. Team creation (home/away) → Salva gli ID
 4. Tournament creation → Salva l'ID
 5. Team registrations → Testa la logica business
@@ -855,11 +484,12 @@ Ho creato una sequenza di 12 step che testa tutto dall'inizio alla fine::
 8. Profile update → Testa la gestione utenti
 9. Data verification → Controlla la coerenza
 
-**Procedura di Utilizzo:**
-1. Importare Collection in Postman
-2. Configurare `base_url` = `http://localhost:8080/api`
-3. Eseguire "Complete Testing Workflow" per test automatico
-4. Oppure usa le singole richieste per test specifici
+**Utilizzo:**
+1. Importare collection in Postman
+2. Eseguire "Complete Testing Workflow" per testare i 12 step principali
+3. Oppure eseguire i singoli endpoint per testare funzionalità specifiche
+
+*NOTA: è possibile che alcuni test presentino errori, in quanto sono stati creati per verificare la risposta del sistema a condizioni specifiche (es. errori di validazione, permessi insufficienti).*
 
 **Test delle regole di business:**
 - **Torneo pieno**: Prova a iscrivere più squadre del limite massimo
@@ -888,7 +518,7 @@ SPRING_PROFILES_ACTIVE=docker
 
 # JPA Configuration
 SPRING_JPA_SHOW_SQL=true
-SPRING_JPA_HIBERNATE_DDL_AUTO=update
+SPRING_JPA_HIBERNATE_DDL_AUTO=none
 ```
 
 ---

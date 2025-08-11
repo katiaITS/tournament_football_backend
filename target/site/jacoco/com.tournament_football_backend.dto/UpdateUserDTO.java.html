@@ -4,6 +4,10 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Size;
 import com.tournament_football_backend.model.Role;
 
+/**
+ * Data Transfer Object for updating user information.
+ * All fields are optional to allow partial updates.
+ */
 public class UpdateUserDTO {
 
     // All fields optional for partial updates
@@ -16,31 +20,31 @@ public class UpdateUserDTO {
     private Role role;
 
     // Constructors
-<span class="fc" id="L19">    public UpdateUserDTO() {}</span>
+<span class="fc" id="L23">    public UpdateUserDTO() {}</span>
 
     // Getters and Setters
     public String getUsername() {
-<span class="fc" id="L23">        return username;</span>
+<span class="fc" id="L27">        return username;</span>
     }
 
     public void setUsername(String username) {
-<span class="fc" id="L27">        this.username = username;</span>
-<span class="fc" id="L28">    }</span>
+<span class="fc" id="L31">        this.username = username;</span>
+<span class="fc" id="L32">    }</span>
 
     public String getEmail() {
-<span class="fc" id="L31">        return email;</span>
+<span class="fc" id="L35">        return email;</span>
     }
 
     public void setEmail(String email) {
-<span class="fc" id="L35">        this.email = email;</span>
-<span class="fc" id="L36">    }</span>
+<span class="fc" id="L39">        this.email = email;</span>
+<span class="fc" id="L40">    }</span>
 
     public Role getRole() {
-<span class="fc" id="L39">        return role;</span>
+<span class="fc" id="L43">        return role;</span>
     }
 
     public void setRole(Role role) {
-<span class="fc" id="L43">        this.role = role;</span>
-<span class="fc" id="L44">    }</span>
+<span class="fc" id="L47">        this.role = role;</span>
+<span class="fc" id="L48">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

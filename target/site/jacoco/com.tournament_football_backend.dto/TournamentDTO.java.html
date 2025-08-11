@@ -9,6 +9,9 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Set;
 
+/* * Tournament Data Transfer Object
+ * Represents a tournament with its details and participating teams.
+ */
 public class TournamentDTO {
 
     private Long id;
@@ -26,100 +29,100 @@ public class TournamentDTO {
     @NotNull
     private LocalDate endDate;
 
-<span class="pc" id="L29">    private Integer maxTeams = 16;</span>
-<span class="pc" id="L30">    private TournamentStatus status = TournamentStatus.OPEN;</span>
+<span class="pc" id="L32">    private Integer maxTeams = 16;</span>
+<span class="pc" id="L33">    private TournamentStatus status = TournamentStatus.OPEN;</span>
     private LocalDateTime createdAt;
     private Set&lt;TeamDTO&gt; participatingTeams;
     private int numberOfRegisteredTeams;
 
     // Constructors
-<span class="fc" id="L36">    public TournamentDTO() {}</span>
+<span class="fc" id="L39">    public TournamentDTO() {}</span>
 
-<span class="nc" id="L38">    public TournamentDTO(String name, LocalDate startDate, LocalDate endDate) {</span>
-<span class="nc" id="L39">        this.name = name;</span>
-<span class="nc" id="L40">        this.startDate = startDate;</span>
-<span class="nc" id="L41">        this.endDate = endDate;</span>
-<span class="nc" id="L42">    }</span>
+<span class="nc" id="L41">    public TournamentDTO(String name, LocalDate startDate, LocalDate endDate) {</span>
+<span class="nc" id="L42">        this.name = name;</span>
+<span class="nc" id="L43">        this.startDate = startDate;</span>
+<span class="nc" id="L44">        this.endDate = endDate;</span>
+<span class="nc" id="L45">    }</span>
 
     // Getters and Setters
     public Long getId() {
-<span class="fc" id="L46">        return id;</span>
+<span class="fc" id="L49">        return id;</span>
     }
 
     public void setId(Long id) {
-<span class="fc" id="L50">        this.id = id;</span>
-<span class="fc" id="L51">    }</span>
+<span class="fc" id="L53">        this.id = id;</span>
+<span class="fc" id="L54">    }</span>
 
     public String getName() {
-<span class="fc" id="L54">        return name;</span>
+<span class="fc" id="L57">        return name;</span>
     }
 
     public void setName(String name) {
-<span class="fc" id="L58">        this.name = name;</span>
-<span class="fc" id="L59">    }</span>
+<span class="fc" id="L61">        this.name = name;</span>
+<span class="fc" id="L62">    }</span>
 
     public String getDescription() {
-<span class="nc" id="L62">        return description;</span>
+<span class="nc" id="L65">        return description;</span>
     }
 
     public void setDescription(String description) {
-<span class="fc" id="L66">        this.description = description;</span>
-<span class="fc" id="L67">    }</span>
+<span class="fc" id="L69">        this.description = description;</span>
+<span class="fc" id="L70">    }</span>
 
     public LocalDate getStartDate() {
-<span class="fc" id="L70">        return startDate;</span>
+<span class="fc" id="L73">        return startDate;</span>
     }
 
     public void setStartDate(LocalDate startDate) {
-<span class="fc" id="L74">        this.startDate = startDate;</span>
-<span class="fc" id="L75">    }</span>
+<span class="fc" id="L77">        this.startDate = startDate;</span>
+<span class="fc" id="L78">    }</span>
 
     public LocalDate getEndDate() {
-<span class="nc" id="L78">        return endDate;</span>
+<span class="nc" id="L81">        return endDate;</span>
     }
 
     public void setEndDate(LocalDate endDate) {
-<span class="fc" id="L82">        this.endDate = endDate;</span>
-<span class="fc" id="L83">    }</span>
+<span class="fc" id="L85">        this.endDate = endDate;</span>
+<span class="fc" id="L86">    }</span>
 
     public Integer getMaxTeams() {
-<span class="nc" id="L86">        return maxTeams;</span>
+<span class="nc" id="L89">        return maxTeams;</span>
     }
 
     public void setMaxTeams(Integer maxTeams) {
-<span class="fc" id="L90">        this.maxTeams = maxTeams;</span>
-<span class="fc" id="L91">    }</span>
+<span class="fc" id="L93">        this.maxTeams = maxTeams;</span>
+<span class="fc" id="L94">    }</span>
 
     public TournamentStatus getStatus() {
-<span class="fc" id="L94">        return status;</span>
+<span class="fc" id="L97">        return status;</span>
     }
 
     public void setStatus(TournamentStatus status) {
-<span class="fc" id="L98">        this.status = status;</span>
-<span class="fc" id="L99">    }</span>
+<span class="fc" id="L101">        this.status = status;</span>
+<span class="fc" id="L102">    }</span>
 
     public LocalDateTime getCreatedAt() {
-<span class="nc" id="L102">        return createdAt;</span>
+<span class="nc" id="L105">        return createdAt;</span>
     }
 
     public void setCreatedAt(LocalDateTime createdAt) {
-<span class="fc" id="L106">        this.createdAt = createdAt;</span>
-<span class="fc" id="L107">    }</span>
+<span class="fc" id="L109">        this.createdAt = createdAt;</span>
+<span class="fc" id="L110">    }</span>
 
     public Set&lt;TeamDTO&gt; getParticipatingTeams() {
-<span class="nc" id="L110">        return participatingTeams;</span>
+<span class="nc" id="L113">        return participatingTeams;</span>
     }
 
     public void setParticipatingTeams(Set&lt;TeamDTO&gt; participatingTeams) {
-<span class="nc" id="L114">        this.participatingTeams = participatingTeams;</span>
-<span class="nc" id="L115">    }</span>
+<span class="nc" id="L117">        this.participatingTeams = participatingTeams;</span>
+<span class="nc" id="L118">    }</span>
 
     public int getNumberOfRegisteredTeams() {
-<span class="nc" id="L118">        return numberOfRegisteredTeams;</span>
+<span class="nc" id="L121">        return numberOfRegisteredTeams;</span>
     }
 
     public void setNumberOfRegisteredTeams(int numberOfRegisteredTeams) {
-<span class="fc" id="L122">        this.numberOfRegisteredTeams = numberOfRegisteredTeams;</span>
-<span class="fc" id="L123">    }</span>
+<span class="fc" id="L125">        this.numberOfRegisteredTeams = numberOfRegisteredTeams;</span>
+<span class="fc" id="L126">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

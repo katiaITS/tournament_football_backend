@@ -4,7 +4,11 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
-<span class="nc" id="L7">public class AuthDTO {</span>
+/**
+ * Data Transfer Objects (DTOs) for Authentication operations.
+ * This class contains nested static classes for login, registration, and JWT response.
+ */
+<span class="nc" id="L11">public class AuthDTO {</span>
 
     // DTO for Login
     public static class LoginRequest {
@@ -14,23 +18,23 @@ import jakarta.validation.constraints.Size;
         @NotBlank
         private String password;
 
-<span class="nc" id="L17">        public LoginRequest() {}</span>
+<span class="nc" id="L21">        public LoginRequest() {}</span>
 
         public String getUsername() {
-<span class="nc" id="L20">            return username;</span>
+<span class="nc" id="L24">            return username;</span>
         }
 
         public void setUsername(String username) {
-<span class="nc" id="L24">            this.username = username;</span>
-<span class="nc" id="L25">        }</span>
+<span class="nc" id="L28">            this.username = username;</span>
+<span class="nc" id="L29">        }</span>
 
         public String getPassword() {
-<span class="nc" id="L28">            return password;</span>
+<span class="nc" id="L32">            return password;</span>
         }
 
         public void setPassword(String password) {
-<span class="nc" id="L32">            this.password = password;</span>
-<span class="nc" id="L33">        }</span>
+<span class="nc" id="L36">            this.password = password;</span>
+<span class="nc" id="L37">        }</span>
     }
 
     // DTO for Registration
@@ -47,87 +51,87 @@ import jakarta.validation.constraints.Size;
         @Size(min = 6, max = 100)
         private String password;
 
-<span class="nc" id="L50">        public RegisterRequest() {}</span>
+<span class="nc" id="L54">        public RegisterRequest() {}</span>
 
         public String getUsername() {
-<span class="nc" id="L53">            return username;</span>
+<span class="nc" id="L57">            return username;</span>
         }
 
         public void setUsername(String username) {
-<span class="nc" id="L57">            this.username = username;</span>
-<span class="nc" id="L58">        }</span>
+<span class="nc" id="L61">            this.username = username;</span>
+<span class="nc" id="L62">        }</span>
 
         public String getEmail() {
-<span class="nc" id="L61">            return email;</span>
+<span class="nc" id="L65">            return email;</span>
         }
 
         public void setEmail(String email) {
-<span class="nc" id="L65">            this.email = email;</span>
-<span class="nc" id="L66">        }</span>
+<span class="nc" id="L69">            this.email = email;</span>
+<span class="nc" id="L70">        }</span>
 
         public String getPassword() {
-<span class="nc" id="L69">            return password;</span>
+<span class="nc" id="L73">            return password;</span>
         }
 
         public void setPassword(String password) {
-<span class="nc" id="L73">            this.password = password;</span>
-<span class="nc" id="L74">        }</span>
+<span class="nc" id="L77">            this.password = password;</span>
+<span class="nc" id="L78">        }</span>
     }
 
     // DTO for JWT Response
     public static class JwtResponse {
         private String token;
-<span class="nc" id="L80">        private String type = &quot;Bearer&quot;;</span>
+<span class="nc" id="L84">        private String type = &quot;Bearer&quot;;</span>
         private String username;
         private String email;
         private String role;
 
-<span class="nc" id="L85">        public JwtResponse(String token, String username, String email, String role) {</span>
-<span class="nc" id="L86">            this.token = token;</span>
-<span class="nc" id="L87">            this.username = username;</span>
-<span class="nc" id="L88">            this.email = email;</span>
-<span class="nc" id="L89">            this.role = role;</span>
-<span class="nc" id="L90">        }</span>
+<span class="nc" id="L89">        public JwtResponse(String token, String username, String email, String role) {</span>
+<span class="nc" id="L90">            this.token = token;</span>
+<span class="nc" id="L91">            this.username = username;</span>
+<span class="nc" id="L92">            this.email = email;</span>
+<span class="nc" id="L93">            this.role = role;</span>
+<span class="nc" id="L94">        }</span>
 
         public String getToken() {
-<span class="nc" id="L93">            return token;</span>
+<span class="nc" id="L97">            return token;</span>
         }
 
         public void setToken(String token) {
-<span class="nc" id="L97">            this.token = token;</span>
-<span class="nc" id="L98">        }</span>
+<span class="nc" id="L101">            this.token = token;</span>
+<span class="nc" id="L102">        }</span>
 
         public String getType() {
-<span class="nc" id="L101">            return type;</span>
+<span class="nc" id="L105">            return type;</span>
         }
 
         public void setType(String type) {
-<span class="nc" id="L105">            this.type = type;</span>
-<span class="nc" id="L106">        }</span>
+<span class="nc" id="L109">            this.type = type;</span>
+<span class="nc" id="L110">        }</span>
 
         public String getUsername() {
-<span class="nc" id="L109">            return username;</span>
+<span class="nc" id="L113">            return username;</span>
         }
 
         public void setUsername(String username) {
-<span class="nc" id="L113">            this.username = username;</span>
-<span class="nc" id="L114">        }</span>
+<span class="nc" id="L117">            this.username = username;</span>
+<span class="nc" id="L118">        }</span>
 
         public String getEmail() {
-<span class="nc" id="L117">            return email;</span>
+<span class="nc" id="L121">            return email;</span>
         }
 
         public void setEmail(String email) {
-<span class="nc" id="L121">            this.email = email;</span>
-<span class="nc" id="L122">        }</span>
+<span class="nc" id="L125">            this.email = email;</span>
+<span class="nc" id="L126">        }</span>
 
         public String getRole() {
-<span class="nc" id="L125">            return role;</span>
+<span class="nc" id="L129">            return role;</span>
         }
 
         public void setRole(String role) {
-<span class="nc" id="L129">            this.role = role;</span>
-<span class="nc" id="L130">        }</span>
+<span class="nc" id="L133">            this.role = role;</span>
+<span class="nc" id="L134">        }</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

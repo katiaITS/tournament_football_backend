@@ -23,9 +23,14 @@ import static com.tournament_football_backend.exception.TeamExceptions.*;
 import static com.tournament_football_backend.exception.TournamentExceptions.*;
 import static com.tournament_football_backend.exception.ValidationExceptions.*;
 
+/**
+ * TournamentService.java
+ * Service class for managing tournaments in the tournament football application.
+ * Provides methods to create, update, delete, and retrieve tournaments and their participating teams.
+ */
 @Service
 @Transactional
-<span class="fc" id="L28">public class TournamentService {</span>
+<span class="fc" id="L33">public class TournamentService {</span>
 
     @Autowired
     private TournamentRepository tournamentRepository;
@@ -34,169 +39,169 @@ import static com.tournament_football_backend.exception.ValidationExceptions.*;
     private TeamRepository teamRepository;
 
     public List&lt;TournamentDTO&gt; getAllTournaments() {
-<span class="fc" id="L37">        return tournamentRepository.findAll().stream()</span>
-<span class="fc" id="L38">                .map(this::convertToDTO)</span>
-<span class="fc" id="L39">                .collect(Collectors.toList());</span>
+<span class="fc" id="L42">        return tournamentRepository.findAll().stream()</span>
+<span class="fc" id="L43">                .map(this::convertToDTO)</span>
+<span class="fc" id="L44">                .collect(Collectors.toList());</span>
     }
 
     public Optional&lt;TournamentDTO&gt; getTournamentById(Long id) {
-<span class="fc" id="L43">        return tournamentRepository.findByIdWithTeams(id)</span>
-<span class="fc" id="L44">                .map(this::convertToDTO);</span>
+<span class="fc" id="L48">        return tournamentRepository.findByIdWithTeams(id)</span>
+<span class="fc" id="L49">                .map(this::convertToDTO);</span>
     }
 
     public TournamentDTO createTournament(CreateTournamentDTO createTournamentDTO) {
-<span class="fc bfc" id="L48" title="All 2 branches covered.">        if (createTournamentDTO.getStartDate().isAfter(createTournamentDTO.getEndDate())) {</span>
-<span class="fc" id="L49">            throw new InvalidTournamentDateException();</span>
+<span class="fc bfc" id="L53" title="All 2 branches covered.">        if (createTournamentDTO.getStartDate().isAfter(createTournamentDTO.getEndDate())) {</span>
+<span class="fc" id="L54">            throw new InvalidTournamentDateException();</span>
         }
 
-<span class="fc" id="L52">        Tournament tournament = new Tournament();</span>
-<span class="fc" id="L53">        tournament.setName(createTournamentDTO.getName());</span>
-<span class="fc" id="L54">        tournament.setDescription(createTournamentDTO.getDescription());</span>
-<span class="fc" id="L55">        tournament.setStartDate(createTournamentDTO.getStartDate());</span>
-<span class="fc" id="L56">        tournament.setEndDate(createTournamentDTO.getEndDate());</span>
-<span class="fc" id="L57">        tournament.setMaxTeams(createTournamentDTO.getMaxTeams());</span>
-<span class="fc bfc" id="L58" title="All 2 branches covered.">        tournament.setStatus(createTournamentDTO.getStatus() != null ? createTournamentDTO.getStatus() : TournamentStatus.OPEN);</span>
+<span class="fc" id="L57">        Tournament tournament = new Tournament();</span>
+<span class="fc" id="L58">        tournament.setName(createTournamentDTO.getName());</span>
+<span class="fc" id="L59">        tournament.setDescription(createTournamentDTO.getDescription());</span>
+<span class="fc" id="L60">        tournament.setStartDate(createTournamentDTO.getStartDate());</span>
+<span class="fc" id="L61">        tournament.setEndDate(createTournamentDTO.getEndDate());</span>
+<span class="fc" id="L62">        tournament.setMaxTeams(createTournamentDTO.getMaxTeams());</span>
+<span class="fc bfc" id="L63" title="All 2 branches covered.">        tournament.setStatus(createTournamentDTO.getStatus() != null ? createTournamentDTO.getStatus() : TournamentStatus.OPEN);</span>
 
-<span class="fc" id="L60">        Tournament savedTournament = tournamentRepository.save(tournament);</span>
-<span class="fc" id="L61">        return convertToDTO(savedTournament);</span>
+<span class="fc" id="L65">        Tournament savedTournament = tournamentRepository.save(tournament);</span>
+<span class="fc" id="L66">        return convertToDTO(savedTournament);</span>
     }
 
     public Optional&lt;TournamentDTO&gt; updateTournament(Long id, UpdateTournamentDTO updateTournamentDTO) {
-<span class="fc" id="L65">        return tournamentRepository.findById(id)</span>
-<span class="fc" id="L66">                .map(tournament -&gt; {</span>
-<span class="pc bpc" id="L67" title="1 of 2 branches missed.">                    if (updateTournamentDTO.getName() != null)</span>
-<span class="fc" id="L68">                        tournament.setName(updateTournamentDTO.getName());</span>
-<span class="pc bpc" id="L69" title="1 of 2 branches missed.">                    if (updateTournamentDTO.getDescription() != null)</span>
-<span class="nc" id="L70">                        tournament.setDescription(updateTournamentDTO.getDescription());</span>
-<span class="fc bfc" id="L71" title="All 2 branches covered.">                    if (updateTournamentDTO.getStartDate() != null)</span>
-<span class="fc" id="L72">                        tournament.setStartDate(updateTournamentDTO.getStartDate());</span>
-<span class="fc bfc" id="L73" title="All 2 branches covered.">                    if (updateTournamentDTO.getEndDate() != null)</span>
-<span class="fc" id="L74">                        tournament.setEndDate(updateTournamentDTO.getEndDate());</span>
-<span class="pc bpc" id="L75" title="1 of 2 branches missed.">                    if (updateTournamentDTO.getMaxTeams() != null)</span>
-<span class="nc" id="L76">                        tournament.setMaxTeams(updateTournamentDTO.getMaxTeams());</span>
-<span class="fc bfc" id="L77" title="All 2 branches covered.">                    if (updateTournamentDTO.getStatus() != null)</span>
-<span class="fc" id="L78">                        tournament.setStatus(updateTournamentDTO.getStatus());</span>
+<span class="fc" id="L70">        return tournamentRepository.findById(id)</span>
+<span class="fc" id="L71">                .map(tournament -&gt; {</span>
+<span class="pc bpc" id="L72" title="1 of 2 branches missed.">                    if (updateTournamentDTO.getName() != null)</span>
+<span class="fc" id="L73">                        tournament.setName(updateTournamentDTO.getName());</span>
+<span class="pc bpc" id="L74" title="1 of 2 branches missed.">                    if (updateTournamentDTO.getDescription() != null)</span>
+<span class="nc" id="L75">                        tournament.setDescription(updateTournamentDTO.getDescription());</span>
+<span class="fc bfc" id="L76" title="All 2 branches covered.">                    if (updateTournamentDTO.getStartDate() != null)</span>
+<span class="fc" id="L77">                        tournament.setStartDate(updateTournamentDTO.getStartDate());</span>
+<span class="fc bfc" id="L78" title="All 2 branches covered.">                    if (updateTournamentDTO.getEndDate() != null)</span>
+<span class="fc" id="L79">                        tournament.setEndDate(updateTournamentDTO.getEndDate());</span>
+<span class="pc bpc" id="L80" title="1 of 2 branches missed.">                    if (updateTournamentDTO.getMaxTeams() != null)</span>
+<span class="nc" id="L81">                        tournament.setMaxTeams(updateTournamentDTO.getMaxTeams());</span>
+<span class="fc bfc" id="L82" title="All 2 branches covered.">                    if (updateTournamentDTO.getStatus() != null)</span>
+<span class="fc" id="L83">                        tournament.setStatus(updateTournamentDTO.getStatus());</span>
 
                     // Validation only if both dates are present
-<span class="pc bpc" id="L81" title="2 of 4 branches missed.">                    if (tournament.getStartDate() != null &amp;&amp; tournament.getEndDate() != null &amp;&amp;</span>
-<span class="fc bfc" id="L82" title="All 2 branches covered.">                            tournament.getStartDate().isAfter(tournament.getEndDate())) {</span>
-<span class="fc" id="L83">                        throw new InvalidTournamentDateException();</span>
+<span class="pc bpc" id="L86" title="2 of 4 branches missed.">                    if (tournament.getStartDate() != null &amp;&amp; tournament.getEndDate() != null &amp;&amp;</span>
+<span class="fc bfc" id="L87" title="All 2 branches covered.">                            tournament.getStartDate().isAfter(tournament.getEndDate())) {</span>
+<span class="fc" id="L88">                        throw new InvalidTournamentDateException();</span>
                     }
 
-<span class="fc" id="L86">                    return convertToDTO(tournamentRepository.save(tournament));</span>
+<span class="fc" id="L91">                    return convertToDTO(tournamentRepository.save(tournament));</span>
                 });
     }
 
     public boolean deleteTournament(Long id) {
-<span class="fc bfc" id="L91" title="All 2 branches covered.">        if (!tournamentRepository.existsById(id)) {</span>
-<span class="fc" id="L92">            throw new TournamentNotFoundException();</span>
+<span class="fc bfc" id="L96" title="All 2 branches covered.">        if (!tournamentRepository.existsById(id)) {</span>
+<span class="fc" id="L97">            throw new TournamentNotFoundException();</span>
         }
 
-<span class="fc" id="L95">        tournamentRepository.deleteById(id);</span>
-<span class="fc" id="L96">        return true;</span>
+<span class="fc" id="L100">        tournamentRepository.deleteById(id);</span>
+<span class="fc" id="L101">        return true;</span>
     }
 
     public boolean registerTeam(Long tournamentId, Long teamId) {
-<span class="fc" id="L100">        Tournament tournament = tournamentRepository.findByIdWithTeams(tournamentId)</span>
-<span class="fc" id="L101">                .orElseThrow(TournamentNotFoundException::new);</span>
+<span class="fc" id="L105">        Tournament tournament = tournamentRepository.findByIdWithTeams(tournamentId)</span>
+<span class="fc" id="L106">                .orElseThrow(TournamentNotFoundException::new);</span>
 
-<span class="fc" id="L103">        Team team = teamRepository.findById(teamId)</span>
-<span class="fc" id="L104">                .orElseThrow(TeamNotFoundException::new);</span>
+<span class="fc" id="L108">        Team team = teamRepository.findById(teamId)</span>
+<span class="fc" id="L109">                .orElseThrow(TeamNotFoundException::new);</span>
 
-<span class="fc bfc" id="L106" title="All 2 branches covered.">        if (tournament.getStatus() != TournamentStatus.OPEN) {</span>
-<span class="fc" id="L107">            throw new TournamentNotOpenException();</span>
+<span class="fc bfc" id="L111" title="All 2 branches covered.">        if (tournament.getStatus() != TournamentStatus.OPEN) {</span>
+<span class="fc" id="L112">            throw new TournamentNotOpenException();</span>
         }
 
-<span class="fc bfc" id="L110" title="All 2 branches covered.">        if (tournament.isFull()) {</span>
-<span class="fc" id="L111">            throw new TournamentFullException();</span>
+<span class="fc bfc" id="L115" title="All 2 branches covered.">        if (tournament.isFull()) {</span>
+<span class="fc" id="L116">            throw new TournamentFullException();</span>
         }
 
-<span class="fc bfc" id="L114" title="All 2 branches covered.">        if (tournament.getParticipatingTeams().contains(team)) {</span>
-<span class="fc" id="L115">            throw new TeamAlreadyInTournamentException();</span>
+<span class="fc bfc" id="L119" title="All 2 branches covered.">        if (tournament.getParticipatingTeams().contains(team)) {</span>
+<span class="fc" id="L120">            throw new TeamAlreadyInTournamentException();</span>
         }
 
-<span class="fc" id="L118">        tournament.addTeam(team);</span>
-<span class="fc" id="L119">        tournamentRepository.save(tournament);</span>
-<span class="fc" id="L120">        return true;</span>
+<span class="fc" id="L123">        tournament.addTeam(team);</span>
+<span class="fc" id="L124">        tournamentRepository.save(tournament);</span>
+<span class="fc" id="L125">        return true;</span>
     }
 
     public boolean removeTeam(Long tournamentId, Long teamId) {
-<span class="fc" id="L124">        Tournament tournament = tournamentRepository.findByIdWithTeams(tournamentId)</span>
-<span class="fc" id="L125">                .orElseThrow(TournamentNotFoundException::new);</span>
+<span class="fc" id="L129">        Tournament tournament = tournamentRepository.findByIdWithTeams(tournamentId)</span>
+<span class="fc" id="L130">                .orElseThrow(TournamentNotFoundException::new);</span>
 
-<span class="fc" id="L127">        Team team = teamRepository.findById(teamId)</span>
-<span class="fc" id="L128">                .orElseThrow(TeamNotFoundException::new);</span>
+<span class="fc" id="L132">        Team team = teamRepository.findById(teamId)</span>
+<span class="fc" id="L133">                .orElseThrow(TeamNotFoundException::new);</span>
 
-<span class="fc bfc" id="L130" title="All 2 branches covered.">        if (!tournament.getParticipatingTeams().contains(team)) {</span>
-<span class="fc" id="L131">            throw new TeamNotInTournamentException();</span>
+<span class="fc bfc" id="L135" title="All 2 branches covered.">        if (!tournament.getParticipatingTeams().contains(team)) {</span>
+<span class="fc" id="L136">            throw new TeamNotInTournamentException();</span>
         }
 
-<span class="fc" id="L134">        tournament.removeTeam(team);</span>
-<span class="fc" id="L135">        tournamentRepository.save(tournament);</span>
-<span class="fc" id="L136">        return true;</span>
+<span class="fc" id="L139">        tournament.removeTeam(team);</span>
+<span class="fc" id="L140">        tournamentRepository.save(tournament);</span>
+<span class="fc" id="L141">        return true;</span>
     }
 
     public List&lt;TournamentDTO&gt; getTournamentsByStatus(TournamentStatus status) {
-<span class="fc" id="L140">        return tournamentRepository.findByStatus(status).stream()</span>
-<span class="fc" id="L141">                .map(this::convertToDTO)</span>
-<span class="fc" id="L142">                .collect(Collectors.toList());</span>
+<span class="fc" id="L145">        return tournamentRepository.findByStatus(status).stream()</span>
+<span class="fc" id="L146">                .map(this::convertToDTO)</span>
+<span class="fc" id="L147">                .collect(Collectors.toList());</span>
     }
 
     public List&lt;TournamentDTO&gt; getUpcomingTournaments() {
-<span class="fc" id="L146">        return tournamentRepository.findByStartDateAfter(LocalDate.now()).stream()</span>
-<span class="fc" id="L147">                .map(this::convertToDTO)</span>
-<span class="fc" id="L148">                .collect(Collectors.toList());</span>
+<span class="fc" id="L151">        return tournamentRepository.findByStartDateAfter(LocalDate.now()).stream()</span>
+<span class="fc" id="L152">                .map(this::convertToDTO)</span>
+<span class="fc" id="L153">                .collect(Collectors.toList());</span>
     }
 
     public List&lt;TournamentDTO&gt; getTournamentsByTeam(Long teamId) {
         // Verify team exists
-<span class="fc bfc" id="L153" title="All 2 branches covered.">        if (!teamRepository.existsById(teamId)) {</span>
-<span class="fc" id="L154">            throw new TeamNotFoundException();</span>
+<span class="fc bfc" id="L158" title="All 2 branches covered.">        if (!teamRepository.existsById(teamId)) {</span>
+<span class="fc" id="L159">            throw new TeamNotFoundException();</span>
         }
 
-<span class="fc" id="L157">        return tournamentRepository.findByParticipatingTeamId(teamId).stream()</span>
-<span class="fc" id="L158">                .map(this::convertToDTO)</span>
-<span class="fc" id="L159">                .collect(Collectors.toList());</span>
+<span class="fc" id="L162">        return tournamentRepository.findByParticipatingTeamId(teamId).stream()</span>
+<span class="fc" id="L163">                .map(this::convertToDTO)</span>
+<span class="fc" id="L164">                .collect(Collectors.toList());</span>
     }
 
     public List&lt;TournamentDTO&gt; searchTournaments(String keyword) {
-<span class="fc bfc" id="L163" title="All 4 branches covered.">        if (keyword == null || keyword.trim().isEmpty()) {</span>
-<span class="fc" id="L164">            throw new EmptySearchKeywordException();</span>
+<span class="fc bfc" id="L168" title="All 4 branches covered.">        if (keyword == null || keyword.trim().isEmpty()) {</span>
+<span class="fc" id="L169">            throw new EmptySearchKeywordException();</span>
         }
 
-<span class="fc" id="L167">        return tournamentRepository.findByNameContaining(keyword).stream()</span>
-<span class="fc" id="L168">                .map(this::convertToDTO)</span>
-<span class="fc" id="L169">                .collect(Collectors.toList());</span>
+<span class="fc" id="L172">        return tournamentRepository.findByNameContaining(keyword).stream()</span>
+<span class="fc" id="L173">                .map(this::convertToDTO)</span>
+<span class="fc" id="L174">                .collect(Collectors.toList());</span>
     }
 
     private TournamentDTO convertToDTO(Tournament tournament) {
-<span class="fc" id="L173">        TournamentDTO dto = new TournamentDTO();</span>
-<span class="fc" id="L174">        dto.setId(tournament.getId());</span>
-<span class="fc" id="L175">        dto.setName(tournament.getName());</span>
-<span class="fc" id="L176">        dto.setDescription(tournament.getDescription());</span>
-<span class="fc" id="L177">        dto.setStartDate(tournament.getStartDate());</span>
-<span class="fc" id="L178">        dto.setEndDate(tournament.getEndDate());</span>
-<span class="fc" id="L179">        dto.setMaxTeams(tournament.getMaxTeams());</span>
-<span class="fc" id="L180">        dto.setStatus(tournament.getStatus());</span>
-<span class="fc" id="L181">        dto.setCreatedAt(tournament.getCreatedAt());</span>
-<span class="fc" id="L182">        dto.setNumberOfRegisteredTeams(tournament.getParticipatingTeams().size());</span>
+<span class="fc" id="L178">        TournamentDTO dto = new TournamentDTO();</span>
+<span class="fc" id="L179">        dto.setId(tournament.getId());</span>
+<span class="fc" id="L180">        dto.setName(tournament.getName());</span>
+<span class="fc" id="L181">        dto.setDescription(tournament.getDescription());</span>
+<span class="fc" id="L182">        dto.setStartDate(tournament.getStartDate());</span>
+<span class="fc" id="L183">        dto.setEndDate(tournament.getEndDate());</span>
+<span class="fc" id="L184">        dto.setMaxTeams(tournament.getMaxTeams());</span>
+<span class="fc" id="L185">        dto.setStatus(tournament.getStatus());</span>
+<span class="fc" id="L186">        dto.setCreatedAt(tournament.getCreatedAt());</span>
+<span class="fc" id="L187">        dto.setNumberOfRegisteredTeams(tournament.getParticipatingTeams().size());</span>
 
-<span class="pc bpc" id="L184" title="2 of 4 branches missed.">        if (tournament.getParticipatingTeams() != null &amp;&amp; !tournament.getParticipatingTeams().isEmpty()) {</span>
-<span class="nc" id="L185">            Set&lt;TeamDTO&gt; teamsDTO = tournament.getParticipatingTeams().stream()</span>
-<span class="nc" id="L186">                    .map(this::convertTeamToDTO)</span>
-<span class="nc" id="L187">                    .collect(Collectors.toSet());</span>
-<span class="nc" id="L188">            dto.setParticipatingTeams(teamsDTO);</span>
+<span class="pc bpc" id="L189" title="2 of 4 branches missed.">        if (tournament.getParticipatingTeams() != null &amp;&amp; !tournament.getParticipatingTeams().isEmpty()) {</span>
+<span class="nc" id="L190">            Set&lt;TeamDTO&gt; teamsDTO = tournament.getParticipatingTeams().stream()</span>
+<span class="nc" id="L191">                    .map(this::convertTeamToDTO)</span>
+<span class="nc" id="L192">                    .collect(Collectors.toSet());</span>
+<span class="nc" id="L193">            dto.setParticipatingTeams(teamsDTO);</span>
         }
 
-<span class="fc" id="L191">        return dto;</span>
+<span class="fc" id="L196">        return dto;</span>
     }
 
     private TeamDTO convertTeamToDTO(Team team) {
-<span class="nc" id="L195">        TeamDTO dto = new TeamDTO();</span>
-<span class="nc" id="L196">        dto.setId(team.getId());</span>
-<span class="nc" id="L197">        dto.setName(team.getName());</span>
-<span class="nc" id="L198">        dto.setNumberOfPlayers(team.getPlayers().size());</span>
-<span class="nc" id="L199">        return dto;</span>
+<span class="nc" id="L200">        TeamDTO dto = new TeamDTO();</span>
+<span class="nc" id="L201">        dto.setId(team.getId());</span>
+<span class="nc" id="L202">        dto.setName(team.getName());</span>
+<span class="nc" id="L203">        dto.setNumberOfPlayers(team.getPlayers().size());</span>
+<span class="nc" id="L204">        return dto;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

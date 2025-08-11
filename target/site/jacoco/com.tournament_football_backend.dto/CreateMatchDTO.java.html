@@ -5,7 +5,12 @@ import jakarta.validation.constraints.NotNull;
 import com.tournament_football_backend.model.MatchStatus;
 
 import java.time.LocalDateTime;
-
+/* * CreateMatchDTO.java
+ *
+ * This class represents the data transfer object for creating a new match.
+ * It includes fields for home team, away team, tournament, match date, goals,
+ * and status. It uses validation annotations to ensure required fields are provided.
+ */
 public class CreateMatchDTO {
 
     @NotNull
@@ -19,78 +24,78 @@ public class CreateMatchDTO {
 
     private LocalDateTime matchDate;
 
-<span class="pc" id="L22">    @Min(0)</span>
-<span class="pc" id="L23">    private Integer homeGoals = 0;</span>
+<span class="pc" id="L27">    @Min(0)</span>
+<span class="pc" id="L28">    private Integer homeGoals = 0;</span>
 
-<span class="pc" id="L25">    @Min(0)</span>
-<span class="pc" id="L26">    private Integer awayGoals = 0;</span>
+<span class="pc" id="L30">    @Min(0)</span>
+<span class="pc" id="L31">    private Integer awayGoals = 0;</span>
 
-<span class="pc" id="L28">    private MatchStatus status = MatchStatus.SCHEDULED;</span>
+<span class="pc" id="L33">    private MatchStatus status = MatchStatus.SCHEDULED;</span>
 
     // Constructors
-<span class="fc" id="L31">    public CreateMatchDTO() {}</span>
+<span class="fc" id="L36">    public CreateMatchDTO() {}</span>
 
-<span class="nc" id="L33">    public CreateMatchDTO(Long homeTeamId, Long awayTeamId, Long tournamentId) {</span>
-<span class="nc" id="L34">        this.homeTeamId = homeTeamId;</span>
-<span class="nc" id="L35">        this.awayTeamId = awayTeamId;</span>
-<span class="nc" id="L36">        this.tournamentId = tournamentId;</span>
-<span class="nc" id="L37">    }</span>
+<span class="nc" id="L38">    public CreateMatchDTO(Long homeTeamId, Long awayTeamId, Long tournamentId) {</span>
+<span class="nc" id="L39">        this.homeTeamId = homeTeamId;</span>
+<span class="nc" id="L40">        this.awayTeamId = awayTeamId;</span>
+<span class="nc" id="L41">        this.tournamentId = tournamentId;</span>
+<span class="nc" id="L42">    }</span>
 
     // Getters and Setters
     public Long getHomeTeamId() {
-<span class="fc" id="L41">        return homeTeamId;</span>
+<span class="fc" id="L46">        return homeTeamId;</span>
     }
 
     public void setHomeTeamId(Long homeTeamId) {
-<span class="fc" id="L45">        this.homeTeamId = homeTeamId;</span>
-<span class="fc" id="L46">    }</span>
+<span class="fc" id="L50">        this.homeTeamId = homeTeamId;</span>
+<span class="fc" id="L51">    }</span>
 
     public Long getAwayTeamId() {
-<span class="fc" id="L49">        return awayTeamId;</span>
+<span class="fc" id="L54">        return awayTeamId;</span>
     }
 
     public void setAwayTeamId(Long awayTeamId) {
-<span class="fc" id="L53">        this.awayTeamId = awayTeamId;</span>
-<span class="fc" id="L54">    }</span>
+<span class="fc" id="L58">        this.awayTeamId = awayTeamId;</span>
+<span class="fc" id="L59">    }</span>
 
     public Long getTournamentId() {
-<span class="fc" id="L57">        return tournamentId;</span>
+<span class="fc" id="L62">        return tournamentId;</span>
     }
 
     public void setTournamentId(Long tournamentId) {
-<span class="fc" id="L61">        this.tournamentId = tournamentId;</span>
-<span class="fc" id="L62">    }</span>
+<span class="fc" id="L66">        this.tournamentId = tournamentId;</span>
+<span class="fc" id="L67">    }</span>
 
     public LocalDateTime getMatchDate() {
-<span class="fc" id="L65">        return matchDate;</span>
+<span class="fc" id="L70">        return matchDate;</span>
     }
 
     public void setMatchDate(LocalDateTime matchDate) {
-<span class="fc" id="L69">        this.matchDate = matchDate;</span>
-<span class="fc" id="L70">    }</span>
+<span class="fc" id="L74">        this.matchDate = matchDate;</span>
+<span class="fc" id="L75">    }</span>
 
     public Integer getHomeGoals() {
-<span class="fc" id="L73">        return homeGoals;</span>
+<span class="fc" id="L78">        return homeGoals;</span>
     }
 
     public void setHomeGoals(Integer homeGoals) {
-<span class="fc" id="L77">        this.homeGoals = homeGoals;</span>
-<span class="fc" id="L78">    }</span>
+<span class="fc" id="L82">        this.homeGoals = homeGoals;</span>
+<span class="fc" id="L83">    }</span>
 
     public Integer getAwayGoals() {
-<span class="fc" id="L81">        return awayGoals;</span>
+<span class="fc" id="L86">        return awayGoals;</span>
     }
 
     public void setAwayGoals(Integer awayGoals) {
-<span class="fc" id="L85">        this.awayGoals = awayGoals;</span>
-<span class="fc" id="L86">    }</span>
+<span class="fc" id="L90">        this.awayGoals = awayGoals;</span>
+<span class="fc" id="L91">    }</span>
 
     public MatchStatus getStatus() {
-<span class="fc" id="L89">        return status;</span>
+<span class="fc" id="L94">        return status;</span>
     }
 
     public void setStatus(MatchStatus status) {
-<span class="fc" id="L93">        this.status = status;</span>
-<span class="fc" id="L94">    }</span>
+<span class="fc" id="L98">        this.status = status;</span>
+<span class="fc" id="L99">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

@@ -20,19 +20,6 @@ import java.util.List;
     * Provides functionality to manage tournaments, including creating, updating, deleting,
     * and retrieving tournaments and their teams.
     *
-    * Endpoints:
-    * - GET /api/tournaments - List all tournaments
-    * - GET /api/tournaments/{id} - Get tournament by ID
-    * - POST /api/tournaments - Create new tournament (ADMIN only)
-    * - PUT /api/tournaments/{id} - Update tournament (ADMIN only)
-    * - DELETE /api/tournaments/{id} - Delete tournament (ADMIN only)
-    * - POST /api/tournaments/{tournamentId}/teams/{teamId} - Register team to tournament
-    * - DELETE /api/tournaments/{tournamentId}/teams/{teamId} - Remove team from tournament (ADMIN only)
-    * - GET /api/tournaments/status/{status} - Tournaments by status
-    * - GET /api/tournaments/upcoming - Upcoming tournaments
-    * - GET /api/tournaments/team/{teamId} - Tournaments by team
-    * - GET /api/tournaments/search?keyword={keyword} - Search tournaments
-    *
  */
 @RestController
 @RequestMapping("/tournaments")

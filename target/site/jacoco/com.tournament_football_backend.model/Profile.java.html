@@ -5,6 +5,11 @@ import jakarta.validation.constraints.Size;
 
 import java.time.LocalDate;
 
+/**
+ * Represents a user profile in the tournament football backend system.
+ * Contains personal information about the user such as name, birth date, phone number, city, and bio.
+ * Each profile is associated with a user account.
+ */
 @Entity
 @Table(name = &quot;profiles&quot;)
 public class Profile {
@@ -35,30 +40,30 @@ public class Profile {
     @JoinColumn(name = &quot;user_id&quot;, referencedColumnName = &quot;id&quot;)
     private User user;
 
-<span class="fc" id="L38">    public Profile() {}</span>
+<span class="fc" id="L43">    public Profile() {}</span>
 
-<span class="fc" id="L40">    public Long getId() { return id; }</span>
-<span class="fc" id="L41">    public void setId(Long id) { this.id = id; }</span>
+<span class="fc" id="L45">    public Long getId() { return id; }</span>
+<span class="fc" id="L46">    public void setId(Long id) { this.id = id; }</span>
 
-<span class="fc" id="L43">    public String getFirstName() { return firstName; }</span>
-<span class="fc" id="L44">    public void setFirstName(String firstName) { this.firstName = firstName; }</span>
+<span class="fc" id="L48">    public String getFirstName() { return firstName; }</span>
+<span class="fc" id="L49">    public void setFirstName(String firstName) { this.firstName = firstName; }</span>
 
-<span class="fc" id="L46">    public String getLastName() { return lastName; }</span>
-<span class="fc" id="L47">    public void setLastName(String lastName) { this.lastName = lastName; }</span>
+<span class="fc" id="L51">    public String getLastName() { return lastName; }</span>
+<span class="fc" id="L52">    public void setLastName(String lastName) { this.lastName = lastName; }</span>
 
-<span class="fc" id="L49">    public LocalDate getBirthDate() { return birthDate; }</span>
-<span class="fc" id="L50">    public void setBirthDate(LocalDate birthDate) { this.birthDate = birthDate; }</span>
+<span class="fc" id="L54">    public LocalDate getBirthDate() { return birthDate; }</span>
+<span class="fc" id="L55">    public void setBirthDate(LocalDate birthDate) { this.birthDate = birthDate; }</span>
 
-<span class="fc" id="L52">    public String getPhone() { return phone; }</span>
-<span class="fc" id="L53">    public void setPhone(String phone) { this.phone = phone; }</span>
+<span class="fc" id="L57">    public String getPhone() { return phone; }</span>
+<span class="fc" id="L58">    public void setPhone(String phone) { this.phone = phone; }</span>
 
-<span class="fc" id="L55">    public String getCity() { return city; }</span>
-<span class="fc" id="L56">    public void setCity(String city) { this.city = city; }</span>
+<span class="fc" id="L60">    public String getCity() { return city; }</span>
+<span class="fc" id="L61">    public void setCity(String city) { this.city = city; }</span>
 
-<span class="fc" id="L58">    public String getBio() { return bio; }</span>
-<span class="fc" id="L59">    public void setBio(String bio) { this.bio = bio; }</span>
+<span class="fc" id="L63">    public String getBio() { return bio; }</span>
+<span class="fc" id="L64">    public void setBio(String bio) { this.bio = bio; }</span>
 
-<span class="nc" id="L61">    public User getUser() { return user; }</span>
-<span class="fc" id="L62">    public void setUser(User user) { this.user = user; }</span>
+<span class="nc" id="L66">    public User getUser() { return user; }</span>
+<span class="fc" id="L67">    public void setUser(User user) { this.user = user; }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

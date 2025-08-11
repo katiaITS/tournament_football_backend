@@ -21,9 +21,13 @@ import static com.tournament_football_backend.exception.TeamExceptions.*;
 import static com.tournament_football_backend.exception.UserExceptions.*;
 import static com.tournament_football_backend.exception.ValidationExceptions.*;
 
+/* * TeamService.java
+ * Service class for managing teams in the tournament football application.
+ * Provides methods to create, update, delete, and retrieve teams and their players.
+ */
 @Service
 @Transactional
-<span class="fc" id="L26">public class TeamService {</span>
+<span class="fc" id="L30">public class TeamService {</span>
 
     @Autowired
     private TeamRepository teamRepository;
@@ -32,138 +36,138 @@ import static com.tournament_football_backend.exception.ValidationExceptions.*;
     private UserRepository userRepository;
 
     public List&lt;TeamDTO&gt; getAllTeams() {
-<span class="fc" id="L35">        return teamRepository.findAll().stream()</span>
-<span class="fc" id="L36">                .map(this::convertToDTO)</span>
-<span class="fc" id="L37">                .collect(Collectors.toList());</span>
+<span class="fc" id="L39">        return teamRepository.findAll().stream()</span>
+<span class="fc" id="L40">                .map(this::convertToDTO)</span>
+<span class="fc" id="L41">                .collect(Collectors.toList());</span>
     }
 
     public Optional&lt;TeamDTO&gt; getTeamById(Long id) {
-<span class="fc" id="L41">        return teamRepository.findByIdWithPlayers(id)</span>
-<span class="fc" id="L42">                .map(this::convertToDTO);</span>
+<span class="fc" id="L45">        return teamRepository.findByIdWithPlayers(id)</span>
+<span class="fc" id="L46">                .map(this::convertToDTO);</span>
     }
 
     public Optional&lt;TeamDTO&gt; getTeamByName(String name) {
-<span class="fc" id="L46">        return teamRepository.findByName(name)</span>
-<span class="fc" id="L47">                .map(this::convertToDTO);</span>
+<span class="fc" id="L50">        return teamRepository.findByName(name)</span>
+<span class="fc" id="L51">                .map(this::convertToDTO);</span>
     }
 
     public TeamDTO createTeam(CreateTeamDTO createTeamDTO) {
         // Check if team name already exists
-<span class="fc bfc" id="L52" title="All 2 branches covered.">        if (teamRepository.existsByName(createTeamDTO.getName())) {</span>
-<span class="fc" id="L53">            throw new TeamNameAlreadyExistsException();</span>
+<span class="fc bfc" id="L56" title="All 2 branches covered.">        if (teamRepository.existsByName(createTeamDTO.getName())) {</span>
+<span class="fc" id="L57">            throw new TeamNameAlreadyExistsException();</span>
         }
 
-<span class="fc" id="L56">        Team team = new Team();</span>
-<span class="fc" id="L57">        team.setName(createTeamDTO.getName());</span>
+<span class="fc" id="L60">        Team team = new Team();</span>
+<span class="fc" id="L61">        team.setName(createTeamDTO.getName());</span>
 
-<span class="fc" id="L59">        Team savedTeam = teamRepository.save(team);</span>
-<span class="fc" id="L60">        return convertToDTO(savedTeam);</span>
+<span class="fc" id="L63">        Team savedTeam = teamRepository.save(team);</span>
+<span class="fc" id="L64">        return convertToDTO(savedTeam);</span>
     }
 
     public Optional&lt;TeamDTO&gt; updateTeam(Long id, UpdateTeamDTO updateTeamDTO) {
-<span class="fc" id="L64">        return teamRepository.findById(id)</span>
-<span class="fc" id="L65">                .map(team -&gt; {</span>
+<span class="fc" id="L68">        return teamRepository.findById(id)</span>
+<span class="fc" id="L69">                .map(team -&gt; {</span>
                     // Check if new name is provided and different from current name
-<span class="fc bfc" id="L67" title="All 4 branches covered.">                    if (updateTeamDTO.getName() != null &amp;&amp; !updateTeamDTO.getName().equals(team.getName())) {</span>
+<span class="fc bfc" id="L71" title="All 4 branches covered.">                    if (updateTeamDTO.getName() != null &amp;&amp; !updateTeamDTO.getName().equals(team.getName())) {</span>
                         // Check if new name already exists
-<span class="fc bfc" id="L69" title="All 2 branches covered.">                        if (teamRepository.existsByName(updateTeamDTO.getName())) {</span>
-<span class="fc" id="L70">                            throw new TeamNameAlreadyExistsException();</span>
+<span class="fc bfc" id="L73" title="All 2 branches covered.">                        if (teamRepository.existsByName(updateTeamDTO.getName())) {</span>
+<span class="fc" id="L74">                            throw new TeamNameAlreadyExistsException();</span>
                         }
-<span class="fc" id="L72">                        team.setName(updateTeamDTO.getName());</span>
+<span class="fc" id="L76">                        team.setName(updateTeamDTO.getName());</span>
                     }
 
-<span class="fc" id="L75">                    return convertToDTO(teamRepository.save(team));</span>
+<span class="fc" id="L79">                    return convertToDTO(teamRepository.save(team));</span>
                 });
     }
 
     public boolean deleteTeam(Long id) {
-<span class="fc bfc" id="L80" title="All 2 branches covered.">        if (!teamRepository.existsById(id)) {</span>
-<span class="fc" id="L81">            throw new TeamNotFoundException();</span>
+<span class="fc bfc" id="L84" title="All 2 branches covered.">        if (!teamRepository.existsById(id)) {</span>
+<span class="fc" id="L85">            throw new TeamNotFoundException();</span>
         }
 
-<span class="fc" id="L84">        teamRepository.deleteById(id);</span>
-<span class="fc" id="L85">        return true;</span>
+<span class="fc" id="L88">        teamRepository.deleteById(id);</span>
+<span class="fc" id="L89">        return true;</span>
     }
 
     public boolean addPlayer(Long teamId, Long playerId) {
-<span class="fc" id="L89">        Team team = teamRepository.findByIdWithPlayers(teamId)</span>
-<span class="fc" id="L90">                .orElseThrow(TeamNotFoundException::new);</span>
+<span class="fc" id="L93">        Team team = teamRepository.findByIdWithPlayers(teamId)</span>
+<span class="fc" id="L94">                .orElseThrow(TeamNotFoundException::new);</span>
 
-<span class="fc" id="L92">        User player = userRepository.findById(playerId)</span>
-<span class="fc" id="L93">                .orElseThrow(UserNotFoundException::new);</span>
+<span class="fc" id="L96">        User player = userRepository.findById(playerId)</span>
+<span class="fc" id="L97">                .orElseThrow(UserNotFoundException::new);</span>
 
         // Check if player is already in the team
-<span class="fc bfc" id="L96" title="All 2 branches covered.">        if (team.getPlayers().contains(player)) {</span>
-<span class="fc" id="L97">            throw new PlayerAlreadyInTeamException();</span>
+<span class="fc bfc" id="L100" title="All 2 branches covered.">        if (team.getPlayers().contains(player)) {</span>
+<span class="fc" id="L101">            throw new PlayerAlreadyInTeamException();</span>
         }
 
-<span class="fc" id="L100">        team.addPlayer(player);</span>
-<span class="fc" id="L101">        teamRepository.save(team);</span>
-<span class="fc" id="L102">        return true;</span>
+<span class="fc" id="L104">        team.addPlayer(player);</span>
+<span class="fc" id="L105">        teamRepository.save(team);</span>
+<span class="fc" id="L106">        return true;</span>
     }
 
     public boolean removePlayer(Long teamId, Long playerId) {
-<span class="fc" id="L106">        Team team = teamRepository.findByIdWithPlayers(teamId)</span>
-<span class="fc" id="L107">                .orElseThrow(TeamNotFoundException::new);</span>
+<span class="fc" id="L110">        Team team = teamRepository.findByIdWithPlayers(teamId)</span>
+<span class="fc" id="L111">                .orElseThrow(TeamNotFoundException::new);</span>
 
-<span class="fc" id="L109">        User player = userRepository.findById(playerId)</span>
-<span class="fc" id="L110">                .orElseThrow(UserNotFoundException::new);</span>
+<span class="fc" id="L113">        User player = userRepository.findById(playerId)</span>
+<span class="fc" id="L114">                .orElseThrow(UserNotFoundException::new);</span>
 
         // Check if player is actually in the team
-<span class="fc bfc" id="L113" title="All 2 branches covered.">        if (!team.getPlayers().contains(player)) {</span>
-<span class="fc" id="L114">            throw new PlayerNotInTeamException();</span>
+<span class="fc bfc" id="L117" title="All 2 branches covered.">        if (!team.getPlayers().contains(player)) {</span>
+<span class="fc" id="L118">            throw new PlayerNotInTeamException();</span>
         }
 
-<span class="fc" id="L117">        team.removePlayer(player);</span>
-<span class="fc" id="L118">        teamRepository.save(team);</span>
-<span class="fc" id="L119">        return true;</span>
+<span class="fc" id="L121">        team.removePlayer(player);</span>
+<span class="fc" id="L122">        teamRepository.save(team);</span>
+<span class="fc" id="L123">        return true;</span>
     }
 
     public List&lt;TeamDTO&gt; getTeamsByPlayer(Long playerId) {
         // Verify player exists
-<span class="fc bfc" id="L124" title="All 2 branches covered.">        if (!userRepository.existsById(playerId)) {</span>
-<span class="fc" id="L125">            throw new UserNotFoundException();</span>
+<span class="fc bfc" id="L128" title="All 2 branches covered.">        if (!userRepository.existsById(playerId)) {</span>
+<span class="fc" id="L129">            throw new UserNotFoundException();</span>
         }
 
-<span class="fc" id="L128">        return teamRepository.findByPlayerId(playerId).stream()</span>
-<span class="fc" id="L129">                .map(this::convertToDTO)</span>
-<span class="fc" id="L130">                .collect(Collectors.toList());</span>
+<span class="fc" id="L132">        return teamRepository.findByPlayerId(playerId).stream()</span>
+<span class="fc" id="L133">                .map(this::convertToDTO)</span>
+<span class="fc" id="L134">                .collect(Collectors.toList());</span>
     }
 
     public List&lt;TeamDTO&gt; searchTeams(String keyword) {
-<span class="fc bfc" id="L134" title="All 4 branches covered.">        if (keyword == null || keyword.trim().isEmpty()) {</span>
-<span class="fc" id="L135">            throw new EmptySearchKeywordException();</span>
+<span class="fc bfc" id="L138" title="All 4 branches covered.">        if (keyword == null || keyword.trim().isEmpty()) {</span>
+<span class="fc" id="L139">            throw new EmptySearchKeywordException();</span>
         }
 
-<span class="fc" id="L138">        return teamRepository.findByNameContaining(keyword).stream()</span>
-<span class="fc" id="L139">                .map(this::convertToDTO)</span>
-<span class="fc" id="L140">                .collect(Collectors.toList());</span>
+<span class="fc" id="L142">        return teamRepository.findByNameContaining(keyword).stream()</span>
+<span class="fc" id="L143">                .map(this::convertToDTO)</span>
+<span class="fc" id="L144">                .collect(Collectors.toList());</span>
     }
 
     private TeamDTO convertToDTO(Team team) {
-<span class="fc" id="L144">        TeamDTO dto = new TeamDTO();</span>
-<span class="fc" id="L145">        dto.setId(team.getId());</span>
-<span class="fc" id="L146">        dto.setName(team.getName());</span>
-<span class="fc" id="L147">        dto.setCreatedAt(team.getCreatedAt());</span>
-<span class="fc" id="L148">        dto.setNumberOfPlayers(team.getPlayers().size());</span>
+<span class="fc" id="L148">        TeamDTO dto = new TeamDTO();</span>
+<span class="fc" id="L149">        dto.setId(team.getId());</span>
+<span class="fc" id="L150">        dto.setName(team.getName());</span>
+<span class="fc" id="L151">        dto.setCreatedAt(team.getCreatedAt());</span>
+<span class="fc" id="L152">        dto.setNumberOfPlayers(team.getPlayers().size());</span>
 
-<span class="pc bpc" id="L150" title="2 of 4 branches missed.">        if (team.getPlayers() != null &amp;&amp; !team.getPlayers().isEmpty()) {</span>
-<span class="nc" id="L151">            Set&lt;UserDTO&gt; playersDTO = team.getPlayers().stream()</span>
-<span class="nc" id="L152">                    .map(this::convertUserToDTO)</span>
-<span class="nc" id="L153">                    .collect(Collectors.toSet());</span>
-<span class="nc" id="L154">            dto.setPlayers(playersDTO);</span>
+<span class="pc bpc" id="L154" title="2 of 4 branches missed.">        if (team.getPlayers() != null &amp;&amp; !team.getPlayers().isEmpty()) {</span>
+<span class="nc" id="L155">            Set&lt;UserDTO&gt; playersDTO = team.getPlayers().stream()</span>
+<span class="nc" id="L156">                    .map(this::convertUserToDTO)</span>
+<span class="nc" id="L157">                    .collect(Collectors.toSet());</span>
+<span class="nc" id="L158">            dto.setPlayers(playersDTO);</span>
         }
 
-<span class="fc" id="L157">        return dto;</span>
+<span class="fc" id="L161">        return dto;</span>
     }
 
     private UserDTO convertUserToDTO(User user) {
-<span class="nc" id="L161">        UserDTO dto = new UserDTO();</span>
-<span class="nc" id="L162">        dto.setId(user.getId());</span>
-<span class="nc" id="L163">        dto.setUsername(user.getUsername());</span>
-<span class="nc" id="L164">        dto.setEmail(user.getEmail());</span>
-<span class="nc" id="L165">        dto.setRole(user.getRole());</span>
-<span class="nc" id="L166">        return dto;</span>
+<span class="nc" id="L165">        UserDTO dto = new UserDTO();</span>
+<span class="nc" id="L166">        dto.setId(user.getId());</span>
+<span class="nc" id="L167">        dto.setUsername(user.getUsername());</span>
+<span class="nc" id="L168">        dto.setEmail(user.getEmail());</span>
+<span class="nc" id="L169">        dto.setRole(user.getRole());</span>
+<span class="nc" id="L170">        return dto;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

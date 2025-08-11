@@ -14,28 +14,40 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-
+/*
+    * AuthEntryPointJwt.java
+    * This class implements the AuthenticationEntryPoint interface to handle authentication errors.
+    * It is invoked when an unauthenticated user tries to access a protected resource.
+    * It logs the error and sends a JSON response with details about the authentication failure.
+    * It sets the response status to 401 Unauthorized and includes an error message in the response body.
+ */
 @Component
-<span class="fc" id="L19">public class AuthEntryPointJwt implements AuthenticationEntryPoint {</span>
+<span class="fc" id="L25">public class AuthEntryPointJwt implements AuthenticationEntryPoint {</span>
+    // This class handles authentication errors and sends a JSON response
+<span class="fc" id="L27">    private static final Logger logger = LoggerFactory.getLogger(AuthEntryPointJwt.class);</span>
 
-<span class="fc" id="L21">    private static final Logger logger = LoggerFactory.getLogger(AuthEntryPointJwt.class);</span>
-
+    // This method is invoked when an unauthenticated user tries to access a protected resource
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response,
                          AuthenticationException authException) throws IOException, ServletException {
-<span class="nc" id="L26">        logger.error(&quot;Unauthorized error: {}&quot;, authException.getMessage());</span>
+        // Log the authentication error
+<span class="nc" id="L34">        logger.warn(&quot;Authentication error: {} for request to {}&quot;,</span>
+<span class="nc" id="L35">                authException.getMessage(), request.getServletPath());</span>
 
-<span class="nc" id="L28">        response.setContentType(MediaType.APPLICATION_JSON_VALUE);</span>
-<span class="nc" id="L29">        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);</span>
+        // Set the response content type to JSON
+<span class="nc" id="L38">        response.setContentType(MediaType.APPLICATION_JSON_VALUE);</span>
+<span class="nc" id="L39">        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);</span>
 
-<span class="nc" id="L31">        final Map&lt;String, Object&gt; body = new HashMap&lt;&gt;();</span>
-<span class="nc" id="L32">        body.put(&quot;status&quot;, HttpServletResponse.SC_UNAUTHORIZED);</span>
-<span class="nc" id="L33">        body.put(&quot;error&quot;, &quot;Unauthorized&quot;);</span>
-<span class="nc" id="L34">        body.put(&quot;message&quot;, authException.getMessage());</span>
-<span class="nc" id="L35">        body.put(&quot;path&quot;, request.getServletPath());</span>
+        // Create a response body with error details
+<span class="nc" id="L42">        final Map&lt;String, Object&gt; body = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L43">        body.put(&quot;error&quot;, &quot;AUTHENTICATION_FAILED&quot;);</span>
+<span class="nc" id="L44">        body.put(&quot;message&quot;, &quot;Token JWT non valido o mancante&quot;);</span>
+<span class="nc" id="L45">        body.put(&quot;status&quot;, HttpServletResponse.SC_UNAUTHORIZED);</span>
+<span class="nc" id="L46">        body.put(&quot;path&quot;, request.getServletPath());</span>
 
-<span class="nc" id="L37">        final ObjectMapper mapper = new ObjectMapper();</span>
-<span class="nc" id="L38">        mapper.writeValue(response.getOutputStream(), body);</span>
-<span class="nc" id="L39">    }</span>
+        // Write the response body as JSON
+<span class="nc" id="L49">        final ObjectMapper mapper = new ObjectMapper();</span>
+<span class="nc" id="L50">        mapper.writeValue(response.getOutputStream(), body);</span>
+<span class="nc" id="L51">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

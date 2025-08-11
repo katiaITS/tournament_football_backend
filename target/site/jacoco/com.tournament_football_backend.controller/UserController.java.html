@@ -3,6 +3,7 @@
 import com.tournament_football_backend.dto.ProfileDTO;
 import com.tournament_football_backend.dto.UpdateUserDTO;
 import com.tournament_football_backend.dto.UserDTO;
+import com.tournament_football_backend.exception.UserExceptions;
 import com.tournament_football_backend.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,10 +13,15 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/* * UserController.java
+ * Handles user-related operations such as listing, searching, retrieving, updating, and deleting users.
+ * Access is restricted based on user roles (ADMIN or self).
+ *
+ */
 @RestController
 @RequestMapping(&quot;/users&quot;)
 @CrossOrigin(origins = &quot;*&quot;, maxAge = 3600)
-<span class="fc" id="L18">public class UserController {</span>
+<span class="fc" id="L24">public class UserController {</span>
 
     @Autowired
     private UserService userService;
@@ -24,60 +30,60 @@ import java.util.List;
     @GetMapping
     @PreAuthorize(&quot;hasRole('ADMIN')&quot;)
     public ResponseEntity&lt;List&lt;UserDTO&gt;&gt; getAllUsers() {
-<span class="nc" id="L27">        List&lt;UserDTO&gt; users = userService.getAllUsers();</span>
-<span class="nc" id="L28">        return ResponseEntity.ok(users);</span>
+<span class="nc" id="L33">        List&lt;UserDTO&gt; users = userService.getAllUsers();</span>
+<span class="nc" id="L34">        return ResponseEntity.ok(users);</span>
     }
 
-    // GET /api/users/{id} - Get user by ID
-    @GetMapping(&quot;/{id}&quot;)
-    @PreAuthorize(&quot;hasRole('ADMIN') or #id == authentication.principal.id&quot;)
-    public ResponseEntity&lt;UserDTO&gt; getUserById(@PathVariable Long id) {
-<span class="nc" id="L35">        return userService.getUserById(id)</span>
-<span class="nc" id="L36">                .map(user -&gt; ResponseEntity.ok(user))</span>
-<span class="nc" id="L37">                .orElse(ResponseEntity.notFound().build());</span>
-    }
-
-    // GET /api/users/username/{username} - Get user by username
-    @GetMapping(&quot;/username/{username}&quot;)
-    @PreAuthorize(&quot;hasRole('ADMIN') or #username == authentication.principal.username&quot;)
-    public ResponseEntity&lt;UserDTO&gt; getUserByUsername(@PathVariable String username) {
-<span class="nc" id="L44">        return userService.getUserByUsername(username)</span>
-<span class="nc" id="L45">                .map(user -&gt; ResponseEntity.ok(user))</span>
-<span class="nc" id="L46">                .orElse(ResponseEntity.notFound().build());</span>
-    }
-
-    // PUT /api/users/{id}/profile - Update user profile
-    @PutMapping(&quot;/{id}/profile&quot;)
-    @PreAuthorize(&quot;hasRole('ADMIN') or #id == authentication.principal.id&quot;)
-    public ResponseEntity&lt;UserDTO&gt; updateProfile(@PathVariable Long id, @Valid @RequestBody ProfileDTO profileDTO) {
-<span class="nc" id="L53">        return userService.updateProfile(id, profileDTO)</span>
-<span class="nc" id="L54">                .map(updatedUser -&gt; ResponseEntity.ok(updatedUser))</span>
-<span class="nc" id="L55">                .orElse(ResponseEntity.notFound().build());</span>
-    }
-
-    // GET /api/users/search?keyword={keyword} - Search users
+    // GET /api/users/search?keyword={keyword} - Search users (ADMIN only)
     @GetMapping(&quot;/search&quot;)
     @PreAuthorize(&quot;hasRole('ADMIN')&quot;)
     public ResponseEntity&lt;List&lt;UserDTO&gt;&gt; searchUsers(@RequestParam String keyword) {
-<span class="nc" id="L62">        List&lt;UserDTO&gt; users = userService.searchUsers(keyword);</span>
-<span class="nc" id="L63">        return ResponseEntity.ok(users);</span>
+<span class="nc" id="L41">        List&lt;UserDTO&gt; users = userService.searchUsers(keyword);</span>
+<span class="nc" id="L42">        return ResponseEntity.ok(users);</span>
     }
 
-    // PUT /api/users/{id} - Update user
+    // GET /api/users/username/{username} - Get user by username (ADMIN or self)
+    @GetMapping(&quot;/username/{username}&quot;)
+    @PreAuthorize(&quot;hasRole('ADMIN') or #username == authentication.principal.username&quot;)
+    public ResponseEntity&lt;UserDTO&gt; getUserByUsername(@PathVariable String username) {
+<span class="nc" id="L49">        return userService.getUserByUsername(username)</span>
+<span class="nc" id="L50">                .map(user -&gt; ResponseEntity.ok(user))</span>
+<span class="nc" id="L51">                .orElse(ResponseEntity.notFound().build());</span>
+    }
+
+    // GET /api/users/{id} - Get user by ID (ADMIN or self)
+    @GetMapping(&quot;/{id}&quot;)
+    @PreAuthorize(&quot;hasRole('ADMIN') or #id == authentication.principal.id&quot;)
+    public ResponseEntity&lt;UserDTO&gt; getUserById(@PathVariable Long id) {
+<span class="nc" id="L58">        UserDTO user = userService.getUserById(id)</span>
+<span class="nc" id="L59">                .orElseThrow(() -&gt; new UserExceptions.UserNotFoundException());</span>
+<span class="nc" id="L60">        return ResponseEntity.ok(user);</span>
+    }
+
+    // PUT /api/users/{id}/profile - Update user profile (ADMIN or self)
+    @PutMapping(&quot;/{id}/profile&quot;)
+    @PreAuthorize(&quot;hasRole('ADMIN') or #id == authentication.principal.id&quot;)
+    public ResponseEntity&lt;UserDTO&gt; updateProfile(@PathVariable Long id, @Valid @RequestBody ProfileDTO profileDTO) {
+<span class="nc" id="L67">        return userService.updateProfile(id, profileDTO)</span>
+<span class="nc" id="L68">                .map(updatedUser -&gt; ResponseEntity.ok(updatedUser))</span>
+<span class="nc" id="L69">                .orElse(ResponseEntity.notFound().build());</span>
+    }
+
+    // PUT /api/users/{id} - Update user (ADMIN or self)
     @PutMapping(&quot;/{id}&quot;)
     @PreAuthorize(&quot;hasRole('ADMIN') or #id == authentication.principal.id&quot;)
     public ResponseEntity&lt;UserDTO&gt; updateUser(@PathVariable Long id, @Valid @RequestBody UpdateUserDTO updateUserDTO) {
-<span class="nc" id="L70">        return userService.updateUser(id, updateUserDTO)</span>
-<span class="nc" id="L71">                .map(updatedUser -&gt; ResponseEntity.ok(updatedUser))</span>
-<span class="nc" id="L72">                .orElse(ResponseEntity.notFound().build());</span>
+<span class="nc" id="L76">        return userService.updateUser(id, updateUserDTO)</span>
+<span class="nc" id="L77">                .map(updatedUser -&gt; ResponseEntity.ok(updatedUser))</span>
+<span class="nc" id="L78">                .orElse(ResponseEntity.notFound().build());</span>
     }
 
     // DELETE /api/users/{id} - Delete user (ADMIN only)
     @DeleteMapping(&quot;/{id}&quot;)
     @PreAuthorize(&quot;hasRole('ADMIN')&quot;)
     public ResponseEntity&lt;?&gt; deleteUser(@PathVariable Long id) {
-<span class="nc" id="L79">        userService.deleteUser(id);</span>
-<span class="nc" id="L80">        return ResponseEntity.ok().build();</span>
+<span class="nc" id="L85">        userService.deleteUser(id);</span>
+<span class="nc" id="L86">        return ResponseEntity.ok().build();</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

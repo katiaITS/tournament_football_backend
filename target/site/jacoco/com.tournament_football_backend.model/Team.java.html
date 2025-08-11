@@ -9,6 +9,9 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
+/* * Team entity representing a football team in the tournament system.
+ * It contains fields for team name, creation date, and relationships with players and tournaments.
+ */
 @Entity
 @Table(name = &quot;teams&quot;)
 public class Team {
@@ -25,7 +28,7 @@ public class Team {
     @Column(name = &quot;created_at&quot;)
     private LocalDateTime createdAt;
 
-<span class="fc" id="L28">    @ManyToMany</span>
+<span class="fc" id="L31">    @ManyToMany</span>
     @JoinTable(
             name = &quot;team_players&quot;,
             joinColumns = @JoinColumn(name = &quot;team_id&quot;),
@@ -33,46 +36,45 @@ public class Team {
     )
     private Set&lt;User&gt; players = new HashSet&lt;&gt;();
 
-<span class="fc" id="L36">    @ManyToMany(mappedBy = &quot;participatingTeams&quot;)</span>
+<span class="fc" id="L39">    @ManyToMany(mappedBy = &quot;participatingTeams&quot;)</span>
     @JsonIgnore
     private Set&lt;Tournament&gt; tournaments = new HashSet&lt;&gt;();
 
-<span class="fc" id="L40">    public Team() {</span>
-<span class="fc" id="L41">        this.createdAt = LocalDateTime.now();</span>
-<span class="fc" id="L42">    }</span>
+<span class="fc" id="L43">    public Team() {</span>
+<span class="fc" id="L44">        this.createdAt = LocalDateTime.now();</span>
+<span class="fc" id="L45">    }</span>
 
     public void addPlayer(User player) {
-<span class="fc" id="L45">        this.players.add(player);</span>
-<span class="fc" id="L46">        player.getTeams().add(this);</span>
-<span class="fc" id="L47">    }</span>
+<span class="fc" id="L48">        this.players.add(player);</span>
+<span class="fc" id="L49">        player.getTeams().add(this);</span>
+<span class="fc" id="L50">    }</span>
 
     public void removePlayer(User player) {
-<span class="fc" id="L50">        this.players.remove(player);</span>
-<span class="fc" id="L51">        player.getTeams().remove(this);</span>
-<span class="fc" id="L52">    }</span>
+<span class="fc" id="L53">        this.players.remove(player);</span>
+<span class="fc" id="L54">        player.getTeams().remove(this);</span>
+<span class="fc" id="L55">    }</span>
 
     // Getters and Setters
-<span class="fc" id="L55">    public Long getId() { return id; }</span>
-<span class="fc" id="L56">    public void setId(Long id) { this.id = id; }</span>
+<span class="fc" id="L58">    public Long getId() { return id; }</span>
+<span class="fc" id="L59">    public void setId(Long id) { this.id = id; }</span>
 
-<span class="fc" id="L58">    public String getName() { return name; }</span>
-<span class="fc" id="L59">    public void setName(String name) { this.name = name; }</span>
+<span class="fc" id="L61">    public String getName() { return name; }</span>
+<span class="fc" id="L62">    public void setName(String name) { this.name = name; }</span>
 
-<span class="fc" id="L61">    public LocalDateTime getCreatedAt() { return createdAt; }</span>
-<span class="fc" id="L62">    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }</span>
+<span class="fc" id="L64">    public LocalDateTime getCreatedAt() { return createdAt; }</span>
+<span class="fc" id="L65">    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }</span>
 
-<span class="fc" id="L64">    public Set&lt;User&gt; getPlayers() { return players; }</span>
-<span class="fc" id="L65">    public void setPlayers(Set&lt;User&gt; players) { this.players = players; }</span>
+<span class="fc" id="L67">    public Set&lt;User&gt; getPlayers() { return players; }</span>
+<span class="fc" id="L68">    public void setPlayers(Set&lt;User&gt; players) { this.players = players; }</span>
 
-<span class="fc" id="L67">    public Set&lt;Tournament&gt; getTournaments() { return tournaments; }</span>
-<span class="nc" id="L68">    public void setTournaments(Set&lt;Tournament&gt; tournaments) { this.tournaments = tournaments; }</span>
+<span class="fc" id="L70">    public Set&lt;Tournament&gt; getTournaments() { return tournaments; }</span>
+<span class="nc" id="L71">    public void setTournaments(Set&lt;Tournament&gt; tournaments) { this.tournaments = tournaments; }</span>
 
     @Override
     public String toString() {
-<span class="nc" id="L72">        return &quot;Team{&quot; +</span>
+<span class="nc" id="L75">        return &quot;Team{&quot; +</span>
                 &quot;id=&quot; + id +
-                &quot;, name='&quot; + name + '\'' +
-<span class="nc" id="L75">                &quot;, numberOfPlayers=&quot; + players.size() +</span>
+                &quot;, name='&quot; + name +
                 '}';
     }
 }

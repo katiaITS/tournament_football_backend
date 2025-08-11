@@ -2,7 +2,9 @@
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-
+/* * CreateTeamDTO is used for creating a new team.
+ * It contains the necessary fields and validation constraints.
+ */
 public class CreateTeamDTO {
 
     @NotBlank
@@ -10,19 +12,19 @@ public class CreateTeamDTO {
     private String name;
 
     // Constructors
-<span class="fc" id="L13">    public CreateTeamDTO() {}</span>
+<span class="fc" id="L15">    public CreateTeamDTO() {}</span>
 
-<span class="nc" id="L15">    public CreateTeamDTO(String name) {</span>
-<span class="nc" id="L16">        this.name = name;</span>
-<span class="nc" id="L17">    }</span>
+<span class="nc" id="L17">    public CreateTeamDTO(String name) {</span>
+<span class="nc" id="L18">        this.name = name;</span>
+<span class="nc" id="L19">    }</span>
 
     // Getters and Setters
     public String getName() {
-<span class="fc" id="L21">        return name;</span>
+<span class="fc" id="L23">        return name;</span>
     }
 
     public void setName(String name) {
-<span class="fc" id="L25">        this.name = name;</span>
-<span class="fc" id="L26">    }</span>
+<span class="fc" id="L27">        this.name = name;</span>
+<span class="fc" id="L28">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

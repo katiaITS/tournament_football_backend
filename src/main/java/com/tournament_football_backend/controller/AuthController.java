@@ -6,6 +6,7 @@ import com.tournament_football_backend.dto.UserDTO;
 import com.tournament_football_backend.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -13,7 +14,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
-/* * AuthController.java
+/** AuthController.java
  * Handles user authentication and registration.
  */
 @RestController
@@ -43,7 +44,7 @@ public class AuthController {
 
         return ResponseEntity.ok(new AuthDTO.JwtResponse(jwt,
                 userDetails.getUsername(),
-                null, // email not available in UserDetails
+                null,
                 role));
     }
 
@@ -55,7 +56,7 @@ public class AuthController {
 
         UserDTO createdUser = userService.createUser(userDTO, signUpRequest.getPassword());
 
-        return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
+        return ResponseEntity.status(HttpStatus.CREATED).body("User registered successfully!");
     }
 
     // Message response class
@@ -74,4 +75,6 @@ public class AuthController {
             this.message = message;
         }
     }
+
+
 }

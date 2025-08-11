@@ -1,9 +1,10 @@
 GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
-tournament-football-backend,com.tournament_football_backend.config,WebSecurityConfig,0,169,0,0,0,29,0,11,0,11
-tournament-football-backend,com.tournament_football_backend.config,AuthEntryPointJwt,48,7,0,0,11,2,1,2,1,2
+tournament-football-backend,com.tournament_football_backend.config,WebSecurityConfig,0,173,0,0,0,32,0,11,0,11
+tournament-football-backend,com.tournament_football_backend.config,AuthEntryPointJwt,49,7,0,0,12,2,1,2,1,2
+tournament-football-backend,com.tournament_football_backend.config,CustomAccessDeniedHandler,49,7,0,0,12,2,1,2,1,2
 tournament-football-backend,com.tournament_football_backend.config,AuthTokenFilter,67,7,8,0,17,2,6,2,2,2
 tournament-football-backend,com.tournament_football_backend.config,JwtUtils,91,7,0,0,27,2,5,2,5,2
-tournament-football-backend,com.tournament_football_backend.model,Team,13,69,0,0,3,20,2,12,2,12
+tournament-football-backend,com.tournament_football_backend.model,Team,10,69,0,0,2,20,2,12,2,12
 tournament-football-backend,com.tournament_football_backend.model,Role,0,15,0,0,0,3,0,1,0,1
 tournament-football-backend,com.tournament_football_backend.model,Profile,3,56,0,0,1,16,1,16,1,16
 tournament-football-backend,com.tournament_football_backend.model,Tournament,7,126,1,3,2,34,3,23,2,22
@@ -41,7 +42,6 @@ tournament-football-backend,com.tournament_football_backend.exception,Validation
 tournament-football-backend,com.tournament_football_backend.exception,UserExceptions.UsernameAlreadyExistsException,0,5,0,0,0,2,0,1,0,1
 tournament-football-backend,com.tournament_football_backend.exception,GlobalExceptionHandler.ErrorResponse,30,0,0,0,13,0,7,0,7,0
 tournament-football-backend,com.tournament_football_backend.exception,TeamExceptions.PlayerNotInTeamException,0,5,0,0,0,2,0,1,0,1
-tournament-football-backend,com.tournament_football_backend.exception,UserExceptions.UnauthorizedOperationException,5,0,0,0,2,0,1,0,1,0
 tournament-football-backend,com.tournament_football_backend.exception,MatchExceptions.InvalidMatchResultException,0,5,0,0,0,2,0,1,0,1
 tournament-football-backend,com.tournament_football_backend.exception,TournamentExceptions.TeamAlreadyInTournamentException,0,5,0,0,0,2,0,1,0,1
 tournament-football-backend,com.tournament_football_backend.exception,TeamExceptions,3,0,0,0,1,0,1,0,1,0
@@ -53,7 +53,7 @@ tournament-football-backend,com.tournament_football_backend.exception,Tournament
 tournament-football-backend,com.tournament_football_backend.exception,ValidationExceptions,3,0,0,0,1,0,1,0,1,0
 tournament-football-backend,com.tournament_football_backend.exception,MatchExceptions,3,0,0,0,1,0,1,0,1,0
 tournament-football-backend,com.tournament_football_backend.exception,TeamExceptions.TeamNotFoundException,0,5,0,0,0,2,0,1,0,1
-tournament-football-backend,com.tournament_football_backend.exception,GlobalExceptionHandler,131,7,18,0,31,2,14,2,5,2
+tournament-football-backend,com.tournament_football_backend.exception,GlobalExceptionHandler,182,7,18,0,40,2,17,2,8,2
 tournament-football-backend,com.tournament_football_backend.exception,UserExceptions.UserNotFoundException,0,5,0,0,0,2,0,1,0,1
 tournament-football-backend,com.tournament_football_backend.exception,TournamentExceptions.InvalidTournamentDateException,0,5,0,0,0,2,0,1,0,1
 tournament-football-backend,com.tournament_football_backend.exception,ValidationExceptions.EmptySearchKeywordException,0,5,0,0,0,2,0,1,0,1
@@ -63,9 +63,9 @@ tournament-football-backend,com.tournament_football_backend.exception,Validation
 tournament-football-backend,com.tournament_football_backend.exception,UserExceptions,3,0,0,0,1,0,1,0,1,0
 tournament-football-backend,com.tournament_football_backend.exception,TournamentExceptions.TournamentNotFoundException,0,5,0,0,0,2,0,1,0,1
 tournament-football-backend,com.tournament_football_backend.exception,TournamentExceptions.TeamNotInTournamentException,0,5,0,0,0,2,0,1,0,1
-tournament-football-backend,com.tournament_football_backend.controller,UserController,81,3,0,0,18,1,11,1,11,1
-tournament-football-backend,com.tournament_football_backend.controller,TeamController,100,3,0,0,23,1,13,1,13,1
-tournament-football-backend,com.tournament_football_backend.controller,AuthController,65,3,0,0,13,1,2,1,2,1
-tournament-football-backend,com.tournament_football_backend.controller,MatchController,118,3,0,0,27,1,14,1,14,1
+tournament-football-backend,com.tournament_football_backend.controller,UserController,82,3,0,0,18,1,11,1,11,1
+tournament-football-backend,com.tournament_football_backend.controller,TeamController,101,3,0,0,23,1,13,1,13,1
+tournament-football-backend,com.tournament_football_backend.controller,AuthController,64,3,0,0,13,1,2,1,2,1
+tournament-football-backend,com.tournament_football_backend.controller,MatchController,121,3,0,0,27,1,14,1,14,1
 tournament-football-backend,com.tournament_football_backend.controller,AuthController.MessageResponse,13,0,0,0,6,0,3,0,3,0
-tournament-football-backend,com.tournament_football_backend.controller,TournamentController,101,3,0,0,24,1,13,1,13,1
+tournament-football-backend,com.tournament_football_backend.controller,TournamentController,102,3,0,0,24,1,13,1,13,1

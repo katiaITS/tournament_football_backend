@@ -9,6 +9,7 @@ import com.tournament_football_backend.service.MatchService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -17,22 +18,9 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
-/*
-    * MatchController.java
-    * Handles match-related operations such as creating, updating, and retrieving matches.
-    * Provides endpoints for both users and administrators.
-    * Endpoints:
-    * - GET /api/matches - List all matches
-    * - GET /api/matches/{id} - Get match by ID
-    * - POST /api/matches - Create new match (ADMIN only)
-    * - PUT /api/matches/{id} - Update match (ADMIN only)
-    * - PUT /api/matches/{id}/result - Update match result (ADMIN only)
-    * - DELETE /api/matches/{id} - Delete match (ADMIN only)
-    * - GET /api/matches/tournament/{tournamentId} - Matches by tournament
-    * - GET /api/matches/team/{teamId} - Matches by team
-    * - GET /api/matches/status/{status} - Matches by status
-    * - GET /api/matches/period?start={start}&end={end} - Matches by period
-    * - GET /api/matches/today - Today's matches
+/** MatchController.java
+ * Handles match-related operations such as creating, updating, and retrieving matches.
+ * Provides endpoints for both users and administrators.
  */
 @RestController
 @RequestMapping("/matches")
@@ -62,7 +50,7 @@ public class MatchController {
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<MatchDTO> createMatch(@Valid @RequestBody CreateMatchDTO createMatchDTO) {
         MatchDTO createdMatch = matchService.createMatch(createMatchDTO);
-        return ResponseEntity.ok(createdMatch);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdMatch);
     }
 
     // PUT /api/matches/{id} - Update match (ADMIN only)
@@ -130,4 +118,5 @@ public class MatchController {
         List<MatchDTO> matches = matchService.getTodayMatches();
         return ResponseEntity.ok(matches);
     }
+
 }

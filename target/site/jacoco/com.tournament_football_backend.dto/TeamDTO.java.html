@@ -6,6 +6,10 @@ import jakarta.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.util.Set;
 
+/**
+ * Data Transfer Object for Team entity.
+ * Contains basic team information and a set of players.
+ */
 public class TeamDTO {
 
     private Long id;
@@ -19,51 +23,51 @@ public class TeamDTO {
     private int numberOfPlayers;
 
     // Constructors
-<span class="fc" id="L22">    public TeamDTO() {}</span>
+<span class="fc" id="L26">    public TeamDTO() {}</span>
 
-<span class="nc" id="L24">    public TeamDTO(String name) {</span>
-<span class="nc" id="L25">        this.name = name;</span>
-<span class="nc" id="L26">    }</span>
+<span class="nc" id="L28">    public TeamDTO(String name) {</span>
+<span class="nc" id="L29">        this.name = name;</span>
+<span class="nc" id="L30">    }</span>
 
     // Getters and Setters
     public Long getId() {
-<span class="fc" id="L30">        return id;</span>
+<span class="fc" id="L34">        return id;</span>
     }
 
     public void setId(Long id) {
-<span class="fc" id="L34">        this.id = id;</span>
-<span class="fc" id="L35">    }</span>
+<span class="fc" id="L38">        this.id = id;</span>
+<span class="fc" id="L39">    }</span>
 
     public String getName() {
-<span class="fc" id="L38">        return name;</span>
+<span class="fc" id="L42">        return name;</span>
     }
 
     public void setName(String name) {
-<span class="fc" id="L42">        this.name = name;</span>
-<span class="fc" id="L43">    }</span>
+<span class="fc" id="L46">        this.name = name;</span>
+<span class="fc" id="L47">    }</span>
 
     public LocalDateTime getCreatedAt() {
-<span class="nc" id="L46">        return createdAt;</span>
+<span class="nc" id="L50">        return createdAt;</span>
     }
 
     public void setCreatedAt(LocalDateTime createdAt) {
-<span class="fc" id="L50">        this.createdAt = createdAt;</span>
-<span class="fc" id="L51">    }</span>
+<span class="fc" id="L54">        this.createdAt = createdAt;</span>
+<span class="fc" id="L55">    }</span>
 
     public Set&lt;UserDTO&gt; getPlayers() {
-<span class="nc" id="L54">        return players;</span>
+<span class="nc" id="L58">        return players;</span>
     }
 
     public void setPlayers(Set&lt;UserDTO&gt; players) {
-<span class="nc" id="L58">        this.players = players;</span>
-<span class="nc" id="L59">    }</span>
+<span class="nc" id="L62">        this.players = players;</span>
+<span class="nc" id="L63">    }</span>
 
     public int getNumberOfPlayers() {
-<span class="fc" id="L62">        return numberOfPlayers;</span>
+<span class="fc" id="L66">        return numberOfPlayers;</span>
     }
 
     public void setNumberOfPlayers(int numberOfPlayers) {
-<span class="fc" id="L66">        this.numberOfPlayers = numberOfPlayers;</span>
-<span class="fc" id="L67">    }</span>
+<span class="fc" id="L70">        this.numberOfPlayers = numberOfPlayers;</span>
+<span class="fc" id="L71">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

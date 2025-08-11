@@ -17,14 +17,6 @@ import java.util.List;
  * Handles user-related operations such as listing, searching, retrieving, updating, and deleting users.
  * Access is restricted based on user roles (ADMIN or self).
  *
- * Endpoints:
- * - GET /api/users: List all users (ADMIN only)
- * - GET /api/users/search?keyword={keyword}: Search users by keyword (ADMIN only)
- * - GET /api/users/username/{username}: Get user by username (ADMIN or self)
- * - GET /api/users/{id}: Get user by ID (ADMIN or self)
- * - PUT /api/users/{id}/profile: Update user profile (ADMIN or self)
- * - PUT /api/users/{id}: Update user (ADMIN or self)
- * - DELETE /api/users/{id}: Delete user (ADMIN only)
  */
 @RestController
 @RequestMapping("/users")

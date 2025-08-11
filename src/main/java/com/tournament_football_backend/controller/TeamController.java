@@ -19,18 +19,6 @@ import java.util.List;
     * Provides functionality to manage teams, including creating, updating, deleting,
     * and retrieving teams and their players.
     *
-    * Endpoints:
-    * - GET /api/teams - List all teams
-    * - GET /api/teams/{id} - Get team by ID
-    * - GET /api/teams/name/{name} - Get team by name
-    * - POST /api/teams - Create new team
-    * - PUT /api/teams/{id} - Update team (ADMIN only)
-    * - DELETE /api/teams/{id} - Delete team (ADMIN only)
-    * - POST /api/teams/{teamId}/players/{playerId} - Add player to team (ADMIN only)
-    * - DELETE /api/teams/{teamId}/players/{playerId} - Remove player from team (ADMIN only)
-    * - GET /api/teams/player/{playerId} - Get teams by player ID
-    * - GET /api/teams/search?keyword={keyword} - Search teams by keyword
-    *
  */
 @RestController
 @RequestMapping("/teams")

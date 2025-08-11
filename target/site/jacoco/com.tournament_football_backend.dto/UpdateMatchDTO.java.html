@@ -5,6 +5,10 @@ import com.tournament_football_backend.model.MatchStatus;
 
 import java.time.LocalDateTime;
 
+/**
+ * Data Transfer Object for updating match details.
+ * All fields are optional to allow partial updates.
+ */
 public class UpdateMatchDTO {
 
     // All fields optional for partial updates
@@ -19,39 +23,39 @@ public class UpdateMatchDTO {
     private MatchStatus status;
 
     // Constructors
-<span class="fc" id="L22">    public UpdateMatchDTO() {}</span>
+<span class="fc" id="L26">    public UpdateMatchDTO() {}</span>
 
     // Getters and Setters
     public LocalDateTime getMatchDate() {
-<span class="fc" id="L26">        return matchDate;</span>
+<span class="fc" id="L30">        return matchDate;</span>
     }
 
     public void setMatchDate(LocalDateTime matchDate) {
-<span class="fc" id="L30">        this.matchDate = matchDate;</span>
-<span class="fc" id="L31">    }</span>
+<span class="fc" id="L34">        this.matchDate = matchDate;</span>
+<span class="fc" id="L35">    }</span>
 
     public Integer getHomeGoals() {
-<span class="fc" id="L34">        return homeGoals;</span>
+<span class="fc" id="L38">        return homeGoals;</span>
     }
 
     public void setHomeGoals(Integer homeGoals) {
-<span class="fc" id="L38">        this.homeGoals = homeGoals;</span>
-<span class="fc" id="L39">    }</span>
+<span class="fc" id="L42">        this.homeGoals = homeGoals;</span>
+<span class="fc" id="L43">    }</span>
 
     public Integer getAwayGoals() {
-<span class="fc" id="L42">        return awayGoals;</span>
+<span class="fc" id="L46">        return awayGoals;</span>
     }
 
     public void setAwayGoals(Integer awayGoals) {
-<span class="nc" id="L46">        this.awayGoals = awayGoals;</span>
-<span class="nc" id="L47">    }</span>
+<span class="nc" id="L50">        this.awayGoals = awayGoals;</span>
+<span class="nc" id="L51">    }</span>
 
     public MatchStatus getStatus() {
-<span class="fc" id="L50">        return status;</span>
+<span class="fc" id="L54">        return status;</span>
     }
 
     public void setStatus(MatchStatus status) {
-<span class="fc" id="L54">        this.status = status;</span>
-<span class="fc" id="L55">    }</span>
+<span class="fc" id="L58">        this.status = status;</span>
+<span class="fc" id="L59">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

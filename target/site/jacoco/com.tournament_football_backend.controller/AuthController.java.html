@@ -6,6 +6,7 @@ import com.tournament_football_backend.dto.UserDTO;
 import com.tournament_football_backend.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -13,11 +14,13 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
-
+/** AuthController.java
+ * Handles user authentication and registration.
+ */
 @RestController
 @RequestMapping(&quot;/auth&quot;)
 @CrossOrigin(origins = &quot;*&quot;, maxAge = 3600)
-<span class="fc" id="L20">public class AuthController {</span>
+<span class="fc" id="L23">public class AuthController {</span>
 
     @Autowired
     AuthenticationManager authenticationManager;
@@ -30,47 +33,49 @@ import org.springframework.web.bind.annotation.*;
 
     @PostMapping(&quot;/login&quot;)
     public ResponseEntity&lt;?&gt; authenticateUser(@Valid @RequestBody AuthDTO.LoginRequest loginRequest) {
-<span class="nc" id="L33">        Authentication authentication = authenticationManager.authenticate(</span>
-<span class="nc" id="L34">                new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));</span>
+<span class="nc" id="L36">        Authentication authentication = authenticationManager.authenticate(</span>
+<span class="nc" id="L37">                new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));</span>
 
-<span class="nc" id="L36">        SecurityContextHolder.getContext().setAuthentication(authentication);</span>
-<span class="nc" id="L37">        String jwt = jwtUtils.generateJwtToken(authentication);</span>
+<span class="nc" id="L39">        SecurityContextHolder.getContext().setAuthentication(authentication);</span>
+<span class="nc" id="L40">        String jwt = jwtUtils.generateJwtToken(authentication);</span>
 
-<span class="nc" id="L39">        UserDetails userDetails = (UserDetails) authentication.getPrincipal();</span>
-<span class="nc" id="L40">        String role = userDetails.getAuthorities().iterator().next().getAuthority();</span>
+<span class="nc" id="L42">        UserDetails userDetails = (UserDetails) authentication.getPrincipal();</span>
+<span class="nc" id="L43">        String role = userDetails.getAuthorities().iterator().next().getAuthority();</span>
 
-<span class="nc" id="L42">        return ResponseEntity.ok(new AuthDTO.JwtResponse(jwt,</span>
-<span class="nc" id="L43">                userDetails.getUsername(),</span>
-                null, // email not available in UserDetails
+<span class="nc" id="L45">        return ResponseEntity.ok(new AuthDTO.JwtResponse(jwt,</span>
+<span class="nc" id="L46">                userDetails.getUsername(),</span>
+                null,
                 role));
     }
 
     @PostMapping(&quot;/register&quot;)
     public ResponseEntity&lt;?&gt; registerUser(@Valid @RequestBody AuthDTO.RegisterRequest signUpRequest) {
-<span class="nc" id="L50">        UserDTO userDTO = new UserDTO();</span>
-<span class="nc" id="L51">        userDTO.setUsername(signUpRequest.getUsername());</span>
-<span class="nc" id="L52">        userDTO.setEmail(signUpRequest.getEmail());</span>
+<span class="nc" id="L53">        UserDTO userDTO = new UserDTO();</span>
+<span class="nc" id="L54">        userDTO.setUsername(signUpRequest.getUsername());</span>
+<span class="nc" id="L55">        userDTO.setEmail(signUpRequest.getEmail());</span>
 
-<span class="nc" id="L54">        UserDTO createdUser = userService.createUser(userDTO, signUpRequest.getPassword());</span>
+<span class="nc" id="L57">        UserDTO createdUser = userService.createUser(userDTO, signUpRequest.getPassword());</span>
 
-<span class="nc" id="L56">        return ResponseEntity.ok(new MessageResponse(&quot;User registered successfully!&quot;));</span>
+<span class="nc" id="L59">        return ResponseEntity.status(HttpStatus.CREATED).body(&quot;User registered successfully!&quot;);</span>
     }
 
     // Message response class
     public static class MessageResponse {
         private String message;
 
-<span class="nc" id="L63">        public MessageResponse(String message) {</span>
-<span class="nc" id="L64">            this.message = message;</span>
-<span class="nc" id="L65">        }</span>
+<span class="nc" id="L66">        public MessageResponse(String message) {</span>
+<span class="nc" id="L67">            this.message = message;</span>
+<span class="nc" id="L68">        }</span>
 
         public String getMessage() {
-<span class="nc" id="L68">            return message;</span>
+<span class="nc" id="L71">            return message;</span>
         }
 
         public void setMessage(String message) {
-<span class="nc" id="L72">            this.message = message;</span>
-<span class="nc" id="L73">        }</span>
+<span class="nc" id="L75">            this.message = message;</span>
+<span class="nc" id="L76">        }</span>
     }
+
+
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

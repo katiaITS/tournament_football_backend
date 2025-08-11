@@ -10,15 +10,12 @@ Sistema backend per la gestione di tornei di calcetto sviluppato con Spring Boot
 - [Requisiti](#requisiti)
 - [Installazione e Avvio](#installazione-e-avvio)
 - [API Endpoints](#api-endpoints)
-- [Configurazione](#configurazione)
 - [Testing](#testing)
 - [Dati di Test](#dati-di-test)
-- [Sviluppi Futuri](#sviluppi-futuri)
 
 ## Panoramica
 
-Tournament Football Backend è un'applicazione per digitalizzare la gestione di competizioni sportive, sostituendo la gestione cartacea tradizionale. Il sistema offre:
-
+Tournament Football Backend è un'applicazione per digitalizzare la gestione di competizioni sportive, sostituendo la gestione cartacea tradizionale. Il sistema è pensato:
 - **Per organizzazioni sportive locali**: Gestione semplice di tornei tra amici o squadre amatoriali
 - **Per centri sportivi**: Soluzione completa per gestire più tornei contemporaneamente
 
@@ -67,43 +64,6 @@ Tournament Football Backend è un'applicazione per digitalizzare la gestione di 
 │     Models      │ ← Rappresentano le tabelle del database
 └─────────────────┘
 ```
-
-### Moduli Principali
-
-#### Modulo User (Utenti)
-- **Controller**: `AuthController`, `UserController`
-- **Service**: `UserService`, `UserDetailsServiceImpl`
-- **Repository**: `UserRepository`, `ProfileRepository`
-- **Entità**: `User`, `Profile`
-- **Relazioni JPA**: OneToOne (User ↔ Profile), ManyToMany (User ↔ Team)
-- **Funzionalità**: Autenticazione JWT, gestione profili, autorizzazioni
-
-#### Modulo Team (Squadre)
-- **Controller**: `TeamController`
-- **Service**: `TeamService`
-- **Repository**: `TeamRepository`
-- **Entità**: `Team`
-- **Relazioni JPA**: ManyToMany (Team ↔ Users e Tournament ↔ Teams)
-- **Funzionalità**: Gestione squadre e giocatori
-
-#### Modulo Tournament (Tornei)
-- **Controller**: `TournamentController`
-- **Service**: `TournamentService`
-- **Repository**: `TournamentRepository`
-- **Entità**: `Tournament`
-- **Relazioni JPA**: OneToMany (Tournament → Match), ManyToMany (Tournament ↔ Teams)
-- **Stati**: OPEN, IN_PROGRESS, COMPLETED, CANCELLED, SCHEDULED
-- **Funzionalità**: Gestione tornei e iscrizioni
-
-#### Modulo Match (Partite)
-- **Controller**: `MatchController`
-- **Service**: `MatchService`
-- **Repository**: `MatchRepository`
-- **Entità**: `Match`
-- **Relazioni JPA**: ManyToOne (Match → Teams, Match → Tournament)
-- **Stati**: SCHEDULED, IN_PROGRESS, COMPLETED, POSTPONED, CANCELLED, TO_BE_SCHEDULED
-- **Funzionalità**: Programmazione partite e risultati
-
 ## Requisiti
 
 - **Docker 20.10+**
@@ -119,105 +79,82 @@ cd tournament-football-backend
 
 ### 2. Avvio dei Servizi
 ```bash
-docker-compose up --build -d
+docker compose up --build -d
 ```
 
 ### 3. Accesso all'Applicazione
 - **API**: http://localhost:8080/api
 - **phpMyAdmin**: http://localhost:8081
-- **Database**: http://localhost:3306
+- **Database**: localhost:3306
 
 ### 4. Verifica Stato Container (Opzionale)
 ```bash
-docker-compose ps
+docker compose ps
 ```
 
 ### 5. Visualizzazione Log (Opzionale)
 ```bash
-docker-compose logs -f
+docker compose logs -f
 ```
 
 ### 6. Arresto Servizi
 ```bash
-docker-compose down
+docker compose down
 ```
 
 ## API Endpoints
 
 ### Autenticazione (`/auth`)
-
-#### POST `/auth/login` - Login utente
-- **Request Body**:
-    ```json
-    {
-    "username": "admin",
-    "password": "password123"
-    }
-    ```
-- **Response**
-    - **Success (200 OK)**:
-        ```json
-        {
-        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
-        "type": "Bearer",
-        "username": "admin",
-        "email": null,
-        "role": "ROLE_ADMIN"
-        }
-        ```
-    - **Error (401 Unauthorized)**: `{ "error": "Invalid credentials" }`
-
-#### POST `/auth/register` - Registrazione
-- **Request Body**:
-    ```json
-    {
-    "username": "nuovo_utente",
-    "email": "utente@email.com",
-    "password": "password123"
-    }
-    ```
-- **Response**
-    - **Success (201 Created)**:
-        ```json
-        {
-        "message": "User registered successfully!"
-        }
-        ```
-    - **Error (400 Bad Request)**: `{ "error": "Username already exists" }`
+- `POST /auth/login` - Login utente
+- `POST /auth/register` - Registrazione
 
 ### Gestione Utenti (`/users`)
-
 - `GET /users` - Lista utenti (ADMIN)
+- `GET /users/search?keyword={keyword}` - Ricerca utenti (ADMIN)
+- `GET /users/username/{username}` - Dettagli utente per username (ADMIN o proprietario)
 - `GET /users/{id}` - Dettagli utente (ADMIN o proprietario)
 - `PUT /users/{id}/profile` - Aggiorna profilo (ADMIN o proprietario)
-- `GET /users/search?keyword={keyword}` - Ricerca utenti (ADMIN)
+- `PUT /users/{id}` - Aggiorna utente (ADMIN o proprietario)
+- `DELETE /users/{id}` - Elimina utente (ADMIN)
 
 ### Gestione Squadre (`/teams`)
-
 - `GET /teams` - Lista squadre
-- `POST /teams` - Crea squadra
 - `GET /teams/{id}` - Dettagli squadra
+- `GET /teams/name/{name}` - Dettagli squadra per nome
+- `POST /teams` - Crea squadra
+- `PUT /teams/{id}` - Aggiorna squadra (ADMIN)
+- `DELETE /teams/{id}` - Elimina squadra (ADMIN)
 - `POST /teams/{teamId}/players/{playerId}` - Aggiungi giocatore (ADMIN)
 - `DELETE /teams/{teamId}/players/{playerId}` - Rimuovi giocatore (ADMIN)
+- `GET /teams/player/{playerId}` - Squadre per giocatore
 - `GET /teams/search?keyword={keyword}` - Ricerca squadre
 
 ### Gestione Tornei (`/tournaments`)
-
 - `GET /tournaments` - Lista tornei
-- `POST /tournaments` - Crea torneo (ADMIN)
 - `GET /tournaments/{id}` - Dettagli torneo
+- `POST /tournaments` - Crea torneo (ADMIN)
+- `PUT /tournaments/{id}` - Aggiorna torneo (ADMIN)
+- `DELETE /tournaments/{id}` - Elimina torneo (ADMIN)
 - `POST /tournaments/{tournamentId}/teams/{teamId}` - Iscrivi squadra
+- `DELETE /api/tournaments/{tournamentId}/teams/{teamId}` - Rimuovi squadra da torneo (ADMIN)
 - `GET /tournaments/status/{status}` - Filtra per stato
 - `GET /tournaments/upcoming` - Tornei futuri
+- `GET /api/tournaments/team/{teamId}` - Tornei per squadra
+- `GET /tournaments/search?keyword={keyword}` - Ricerca tornei
 
 ### Gestione Partite (`/matches`)
-
 - `GET /matches` - Lista partite
+- `GET /matches/{id}` - Dettagli partita per id
 - `POST /matches` - Crea partita (ADMIN)
+- `PUT /matches/{id}` - Aggiorna match (ADMIN)
 - `PUT /matches/{id}/result` - Aggiorna risultato (ADMIN)
-- `GET /matches/today` - Partite odierne
+- `DELETE /matches/{id}` - Elimina partita (ADMIN)
 - `GET /matches/tournament/{id}` - Partite per torneo
 - `GET /matches/team/{id}` - Partite per squadra
+- `GET /matches/status/{status}` - Partite per stato
+- `GET /matches/period?start={start}&end={end}` - Partite per periodo
+- `GET /matches/today` - Partite odierne
+
 
 ### Codici di Stato HTTP
 
@@ -230,40 +167,6 @@ docker-compose down
 | 403 | Forbidden | Permessi insufficienti |
 | 404 | Not Found | Risorsa inesistente |
 | 409 | Conflict | Conflitto logico |
-
-## Configurazione
-
-### File .env
-```env
-# Database Configuration
-DB_NAME=tournament_football
-DB_USERNAME=tournament_user
-DB_PASSWORD=password
-DB_ROOT_PASSWORD=rootpassword
-
-# JWT Configuration
-JWT_SECRET=mySecretKey12345678901234567890123456789012345678901234567890
-JWT_EXPIRATION=86400000
-
-# Server Configuration
-SERVER_PORT=8080
-SPRING_PROFILES_ACTIVE=docker
-
-# JPA Configuration
-SPRING_JPA_SHOW_SQL=true
-SPRING_JPA_HIBERNATE_DDL_AUTO=update
-```
-
-### Sicurezza JWT
-- **Algoritmo**: HS256 (HMAC con SHA-256)
-- **Durata token**: 24 ore (configurabile)
-- **Secret key**: Configurabile tramite variabili d'ambiente
-
-### Permessi Endpoint
-- **Pubblici** (`/auth/**`): Accesso libero
-- **Autenticati**: Richiede token JWT valido
-- **Solo ADMIN**: Operazioni amministrative
-- **Proprietario o ADMIN**: Accesso ai propri dati
 
 ## Testing
 
@@ -278,20 +181,39 @@ Copertura superiore al 35% con JUnit 5 + Mockito:
 | UserServiceTest | Autenticazione, profili |
 | UserDetailsServiceImplTest | Integrazione Spring Security |
 
-### Test API con Postman
+### Esecuzione Test
+Per eseguire i test automatici è consigliato utilizzare IntelliJ IDEA con plugin Maven.
+
+#### Esecuzione con IntelliJ IDEA da terminale
+1. Aprire il progetto in IntelliJ IDEA
+2. Aprire il terminale integrato
+3. Eseguire il comando:
+   ```bash
+   ./mvnw clean test
+   ```
+#### Esecuzione con IntelliJ IDEA GUI
+IntelliJ IDEA permette di eseguire i test direttamente dall'interfaccia grafica:
+1. Aprire il progetto in IntelliJ IDEA
+2. Navigare su `Run` → `Run All Tests with Coverage`
+
+### Test Manuali
+Per testare manualmente le API, è possibile utilizzare Postman è presente una collection completa con tutti gli endpoint e i test di business logic.
+
+#### Test API con Postman
 Collection completa disponibile in `Tournament Football API.postman_collection.json`:
 
 **Funzionalità:**
 - Gestione automatica JWT
 - Variabili dinamiche
 - Workflow completo di test (12 step)
-- Test regole di business
-- Validazione autorizzazioni
+- Test regole di business (Presentano errori relative al tipo di test)
 
 **Utilizzo:**
 1. Importare collection in Postman
-2. Configurare `base_url` = `http://localhost:8080/api`
-3. Eseguire "Complete Testing Workflow"
+2. Eseguire "Complete Testing Workflow" per testare i 12 step principali
+3. Oppure eseguire i singoli endpoint per testare funzionalità specifiche
+
+*NOTA: è possibile che alcuni test presentino errori, in quanto sono stati creati per verificare la risposta del sistema a condizioni specifiche (es. errori di validazione, permessi insufficienti).*
 
 ## Dati di Test
 
@@ -314,26 +236,3 @@ Collection completa disponibile in `Tournament Football API.postman_collection.j
 - 2 tabelle di relazione (team_players, tournament_teams)
 - Vincoli di integrità referenziale
 - Indici per performance ottimizzate
-
-## Sviluppi Futuri
-
-### Funzionalità Future
-- Statistiche dettagliate (goal, assist, presenze, cartellini)
-- Generazione calendario automatico
-- Diversi tipi di torneo (eliminazione diretta, gironi)
-- Export dati in PDF/Excel
-- Sistema notifiche real-time
-- Interfaccia web completa
-
-### Miglioramenti Tecnici
-- Architettura a microservizi
-- Comunicazione asincrona
-- Deployment cloud (AWS, Azure)
-
-## Licenza
-
-Progetto sviluppato per scopi educativi.
-
----
-
-**Sviluppato utilizzando Spring Boot, MySQL e Docker**

@@ -4,6 +4,10 @@ import jakarta.validation.constraints.Size;
 
 import java.time.LocalDate;
 
+/**
+ * Data Transfer Object for user profile information.
+ * This class is used to transfer profile data between the client and server.
+ */
 public class ProfileDTO {
 
     private Long id;
@@ -26,68 +30,68 @@ public class ProfileDTO {
     private String bio;
 
     // Constructors
-<span class="fc" id="L29">    public ProfileDTO() {}</span>
+<span class="fc" id="L33">    public ProfileDTO() {}</span>
 
-<span class="nc" id="L31">    public ProfileDTO(String firstName, String lastName) {</span>
-<span class="nc" id="L32">        this.firstName = firstName;</span>
-<span class="nc" id="L33">        this.lastName = lastName;</span>
-<span class="nc" id="L34">    }</span>
+<span class="nc" id="L35">    public ProfileDTO(String firstName, String lastName) {</span>
+<span class="nc" id="L36">        this.firstName = firstName;</span>
+<span class="nc" id="L37">        this.lastName = lastName;</span>
+<span class="nc" id="L38">    }</span>
 
     // Getters and Setters
     public Long getId() {
-<span class="fc" id="L38">        return id;</span>
+<span class="fc" id="L42">        return id;</span>
     }
 
     public void setId(Long id) {
-<span class="fc" id="L42">        this.id = id;</span>
-<span class="fc" id="L43">    }</span>
+<span class="fc" id="L46">        this.id = id;</span>
+<span class="fc" id="L47">    }</span>
 
     public String getFirstName() {
-<span class="fc" id="L46">        return firstName;</span>
+<span class="fc" id="L50">        return firstName;</span>
     }
 
     public void setFirstName(String firstName) {
-<span class="fc" id="L50">        this.firstName = firstName;</span>
-<span class="fc" id="L51">    }</span>
+<span class="fc" id="L54">        this.firstName = firstName;</span>
+<span class="fc" id="L55">    }</span>
 
     public String getLastName() {
-<span class="fc" id="L54">        return lastName;</span>
+<span class="fc" id="L58">        return lastName;</span>
     }
 
     public void setLastName(String lastName) {
-<span class="fc" id="L58">        this.lastName = lastName;</span>
-<span class="fc" id="L59">    }</span>
+<span class="fc" id="L62">        this.lastName = lastName;</span>
+<span class="fc" id="L63">    }</span>
 
     public LocalDate getBirthDate() {
-<span class="fc" id="L62">        return birthDate;</span>
+<span class="fc" id="L66">        return birthDate;</span>
     }
 
     public void setBirthDate(LocalDate birthDate) {
-<span class="fc" id="L66">        this.birthDate = birthDate;</span>
-<span class="fc" id="L67">    }</span>
+<span class="fc" id="L70">        this.birthDate = birthDate;</span>
+<span class="fc" id="L71">    }</span>
 
     public String getPhone() {
-<span class="fc" id="L70">        return phone;</span>
+<span class="fc" id="L74">        return phone;</span>
     }
 
     public void setPhone(String phone) {
-<span class="fc" id="L74">        this.phone = phone;</span>
-<span class="fc" id="L75">    }</span>
+<span class="fc" id="L78">        this.phone = phone;</span>
+<span class="fc" id="L79">    }</span>
 
     public String getCity() {
-<span class="fc" id="L78">        return city;</span>
+<span class="fc" id="L82">        return city;</span>
     }
 
     public void setCity(String city) {
-<span class="fc" id="L82">        this.city = city;</span>
-<span class="fc" id="L83">    }</span>
+<span class="fc" id="L86">        this.city = city;</span>
+<span class="fc" id="L87">    }</span>
 
     public String getBio() {
-<span class="fc" id="L86">        return bio;</span>
+<span class="fc" id="L90">        return bio;</span>
     }
 
     public void setBio(String bio) {
-<span class="fc" id="L90">        this.bio = bio;</span>
-<span class="fc" id="L91">    }</span>
+<span class="fc" id="L94">        this.bio = bio;</span>
+<span class="fc" id="L95">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

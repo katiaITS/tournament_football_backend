@@ -7,6 +7,10 @@ import com.tournament_football_backend.model.Role;
 
 import java.time.LocalDateTime;
 
+/**
+ * Data Transfer Object for User entity.
+ * This class is used to transfer user data between layers.
+ */
 public class UserDTO {
 
     private Long id;
@@ -24,63 +28,63 @@ public class UserDTO {
     private ProfileDTO profile;
 
     // Constructors
-<span class="fc" id="L27">    public UserDTO() {}</span>
+<span class="fc" id="L31">    public UserDTO() {}</span>
 
-<span class="nc" id="L29">    public UserDTO(Long id, String username, String email, Role role, LocalDateTime createdAt) {</span>
-<span class="nc" id="L30">        this.id = id;</span>
-<span class="nc" id="L31">        this.username = username;</span>
-<span class="nc" id="L32">        this.email = email;</span>
-<span class="nc" id="L33">        this.role = role;</span>
-<span class="nc" id="L34">        this.createdAt = createdAt;</span>
-<span class="nc" id="L35">    }</span>
+<span class="nc" id="L33">    public UserDTO(Long id, String username, String email, Role role, LocalDateTime createdAt) {</span>
+<span class="nc" id="L34">        this.id = id;</span>
+<span class="nc" id="L35">        this.username = username;</span>
+<span class="nc" id="L36">        this.email = email;</span>
+<span class="nc" id="L37">        this.role = role;</span>
+<span class="nc" id="L38">        this.createdAt = createdAt;</span>
+<span class="nc" id="L39">    }</span>
 
     // Getters and Setters
     public Long getId() {
-<span class="fc" id="L39">        return id;</span>
+<span class="fc" id="L43">        return id;</span>
     }
 
     public void setId(Long id) {
-<span class="fc" id="L43">        this.id = id;</span>
-<span class="fc" id="L44">    }</span>
+<span class="fc" id="L47">        this.id = id;</span>
+<span class="fc" id="L48">    }</span>
 
     public String getUsername() {
-<span class="fc" id="L47">        return username;</span>
+<span class="fc" id="L51">        return username;</span>
     }
 
     public void setUsername(String username) {
-<span class="fc" id="L51">        this.username = username;</span>
-<span class="fc" id="L52">    }</span>
+<span class="fc" id="L55">        this.username = username;</span>
+<span class="fc" id="L56">    }</span>
 
     public String getEmail() {
-<span class="fc" id="L55">        return email;</span>
+<span class="fc" id="L59">        return email;</span>
     }
 
     public void setEmail(String email) {
-<span class="fc" id="L59">        this.email = email;</span>
-<span class="fc" id="L60">    }</span>
+<span class="fc" id="L63">        this.email = email;</span>
+<span class="fc" id="L64">    }</span>
 
     public Role getRole() {
-<span class="fc" id="L63">        return role;</span>
+<span class="fc" id="L67">        return role;</span>
     }
 
     public void setRole(Role role) {
-<span class="fc" id="L67">        this.role = role;</span>
-<span class="fc" id="L68">    }</span>
+<span class="fc" id="L71">        this.role = role;</span>
+<span class="fc" id="L72">    }</span>
 
     public LocalDateTime getCreatedAt() {
-<span class="nc" id="L71">        return createdAt;</span>
+<span class="nc" id="L75">        return createdAt;</span>
     }
 
     public void setCreatedAt(LocalDateTime createdAt) {
-<span class="fc" id="L75">        this.createdAt = createdAt;</span>
-<span class="fc" id="L76">    }</span>
+<span class="fc" id="L79">        this.createdAt = createdAt;</span>
+<span class="fc" id="L80">    }</span>
 
     public ProfileDTO getProfile() {
-<span class="fc" id="L79">        return profile;</span>
+<span class="fc" id="L83">        return profile;</span>
     }
 
     public void setProfile(ProfileDTO profile) {
-<span class="fc" id="L83">        this.profile = profile;</span>
-<span class="fc" id="L84">    }</span>
+<span class="fc" id="L87">        this.profile = profile;</span>
+<span class="fc" id="L88">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>
